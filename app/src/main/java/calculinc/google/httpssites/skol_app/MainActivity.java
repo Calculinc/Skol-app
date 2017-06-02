@@ -13,6 +13,8 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 
+import static calculinc.google.httpssites.skol_app.R.string.Tab_1;
+
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
@@ -79,24 +81,37 @@ public class MainActivity extends AppCompatActivity
     public boolean onNavigationItemSelected(MenuItem item) {
         // Handle navigation view item clicks here.
         int id = item.getItemId();
+        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
+
 
         if (id == R.id.nav_camera) {
-            // Handle the camera action
+
+            toolbar.setTitle(R.string.Tab_1);
+
         } else if (id == R.id.nav_gallery) {
+
+            toolbar.setTitle(R.string.Tab_2);
 
         } else if (id == R.id.nav_slideshow) {
 
+            toolbar.setTitle(R.string.Tab_3);
+
         } else if (id == R.id.nav_manage) {
+
+            toolbar.setTitle(R.string.Tab_4);
 
         } else if (id == R.id.nav_share) {
 
+            toolbar.setTitle(R.string.Tab_5);
+
         } else if (id == R.id.nav_send) {
+
+            toolbar.setTitle(R.string.Tab_6);
 
         }
 
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
-
     }
 }

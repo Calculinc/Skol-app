@@ -1,6 +1,15 @@
 <resources>
     <string name="app_name">Skol-app</string>
 
+    <string name="page_heading">@string/Tab_1</string>
+
+    <string name="Tab_1">Nyheter</string>
+    <string name="Tab_2">Schema</string>
+    <string name="Tab_3">Matsedel</string>
+    <string name="Tab_4">Läxor</string>
+    <string name="Tab_5">Share</string>
+    <string name="Tab_6">Send</string>
+
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
 
