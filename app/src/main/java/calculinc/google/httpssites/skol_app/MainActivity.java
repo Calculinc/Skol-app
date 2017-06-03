@@ -12,6 +12,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.ViewFlipper;
 
 import static calculinc.google.httpssites.skol_app.R.string.Tab_1;
 
@@ -82,23 +83,27 @@ public class MainActivity extends AppCompatActivity
         // Handle navigation view item clicks here.
         int id = item.getItemId();
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-
+        ViewFlipper vf = (ViewFlipper)findViewById(R.id.vf);
 
         if (id == R.id.nav_camera) {
 
             toolbar.setTitle(R.string.Tab_1);
+            vf.setDisplayedChild(0);
 
         } else if (id == R.id.nav_gallery) {
 
             toolbar.setTitle(R.string.Tab_2);
+            vf.setDisplayedChild(1);
 
         } else if (id == R.id.nav_slideshow) {
 
             toolbar.setTitle(R.string.Tab_3);
+            vf.setDisplayedChild(2);
 
         } else if (id == R.id.nav_manage) {
 
             toolbar.setTitle(R.string.Tab_4);
+            vf.setDisplayedChild(3);
 
         } else if (id == R.id.nav_share) {
 
