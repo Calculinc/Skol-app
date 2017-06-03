@@ -85,22 +85,22 @@ public class MainActivity extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         ViewFlipper vf = (ViewFlipper)findViewById(R.id.vf);
 
-        if (id == R.id.nav_camera) {
+        if (id == R.id.nav_nyheter) {
 
             toolbar.setTitle(R.string.Tab_1);
             vf.setDisplayedChild(0);
 
-        } else if (id == R.id.nav_gallery) {
+        } else if (id == R.id.nav_schema) {
 
             toolbar.setTitle(R.string.Tab_2);
             vf.setDisplayedChild(1);
 
-        } else if (id == R.id.nav_slideshow) {
+        } else if (id == R.id.nav_matsedel) {
 
             toolbar.setTitle(R.string.Tab_3);
             vf.setDisplayedChild(2);
 
-        } else if (id == R.id.nav_manage) {
+        } else if (id == R.id.nav_laxor) {
 
             toolbar.setTitle(R.string.Tab_4);
             vf.setDisplayedChild(3);
