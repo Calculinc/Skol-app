@@ -1,8 +1,12 @@
 package calculinc.google.httpssites.skol_app;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.util.Log;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -12,12 +16,23 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.widget.Button;
+import android.widget.EditText;
+import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.ViewFlipper;
+
+import java.io.InputStream;
+import java.util.Calendar;
+import java.util.GregorianCalendar;
 
 import static calculinc.google.httpssites.skol_app.R.string.Tab_1;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
+
+    long id_number = 0;
+    int day = GregorianCalendar.getInstance().get(Calendar.DAY_OF_WEEK);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -43,6 +58,18 @@ public class MainActivity extends AppCompatActivity
 
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
+
+        Button login = (Button) findViewById(R.id.login_button);
+        final EditText personal_id = (EditText) findViewById(R.id.editText);
+        login.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                id_number = Long.parseLong(personal_id.getText().toString());
+            }
+        });
+
+        TextView kek = (TextView) findViewById(R.id.öpö);
+        kek.setText(String.valueOf(day));
     }
 
     @Override
@@ -94,6 +121,7 @@ public class MainActivity extends AppCompatActivity
 
             toolbar.setTitle(R.string.Tab_2);
             vf.setDisplayedChild(1);
+            getSchedule();
 
         } else if (id == R.id.nav_matsedel) {
 
@@ -105,9 +133,10 @@ public class MainActivity extends AppCompatActivity
             toolbar.setTitle(R.string.Tab_4);
             vf.setDisplayedChild(3);
 
-        } else if (id == R.id.nav_share) {
+        } else if (id == R.id.nav_login) {
 
             toolbar.setTitle(R.string.Tab_5);
+            vf.setDisplayedChild(4);
 
         } else if (id == R.id.nav_send) {
 
@@ -118,5 +147,38 @@ public class MainActivity extends AppCompatActivity
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    public void getSchedule() {
+
+        int NovaDay = (int) Math.pow(2, (day - 2));
+        new DownloadImageTask((ImageView) findViewById(R.id.schema_pic))
+                .execute("http://www.novasoftware.se/ImgGen/schedulegenerator.aspx?format=png&schoolid=81530/sv-se&type=0&id=" + id_number + "&period=&week=23&mode=0&printer=0&colors=32&head=5&clock=7&foot=1&day=" + NovaDay + "&width=400&height=640&maxwidth=1883&maxheight=830");
+
+    }
+
+    private class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
+        ImageView bmImage;
+
+        private DownloadImageTask(ImageView bmImage) {
+            this.bmImage = bmImage;
+        }
+
+        protected Bitmap doInBackground(String... urls) {
+            String urldisplay = urls[0];
+            Bitmap mIcon11 = null;
+            try {
+                InputStream in = new java.net.URL(urldisplay).openStream();
+                mIcon11 = BitmapFactory.decodeStream(in);
+            } catch (Exception e) {
+                Log.e("Error", e.getMessage());
+                e.printStackTrace();
+            }
+            return mIcon11;
+        }
+
+        protected void onPostExecute(Bitmap result) {
+            bmImage.setImageBitmap(result);
+        }
     }
 }

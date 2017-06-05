@@ -29,6 +29,7 @@
         <include android:id="@+id/layout_2" layout="@layout/content_schema" />
         <include android:id="@+id/layout_3" layout="@layout/content_matsedel" />
         <include android:id="@+id/layout_4" layout="@layout/content_laxor" />
+        <include android:id="@+id/layout_5" layout="@layout/content_login" />
 
     </ViewFlipper>
 
