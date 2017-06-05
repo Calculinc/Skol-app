@@ -33,6 +33,7 @@ public class MainActivity extends AppCompatActivity
 
     long id_number = 0;
     int day = GregorianCalendar.getInstance().get(Calendar.DAY_OF_WEEK);
+    int week = GregorianCalendar.getInstance().get(Calendar.WEEK_OF_YEAR);
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -69,7 +70,7 @@ public class MainActivity extends AppCompatActivity
         });
 
         TextView kek = (TextView) findViewById(R.id.öpö);
-        kek.setText(String.valueOf(day));
+        kek.setText(String.valueOf(week));
     }
 
     @Override
@@ -153,7 +154,7 @@ public class MainActivity extends AppCompatActivity
 
         int NovaDay = (int) Math.pow(2, (day - 2));
         new DownloadImageTask((ImageView) findViewById(R.id.schema_pic))
-                .execute("http://www.novasoftware.se/ImgGen/schedulegenerator.aspx?format=png&schoolid=81530/sv-se&type=0&id=" + id_number + "&period=&week=23&mode=0&printer=0&colors=32&head=5&clock=7&foot=1&day=" + NovaDay + "&width=400&height=640&maxwidth=1883&maxheight=830");
+                .execute("http://www.novasoftware.se/ImgGen/schedulegenerator.aspx?format=png&schoolid=81530/sv-se&type=0&id=" + id_number + "&period=&week=" + week + "&mode=0&printer=0&colors=32&head=5&clock=7&foot=1&day=" + NovaDay + "&width=400&height=640&maxwidth=1883&maxheight=830");
 
     }
 
