@@ -31,7 +31,7 @@ import static calculinc.google.httpssites.skol_app.R.string.Tab_1;
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
-    long id_number = 0;
+    long id_number;
     int day = GregorianCalendar.getInstance().get(Calendar.DAY_OF_WEEK);
     int week = GregorianCalendar.getInstance().get(Calendar.WEEK_OF_YEAR);
 
@@ -153,8 +153,16 @@ public class MainActivity extends AppCompatActivity
     public void getSchedule() {
 
         int NovaDay = (int) Math.pow(2, (day - 2));
-        new DownloadImageTask((ImageView) findViewById(R.id.schema_pic))
-                .execute("http://www.novasoftware.se/ImgGen/schedulegenerator.aspx?format=png&schoolid=81530/sv-se&type=0&id=" + id_number + "&period=&week=" + week + "&mode=0&printer=0&colors=32&head=5&clock=7&foot=1&day=" + NovaDay + "&width=400&height=640&maxwidth=1883&maxheight=830");
+        new DownloadImageTask((ImageView) findViewById(R.id.schema_pic_mon))
+                .execute("http://www.novasoftware.se/ImgGen/schedulegenerator.aspx?format=png&schoolid=81530/sv-se&type=0&id=" + id_number + "&period=&week=" + week + "&mode=0&printer=0&colors=32&head=5&clock=7&foot=1&day=" + 1 + "&width=400&height=640&maxwidth=1883&maxheight=830");
+        new DownloadImageTask((ImageView) findViewById(R.id.schema_pic_tue))
+                .execute("http://www.novasoftware.se/ImgGen/schedulegenerator.aspx?format=png&schoolid=81530/sv-se&type=0&id=" + id_number + "&period=&week=" + week + "&mode=0&printer=0&colors=32&head=5&clock=7&foot=1&day=" + 2 + "&width=400&height=640&maxwidth=1883&maxheight=830");
+        new DownloadImageTask((ImageView) findViewById(R.id.schema_pic_wen))
+                .execute("http://www.novasoftware.se/ImgGen/schedulegenerator.aspx?format=png&schoolid=81530/sv-se&type=0&id=" + id_number + "&period=&week=" + week + "&mode=0&printer=0&colors=32&head=5&clock=7&foot=1&day=" + 4 + "&width=400&height=640&maxwidth=1883&maxheight=830");
+        new DownloadImageTask((ImageView) findViewById(R.id.schema_pic_thu))
+                .execute("http://www.novasoftware.se/ImgGen/schedulegenerator.aspx?format=png&schoolid=81530/sv-se&type=0&id=" + id_number + "&period=&week=" + week + "&mode=0&printer=0&colors=32&head=5&clock=7&foot=1&day=" + 8 + "&width=400&height=640&maxwidth=1883&maxheight=830");
+        new DownloadImageTask((ImageView) findViewById(R.id.schema_pic_fri))
+                .execute("http://www.novasoftware.se/ImgGen/schedulegenerator.aspx?format=png&schoolid=81530/sv-se&type=0&id=" + id_number + "&period=&week=" + week + "&mode=0&printer=0&colors=32&head=5&clock=7&foot=1&day=" + 16 + "&width=400&height=640&maxwidth=1883&maxheight=830");
 
     }
 

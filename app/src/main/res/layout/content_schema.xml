@@ -8,16 +8,68 @@
     tools:context="calculinc.google.httpssites.skol_app.MainActivity"
     tools:showIn="@layout/app_bar_main">
 
-
-    <ImageView
-        android:id="@+id/schema_pic"
-        android:layout_width="0dp"
-        android:layout_height="0dp"
-        android:layout_marginTop="60dp"
+    <HorizontalScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
 
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent"/>
+        app:layout_constraintTop_toTopOf="parent">
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+
+            android:layout_marginTop="57dp">
+
+            <ImageView
+                android:id="@+id/schema_pic_mon"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:scaleType="fitXY"
+                android:adjustViewBounds="true"
+                android:layout_marginStart="21dp"
+                android:layout_marginEnd="21dp"/>
+
+            <ImageView
+                android:id="@+id/schema_pic_tue"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:scaleType="fitXY"
+                android:adjustViewBounds="true"
+                android:layout_marginStart="21dp"
+                android:layout_marginEnd="21dp"/>
+
+            <ImageView
+                android:id="@+id/schema_pic_wen"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:scaleType="fitXY"
+                android:adjustViewBounds="true"
+                android:layout_marginStart="21dp"
+                android:layout_marginEnd="21dp"/>
+
+            <ImageView
+                android:id="@+id/schema_pic_thu"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:scaleType="fitXY"
+                android:adjustViewBounds="true"
+                android:layout_marginStart="21dp"
+                android:layout_marginEnd="21dp"/>
+
+            <ImageView
+                android:id="@+id/schema_pic_fri"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"
+                android:scaleType="fitXY"
+                android:adjustViewBounds="true"
+                android:layout_marginStart="21dp"
+                android:layout_marginEnd="21dp"/>
+
+        </LinearLayout>
+    </HorizontalScrollView>
 
 </android.support.constraint.ConstraintLayout>
