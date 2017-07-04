@@ -1,9 +1,8 @@
 package calculinc.google.httpssites.skol_app;
 
-import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.os.AsyncTask;
 import android.os.Bundle;
+import android.os.Environment;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.util.Log;
@@ -22,11 +21,10 @@ import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.ViewFlipper;
 
-import java.io.InputStream;
+import java.io.File;
+import java.io.IOException;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
-
-import static calculinc.google.httpssites.skol_app.R.string.Tab_1;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -122,7 +120,7 @@ public class MainActivity extends AppCompatActivity
 
             toolbar.setTitle(R.string.Tab_2);
             vf.setDisplayedChild(1);
-            getSchedule();
+            new DownloadFile().execute("http://www.novasoftware.se/ImgGen/schedulegenerator.aspx?format=pdf&schoolid=81530/sv-se&type=0&id=" + id_number + "&period=&week=" + 20 + "&mode=0&printer=0&colors=32&head=5&clock=7&foot=1&day=" + 0 + "&width=400&height=640","Nova.pdf");
 
         } else if (id == R.id.nav_matsedel) {
 
@@ -150,44 +148,26 @@ public class MainActivity extends AppCompatActivity
         return true;
     }
 
-    public void getSchedule() {
+    private class DownloadFile extends AsyncTask<String, Void, Void>{
 
-        int NovaDay = (int) Math.pow(2, (day - 2));
-        new DownloadImageTask((ImageView) findViewById(R.id.schema_pic_mon))
-                .execute("http://www.novasoftware.se/ImgGen/schedulegenerator.aspx?format=png&schoolid=81530/sv-se&type=0&id=" + id_number + "&period=&week=" + week + "&mode=0&printer=0&colors=32&head=5&clock=7&foot=1&day=" + 1 + "&width=400&height=640&maxwidth=1883&maxheight=830");
-        new DownloadImageTask((ImageView) findViewById(R.id.schema_pic_tue))
-                .execute("http://www.novasoftware.se/ImgGen/schedulegenerator.aspx?format=png&schoolid=81530/sv-se&type=0&id=" + id_number + "&period=&week=" + week + "&mode=0&printer=0&colors=32&head=5&clock=7&foot=1&day=" + 2 + "&width=400&height=640&maxwidth=1883&maxheight=830");
-        new DownloadImageTask((ImageView) findViewById(R.id.schema_pic_wen))
-                .execute("http://www.novasoftware.se/ImgGen/schedulegenerator.aspx?format=png&schoolid=81530/sv-se&type=0&id=" + id_number + "&period=&week=" + week + "&mode=0&printer=0&colors=32&head=5&clock=7&foot=1&day=" + 4 + "&width=400&height=640&maxwidth=1883&maxheight=830");
-        new DownloadImageTask((ImageView) findViewById(R.id.schema_pic_thu))
-                .execute("http://www.novasoftware.se/ImgGen/schedulegenerator.aspx?format=png&schoolid=81530/sv-se&type=0&id=" + id_number + "&period=&week=" + week + "&mode=0&printer=0&colors=32&head=5&clock=7&foot=1&day=" + 8 + "&width=400&height=640&maxwidth=1883&maxheight=830");
-        new DownloadImageTask((ImageView) findViewById(R.id.schema_pic_fri))
-                .execute("http://www.novasoftware.se/ImgGen/schedulegenerator.aspx?format=png&schoolid=81530/sv-se&type=0&id=" + id_number + "&period=&week=" + week + "&mode=0&printer=0&colors=32&head=5&clock=7&foot=1&day=" + 16 + "&width=400&height=640&maxwidth=1883&maxheight=830");
+        @Override
+        protected Void doInBackground(String... strings) {
+            String fileUrl = strings[0];
+            String fileName = strings[1];
+            String extStorageDirectory = Environment.getExternalStorageDirectory().toString();
+            File folder = new File(extStorageDirectory, "testthreepdf");
+            folder.mkdir();
 
-    }
+            File pdfFile = new File(folder, fileName);
 
-    private class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
-        ImageView bmImage;
-
-        private DownloadImageTask(ImageView bmImage) {
-            this.bmImage = bmImage;
-        }
-
-        protected Bitmap doInBackground(String... urls) {
-            String urldisplay = urls[0];
-            Bitmap mIcon11 = null;
-            try {
-                InputStream in = new java.net.URL(urldisplay).openStream();
-                mIcon11 = BitmapFactory.decodeStream(in);
-            } catch (Exception e) {
-                Log.e("Error", e.getMessage());
+            try{
+                pdfFile.createNewFile();
+            }catch (IOException e){
                 e.printStackTrace();
             }
-            return mIcon11;
-        }
-
-        protected void onPostExecute(Bitmap result) {
-            bmImage.setImageBitmap(result);
+            FileDownloader.downloadFile(fileUrl, pdfFile);
+            return null;
         }
     }
+
 }
