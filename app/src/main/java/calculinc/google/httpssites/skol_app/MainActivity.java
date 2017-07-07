@@ -15,14 +15,20 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.ViewDebug;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 import android.widget.ViewFlipper;
 
 import java.io.File;
+import java.io.FileOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
+import java.net.HttpURLConnection;
+import java.net.URL;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 
@@ -58,17 +64,17 @@ public class MainActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        Button login = (Button) findViewById(R.id.login_button);
-        final EditText personal_id = (EditText) findViewById(R.id.editText);
-        login.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                id_number = Long.parseLong(personal_id.getText().toString());
-            }
-        });
-
         TextView kek = (TextView) findViewById(R.id.öpö);
         kek.setText(String.valueOf(week));
+    }
+
+    public void loginSubmit (View view) {
+        final EditText personal_id = (EditText) findViewById(R.id.editText);
+        if (personal_id.getText().toString().equals("")) {
+            id_number = 0;
+        } else {
+            id_number = Long.parseLong(personal_id.getText().toString());
+        }
     }
 
     @Override
@@ -120,7 +126,7 @@ public class MainActivity extends AppCompatActivity
 
             toolbar.setTitle(R.string.Tab_2);
             vf.setDisplayedChild(1);
-            new DownloadFile().execute("http://www.novasoftware.se/ImgGen/schedulegenerator.aspx?format=pdf&schoolid=81530/sv-se&type=0&id=" + id_number + "&period=&week=" + 20 + "&mode=0&printer=0&colors=32&head=5&clock=7&foot=1&day=" + 0 + "&width=400&height=640","Nova.pdf");
+            new DownloadFile().execute("http://www.novasoftware.se/ImgGen/schedulegenerator.aspx?format=pdf&schoolid=81530/sv-se&type=0&id=" + id_number + "&period=&week=" + 17 + "&mode=0&printer=0&colors=32&head=5&clock=7&foot=1&day=" + 0 + "&width=400&height=640","Nova.pdf");
 
         } else if (id == R.id.nav_matsedel) {
 
@@ -154,18 +160,61 @@ public class MainActivity extends AppCompatActivity
         protected Void doInBackground(String... strings) {
             String fileUrl = strings[0];
             String fileName = strings[1];
-            String extStorageDirectory = Environment.getExternalStorageDirectory().toString();
-            File folder = new File(extStorageDirectory, "testthreepdf");
-            folder.mkdir();
 
-            File pdfFile = new File(folder, fileName);
+            final int  MEGABYTE = 1024 * 1024;
 
-            try{
-                pdfFile.createNewFile();
-            }catch (IOException e){
+            File pdfFile = new File(getFilesDir() + "/" + fileName);
+            if (pdfFile.exists()) {
+                pdfFile.delete();
+            }
+
+            try {
+
+                URL url = new URL(fileUrl);
+                HttpURLConnection urlConnection = (HttpURLConnection)url.openConnection();
+                urlConnection.connect();
+
+                InputStream inputStream = urlConnection.getInputStream();
+                FileOutputStream fileOutputStream = openFileOutput(fileName,MODE_PRIVATE);
+                int totalSize = urlConnection.getContentLength();
+
+                byte[] buffer = new byte[MEGABYTE];
+                int bufferLength = 0;
+                while((bufferLength = inputStream.read(buffer))>0 ){
+                    fileOutputStream.write(buffer, 0, bufferLength);
+                }
+                fileOutputStream.close();
+            } catch (IOException e) {
                 e.printStackTrace();
             }
-            FileDownloader.downloadFile(fileUrl, pdfFile);
+
+            // The following is purely for testing in the debugger
+            String kek;
+
+            if (pdfFile.exists()) {
+                kek = "pdfFile exists";
+            } else {
+                kek = "pdfFile doesn't exist";
+            }
+
+            if (pdfFile.isDirectory()) {
+                kek = "pdfFile is a directory";
+            } else {
+                kek = "pdfFile ain't a directory";
+            }
+
+            if (pdfFile.isFile()) {
+                kek = "pdfFile is a file";
+            } else {
+                kek = "pdfFile ain't a file";
+            }
+
+            if (pdfFile.length() > 1000) {
+                kek = "pdfFile is loooong " + pdfFile.length();
+            } else {
+                kek = "pdfFile is short " + pdfFile.length();
+            }
+
             return null;
         }
     }
