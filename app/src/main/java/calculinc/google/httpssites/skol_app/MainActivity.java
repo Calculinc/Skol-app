@@ -38,6 +38,7 @@ public class MainActivity extends AppCompatActivity
     long id_number;
     int day = GregorianCalendar.getInstance().get(Calendar.DAY_OF_WEEK);
     int week = GregorianCalendar.getInstance().get(Calendar.WEEK_OF_YEAR);
+    File pdfFile;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -66,6 +67,8 @@ public class MainActivity extends AppCompatActivity
 
         TextView kek = (TextView) findViewById(R.id.öpö);
         kek.setText(String.valueOf(week));
+
+        pdfFile.delete();
     }
 
     public void loginSubmit (View view) {
@@ -126,7 +129,7 @@ public class MainActivity extends AppCompatActivity
 
             toolbar.setTitle(R.string.Tab_2);
             vf.setDisplayedChild(1);
-            new DownloadFile().execute("http://www.novasoftware.se/ImgGen/schedulegenerator.aspx?format=pdf&schoolid=81530/sv-se&type=0&id=" + id_number + "&period=&week=" + 17 + "&mode=0&printer=0&colors=32&head=5&clock=7&foot=1&day=" + 0 + "&width=400&height=640","Nova.pdf");
+            new DownloadFile().execute("http://www.novasoftware.se/ImgGen/schedulegenerator.aspx?format=pdf&schoolid=81530/sv-se&type=0&id=" + id_number  + "&period=&week=" + 20 + "&mode=0&printer=0&colors=32&head=5&clock=7&foot=1&day=" + 0 + "&width=400&height=640","Nova.pdf");
 
         } else if (id == R.id.nav_matsedel) {
 
@@ -163,11 +166,9 @@ public class MainActivity extends AppCompatActivity
 
             final int  MEGABYTE = 1024 * 1024;
 
-            File pdfFile = new File(getFilesDir() + "/" + fileName);
-            if (pdfFile.exists()) {
-                pdfFile.delete();
-            }
+            pdfFile = new File(getFilesDir() + "/" + fileName);
 
+            String lel = "finns";
             try {
 
                 URL url = new URL(fileUrl);
@@ -175,8 +176,14 @@ public class MainActivity extends AppCompatActivity
                 urlConnection.connect();
 
                 InputStream inputStream = urlConnection.getInputStream();
+                lel = "hej";
+                if (pdfFile.exists()) {
+                    pdfFile.delete();
+                    lel = "borta";
+                }
                 FileOutputStream fileOutputStream = openFileOutput(fileName,MODE_PRIVATE);
                 int totalSize = urlConnection.getContentLength();
+                lel = "finns";
 
                 byte[] buffer = new byte[MEGABYTE];
                 int bufferLength = 0;
