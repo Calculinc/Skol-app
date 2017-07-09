@@ -8,13 +8,79 @@
     tools:context="calculinc.google.httpssites.skol_app.MainActivity"
     tools:showIn="@layout/app_bar_main">
 
-    <TextView
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Hello Matsedel!"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:id="@+id/linearlayout"
+        android:background="@drawable/box_background"
+        android:gravity="center_horizontal">
+
+        <ImageView
+            android:id="@+id/föfan"
+            android:layout_width="match_parent"
+            android:layout_height="70dp" />
+        <ImageView
+            android:id="@+id/hexagon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:srcCompat="@drawable/hexagon_top" />
+
+        <LinearLayout
+            android:id="@+id/mid_box"
+            android:orientation="vertical"
+            android:layout_width="280dp"
+            android:layout_height="20dp"
+            android:background="@color/colorPrimary">
+        </LinearLayout>
+
+        <ImageView
+            android:id="@+id/hexagon2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            app:srcCompat="@drawable/hexagon_bottom" />
+
+    </LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical"
+        android:id="@+id/linearlayout2"
+        android:gravity="center_horizontal">
+
+        <TextView
+            android:id="@+id/textView2"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="70dp"
+            android:text="Nu jävlar ska det ätas!"
+            android:textSize="20dp" />
+
+        <TextView
+            android:id="@+id/gg_bois"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:text=""
+            android:textSize="20dp"
+            android:layout_marginTop="70dp"
+            android:textColor="#ffffff" />
+
+        <Button
+            android:id="@+id/plebknapp"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="70dp"
+            android:text="Button" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/klockan"
+            android:layout_marginTop="60dp"/>
+
+
+    </LinearLayout>
+
 
 </android.support.constraint.ConstraintLayout>
