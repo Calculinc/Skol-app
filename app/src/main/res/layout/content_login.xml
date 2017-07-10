@@ -8,33 +8,124 @@
     tools:context="calculinc.google.httpssites.skol_app.MainActivity"
     tools:showIn="@layout/app_bar_main">
 
-    <EditText
-        android:id="@+id/editText"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:ems="10"
-        android:hint="ÅÅMMDDXXXX"
-        android:inputType="number"
-        tools:layout_editor_absoluteX="133dp"
-        tools:layout_editor_absoluteY="296dp"
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
 
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent"/>
+        <ImageView
+            android:layout_width="160dp"
+            android:layout_height="160dp"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="70dp"
+            android:src="@drawable/applogga"/>
 
-    <Button
-        android:id="@+id/login_button"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:text="Submit"
-        android:onClick="loginSubmit"
-        tools:layout_editor_absoluteX="202dp"
-        tools:layout_editor_absoluteY="281dp"
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:gravity="center_horizontal">
 
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintLeft_toLeftOf="parent"
-        app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="@id/editText"/>
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:gravity="left"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginRight="3dp">
+
+                <EditText
+                    android:layout_width="160dp"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/name1"
+                    android:layout_marginTop="32dp"
+                    android:paddingLeft="8dp"
+                    android:background="@drawable/text_box"
+                    android:hint="FÖRNAMN"
+                    android:inputType="text" />
+
+                <EditText
+                    android:layout_width="160dp"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/mobile_number"
+                    android:layout_marginTop="20dp"
+                    android:paddingLeft="8dp"
+                    android:background="@drawable/text_box"
+                    android:hint="MOBILNUMMER"
+                    android:inputType="phone"/>
+
+                <EditText
+                    android:id="@+id/editText"
+                    android:layout_width="160dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:hint="ÅÅMMDDXXXX"
+                    android:paddingLeft="8dp"
+                    android:background="@drawable/text_box"
+                    android:inputType="number" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:orientation="vertical"
+                android:gravity="left"
+                android:layout_gravity="center_horizontal"
+                android:layout_marginLeft="3dp">
+
+                <EditText
+                    android:layout_width="160dp"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/name2"
+                    android:layout_marginTop="32dp"
+                    android:paddingLeft="8dp"
+                    android:background="@drawable/text_box"
+                    android:hint="EFTERNAMN"
+                    android:inputType="text"/>
+
+                <EditText
+                    android:layout_width="160dp"
+                    android:layout_height="wrap_content"
+                    android:id="@+id/city"
+                    android:layout_marginTop="20dp"
+                    android:paddingLeft="8dp"
+                    android:background="@drawable/text_box"
+                    android:hint="STAD"
+                    android:inputType="text"/>
+
+                <Spinner
+                    android:layout_width="160dp"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="20dp"
+                    android:dropDownSelector="@color/colorPrimary"
+                    android:background="@drawable/text_box_spinner"
+                    android:id="@+id/fidget_spinner">
+                </Spinner>
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/login_button"
+            android:layout_width="303dp"
+            android:layout_height="33dp"
+            android:layout_marginTop="20dp"
+            android:text="Registrera"
+            android:textStyle="normal"
+            android:layout_gravity="center_horizontal"
+            android:background="@drawable/button_special"
+            android:onClick="loginSubmit" />
+
+        <LinearLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:visibility="invisible"
+            android:background="@drawable/button_special"
+            android:layout_gravity="center">
+        </LinearLayout>
+
+    </LinearLayout>
 
 </android.support.constraint.ConstraintLayout>

@@ -14,4 +14,13 @@
     <string name="navigation_drawer_close">Close navigation drawer</string>
 
     <string name="action_settings">Settings</string>
+
+    <string-array name="gender_array">
+        <item>Kvinna</item>
+        <item>Man</item>
+        <item>AH-64 Apache</item>
+        <item>UH-60 Black Hawk</item>
+        <item>Annat</item>
+    </string-array>
+
 </resources>
