@@ -126,6 +126,9 @@ public class MainActivity extends AppCompatActivity
 
     public void loginSubmit (View view) {
         final EditText personal_id = (EditText) findViewById(R.id.editText);
+        final Animation anim_button_click = AnimationUtils.loadAnimation(this, R.anim.anim_button_click);
+
+        view.startAnimation(anim_button_click);
 
         if (personal_id.getText().toString().equals("")) {
             id_number = 0;
@@ -212,7 +215,6 @@ public class MainActivity extends AppCompatActivity
             toolbar.setTitle(R.string.Tab_5);
             vf.setDisplayedChild(4);
             fidget_spinner();
-            onButtonClick();
 
         } else if (id == R.id.nav_send) {
 
@@ -285,23 +287,6 @@ public class MainActivity extends AppCompatActivity
         adapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 // Apply the adapter to the spinner
         spinner.setAdapter(adapter);
-
-    }
-
-    public void onButtonClick() {
-
-        final Animation anim_button_click = AnimationUtils.loadAnimation(this, R.anim.anim_button_click);
-        Button login_button = (Button) findViewById(R.id.login_button);
-
-        login_button.setOnClickListener(new View.OnClickListener() {
-
-            @Override
-            public void onClick(View v) {
-
-                v.startAnimation(anim_button_click);
-
-            }
-        });
 
     }
 
