@@ -111,8 +111,9 @@
                     android:dropDownSelector="@color/colorPrimary"
                     android:background="@drawable/text_box_spinner"
                     android:id="@+id/fidget_spinner"
-                    android:textColor="@color/colorText"
-                    android:textColorHint="@color/colorHint" />
+                    android:textColor="@color/colorHint"
+                    android:textColorHint="@color/colorHint"
+                    android:popupBackground="@color/colorBackground"/>
 
             </LinearLayout>
 
