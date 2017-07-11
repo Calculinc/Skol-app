@@ -118,7 +118,6 @@
             </LinearLayout>
 
         </LinearLayout>
-
         <Button
             android:id="@+id/login_button"
             android:layout_width="303dp"
