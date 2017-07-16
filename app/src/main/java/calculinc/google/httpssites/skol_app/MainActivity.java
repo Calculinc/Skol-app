@@ -357,6 +357,8 @@ public class MainActivity extends AppCompatActivity
             //delete when not needed
 
             return null;
+
+            //http://developers.itextpdf.com/examples/content-extraction-and-redaction-itext5/parsing-pdfs
         }
     }
 
