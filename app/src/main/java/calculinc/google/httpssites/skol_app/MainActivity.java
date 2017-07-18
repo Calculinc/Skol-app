@@ -36,6 +36,9 @@ import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ViewFlipper;
 
+import com.itextpdf.text.pdf.PdfReader;
+import com.itextpdf.text.pdf.parser.PdfTextExtractor;
+
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
@@ -197,7 +200,8 @@ public class MainActivity extends AppCompatActivity
 
             toolbar.setTitle(R.string.Tab_2);
             vf.setDisplayedChild(1);
-            new DownloadFile().execute("http://www.novasoftware.se/ImgGen/schedulegenerator.aspx?format=pdf&schoolid=81530/sv-se&type=0&id=" + id_number  + "&period=&week=" + 20 + "&mode=0&printer=0&colors=32&head=5&clock=7&foot=1&day=" + 0 + "&width=400&height=640");
+            new DownloadFile().execute("http://www.novasoftware.se/ImgGen/schedulegenerator.aspx?format=pdf&schoolid=81530/sv-se&type=0&id=" + id_number  + "&period=&week=" + 20 + "&mode=0&printer=0&colors=32&head=5&clock=7&foot=1&day=" + 1 + "&width=400&height=640");
+            pdfParse(pdfFile);
 
         } else if (id == R.id.nav_matsedel) {
 
@@ -225,6 +229,16 @@ public class MainActivity extends AppCompatActivity
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         drawer.closeDrawer(GravityCompat.START);
         return true;
+    }
+
+    public void pdfParse(File FileToParse){
+        try {
+            PdfReader reader = new PdfReader(FileToParse.getPath());
+            String öpöboll = PdfTextExtractor.getTextFromPage(reader, 1);
+            reader.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     public void drawing()  {
