@@ -69,6 +69,7 @@ public class MainActivity extends AppCompatActivity
     String loginFileName = "login.txt";
     File loginFile;
     String päron;
+    String[] desert;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -208,7 +209,6 @@ public class MainActivity extends AppCompatActivity
             new DownloadFile().execute("http://www.novasoftware.se/ImgGen/schedulegenerator.aspx?format=pdf&schoolid=81530/sv-se&type=0&id=" + id_number  + "&period=&week=" + 20 + "&mode=0&printer=0&colors=32&head=5&clock=7&foot=1&day=" + 1 + "&width=400&height=640");
             pdfParse(pdfFile);
 
-
         } else if (id == R.id.nav_matsedel) {
 
             toolbar.setTitle(R.string.Tab_3);
@@ -230,6 +230,7 @@ public class MainActivity extends AppCompatActivity
         } else if (id == R.id.nav_send) {
 
             toolbar.setTitle(R.string.Tab_6);
+            drawSchema();
 
         }
 
@@ -251,14 +252,43 @@ public class MainActivity extends AppCompatActivity
 
     public void schema_text() {
 
-        LinearLayout schema_space = (LinearLayout) findViewById(R.id.schema_layout);
-        int status = 1;
         String[] single = päron.split("\n");
-        for (int i = 1; i < single.length ; i++) {
+        StringBuilder förädlat = new StringBuilder();
+        String banan;
+
+        for (int i = 1; i < single.length; i++) {
+
+            //check function here
+
+            String[] testing = single[i].split(":");
+            if (testing.length <= 2) {
+                förädlat.append(single[i]);
+            } else {
+                String[] tempArray = single[i].split(" ");
+                förädlat.append(tempArray[0]);
+                förädlat.append("\n");
+                förädlat.append(tempArray[1]);
+            }
+
+            if (i != single.length - 1) {
+                förädlat.append("\n");
+            }
+        }
+
+        banan = förädlat.toString();
+        desert = banan.split("\n");
+    }
+
+    public void drawSchema() {
+
+        int status = 1;
+        LinearLayout schema_space = (LinearLayout) findViewById(R.id.schema_layout);
+
+        for (int i = 0; i < desert.length ; i++) {
 
             TextView textView = new TextView(this);
             textView.setTextColor(Color.parseColor("#ffffff"));
-            textView.setText(single[i]);
+            textView.setText(desert[i]);
             textView.setLayoutParams(new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
             if (status==1) {
 
@@ -290,7 +320,6 @@ public class MainActivity extends AppCompatActivity
             }
 
             schema_space.addView(textView);
-
         }
     }
 
