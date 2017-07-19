@@ -11,9 +11,11 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v4.widget.DrawerLayout.LayoutParams;
 import android.support.v7.view.menu.MenuView;
 import android.text.TextPaint;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -52,6 +54,8 @@ import java.net.URL;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 
+import static calculinc.google.httpssites.skol_app.R.drawable.hexagon_bottom;
+import static calculinc.google.httpssites.skol_app.R.drawable.hexagon_top;
 import static calculinc.google.httpssites.skol_app.R.drawable.rainbowcolor;
 
 public class MainActivity extends AppCompatActivity
@@ -64,6 +68,7 @@ public class MainActivity extends AppCompatActivity
     File pdfFile;
     String loginFileName = "login.txt";
     File loginFile;
+    String päron;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -203,6 +208,7 @@ public class MainActivity extends AppCompatActivity
             new DownloadFile().execute("http://www.novasoftware.se/ImgGen/schedulegenerator.aspx?format=pdf&schoolid=81530/sv-se&type=0&id=" + id_number  + "&period=&week=" + 20 + "&mode=0&printer=0&colors=32&head=5&clock=7&foot=1&day=" + 1 + "&width=400&height=640");
             pdfParse(pdfFile);
 
+
         } else if (id == R.id.nav_matsedel) {
 
             toolbar.setTitle(R.string.Tab_3);
@@ -213,6 +219,7 @@ public class MainActivity extends AppCompatActivity
 
             toolbar.setTitle(R.string.Tab_4);
             vf.setDisplayedChild(3);
+            schema_text();
 
         } else if (id == R.id.nav_login) {
 
@@ -234,12 +241,59 @@ public class MainActivity extends AppCompatActivity
     public void pdfParse(File FileToParse){
         try {
             PdfReader reader = new PdfReader(FileToParse.getPath());
-            String öpöboll = PdfTextExtractor.getTextFromPage(reader, 1);
+            päron = PdfTextExtractor.getTextFromPage(reader, 1);
             reader.close();
         } catch (IOException e) {
             e.printStackTrace();
         }
     }
+
+
+    public void schema_text() {
+
+        LinearLayout schema_space = (LinearLayout) findViewById(R.id.schema_layout);
+        int status = 1;
+        String[] single = päron.split("\n");
+        for (int i = 1; i < single.length ; i++) {
+
+            TextView textView = new TextView(this);
+            textView.setTextColor(Color.parseColor("#ffffff"));
+            textView.setText(single[i]);
+            textView.setLayoutParams(new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
+            if (status==1) {
+
+                LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
+                params.setMargins(0, 30, 0, 0);
+                textView.setBackgroundResource(hexagon_top);
+                textView.setLayoutParams(params);
+
+            } else if (status==2) {
+
+                textView.setBackgroundColor(Color.parseColor("#ff219c"));
+                textView.setWidth(Math.round(getResources().getDimension(R.dimen.image_width)));
+                textView.setGravity(Gravity.CENTER);
+
+            } else if (status==3) {
+
+                textView.setBackgroundResource(hexagon_bottom);
+                textView.setGravity(Gravity.RIGHT);
+            }
+
+            if (status==3) {
+
+                status = 1;
+
+            } else {
+
+                status++;
+
+            }
+
+            schema_space.addView(textView);
+
+        }
+    }
+
 
     public void drawing()  {
 
