@@ -70,6 +70,7 @@ public class MainActivity extends AppCompatActivity
     File loginFile;
     String päron;
     String[] desert;
+    boolean downloadSuccess;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -100,10 +101,6 @@ public class MainActivity extends AppCompatActivity
         kek.setText(String.valueOf(week));
 
         pdfFile = new File(getFilesDir() + "/" + pdfFileName);
-
-        if (pdfFile.exists()) {
-            pdfFile.delete();
-        }
 
         loginFile = new File(getFilesDir() + "/" + loginFileName);
 
@@ -196,88 +193,122 @@ public class MainActivity extends AppCompatActivity
         int id = item.getItemId();
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         ViewFlipper vf = (ViewFlipper)findViewById(R.id.vf);
+        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
 
         if (id == R.id.nav_nyheter) {
 
             toolbar.setTitle(R.string.Tab_1);
             vf.setDisplayedChild(0);
+            drawer.closeDrawer(GravityCompat.START);
 
         } else if (id == R.id.nav_schema) {
 
             toolbar.setTitle(R.string.Tab_2);
             vf.setDisplayedChild(1);
-            new DownloadFile().execute("http://www.novasoftware.se/ImgGen/schedulegenerator.aspx?format=pdf&schoolid=81530/sv-se&type=0&id=" + id_number  + "&period=&week=" + 20 + "&mode=0&printer=0&colors=32&head=5&clock=7&foot=1&day=" + 1 + "&width=400&height=640");
-            pdfParse(pdfFile);
+            drawer.closeDrawer(GravityCompat.START);
+            //start loading animation here (spinning circle and "laddar..." text
+
+            onSchemaSelect öpö = new onSchemaSelect();
+            öpö.start();
 
         } else if (id == R.id.nav_matsedel) {
 
             toolbar.setTitle(R.string.Tab_3);
             vf.setDisplayedChild(2);
+            drawer.closeDrawer(GravityCompat.START);
             ggfunktion();
 
         } else if (id == R.id.nav_laxor) {
 
             toolbar.setTitle(R.string.Tab_4);
             vf.setDisplayedChild(3);
-            schema_text();
+            drawer.closeDrawer(GravityCompat.START);
 
         } else if (id == R.id.nav_login) {
 
             toolbar.setTitle(R.string.Tab_5);
             vf.setDisplayedChild(4);
+            drawer.closeDrawer(GravityCompat.START);
             fidget_spinner();
 
         } else if (id == R.id.nav_send) {
 
             toolbar.setTitle(R.string.Tab_6);
-            drawSchema();
+            drawer.closeDrawer(GravityCompat.START);
 
         }
 
-        DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
-        drawer.closeDrawer(GravityCompat.START);
         return true;
     }
 
-    public void pdfParse(File FileToParse){
-        try {
-            PdfReader reader = new PdfReader(FileToParse.getPath());
-            päron = PdfTextExtractor.getTextFromPage(reader, 1);
-            reader.close();
-        } catch (IOException e) {
-            e.printStackTrace();
+    class onSchemaSelect extends Thread {
+        public void run() {
+
+            DownloadFile M = new DownloadFile("http://www.novasoftware.se/ImgGen/schedulegenerator.aspx?format=pdf&schoolid=81530/sv-se&type=0&id=" + id_number  + "&period=&week=" + 20 + "&mode=0&printer=0&colors=32&head=5&clock=7&foot=1&day=" + 1 + "&width=400&height=640");
+            M.start();
+            try {
+                M.join();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+
+            pdfParse.start();
+            try {
+                pdfParse.join();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+
+            schema_text.start();
+            try {
+                schema_text.join();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+
+            drawSchema();
         }
     }
 
-
-    public void schema_text() {
-
-        String[] single = päron.split("\n");
-        StringBuilder förädlat = new StringBuilder();
-        String banan;
-
-        for (int i = 1; i < single.length; i++) {
-
-            //check function here
-
-            String[] testing = single[i].split(":");
-            if (testing.length <= 2) {
-                förädlat.append(single[i]);
-            } else {
-                String[] tempArray = single[i].split(" ");
-                förädlat.append(tempArray[0]);
-                förädlat.append("\n");
-                förädlat.append(tempArray[1]);
-            }
-
-            if (i != single.length - 1) {
-                förädlat.append("\n");
+    Thread pdfParse = new Thread(){
+        public void run() {
+            try {
+                PdfReader reader = new PdfReader(pdfFile.getPath());
+                päron = PdfTextExtractor.getTextFromPage(reader, 1);
+                reader.close();
+            } catch (IOException e) {
+                e.printStackTrace();
             }
         }
+    };
 
-        banan = förädlat.toString();
-        desert = banan.split("\n");
-    }
+    Thread schema_text = new Thread(){
+        public void run() {
+            String[] single = päron.split("\n");
+            StringBuilder förädlat = new StringBuilder();
+            String banan;
+
+            for (int i = 1; i < single.length; i++) {
+
+                String[] testing = single[i].split(":");
+                if (testing.length <= 2) {
+                    förädlat.append(single[i]);
+                } else {
+                    String[] tempArray = single[i].split(" ");
+                    förädlat.append(tempArray[0]);
+                    förädlat.append("\n");
+                    förädlat.append(tempArray[1]);
+                }
+
+                if (i != single.length - 1) {
+                    förädlat.append("\n");
+                }
+            }
+
+            banan = förädlat.toString();
+            desert = banan.split("\n");
+        }
+    };
 
     public void drawSchema() {
 
@@ -320,9 +351,9 @@ public class MainActivity extends AppCompatActivity
             }
 
             schema_space.addView(textView);
+            String lel = "öpö";
         }
     }
-
 
     public void drawing()  {
 
@@ -389,16 +420,17 @@ public class MainActivity extends AppCompatActivity
 
     }
 
-    private class DownloadFile extends AsyncTask<String, Void, Void>{
+    private class DownloadFile extends Thread{
 
-        @Override
-        protected Void doInBackground(String... strings) {
-            String fileUrl = strings[0];
-            //String fileName = strings[1];
+        String fileUrl;
+        DownloadFile(String fileUrl){
+            this.fileUrl = fileUrl;
+        }
+
+        public void run() {
 
             final int  MEGABYTE = 1024 * 1024;
 
-            String lel = "finns";
             try {
 
                 URL url = new URL(fileUrl);
@@ -406,23 +438,23 @@ public class MainActivity extends AppCompatActivity
                 urlConnection.connect();
 
                 InputStream inputStream = urlConnection.getInputStream();
-                lel = "hej";
                 if (pdfFile.exists()) {
                     pdfFile.delete();
-                    lel = "borta";
                 }
                 FileOutputStream fileOutputStream = openFileOutput(pdfFileName,MODE_PRIVATE);
                 int totalSize = urlConnection.getContentLength();
-                lel = "finns";
 
                 byte[] buffer = new byte[MEGABYTE];
                 int bufferLength = 0;
                 while((bufferLength = inputStream.read(buffer))>0 ){
                     fileOutputStream.write(buffer, 0, bufferLength);
                 }
+                downloadSuccess = true;
                 fileOutputStream.close();
+
             } catch (IOException e) {
                 e.printStackTrace();
+                downloadSuccess = false;
             }
 
             // The following is purely for testing in the debugger
@@ -452,8 +484,6 @@ public class MainActivity extends AppCompatActivity
                 kek = "pdfFile is short " + pdfFile.length();
             }
             //delete when not needed
-
-            return null;
 
             //http://developers.itextpdf.com/examples/content-extraction-and-redaction-itext5/parsing-pdfs
         }
