@@ -311,48 +311,53 @@ public class MainActivity extends AppCompatActivity
     };
 
     public void drawSchema() {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
 
-        int status = 1;
-        LinearLayout schema_space = (LinearLayout) findViewById(R.id.schema_layout);
+                LinearLayout schema_space = (LinearLayout) findViewById(R.id.schema_layout);
+                int status = 1;
 
-        for (int i = 0; i < desert.length ; i++) {
+                for (int i = 0; i < desert.length; i++) {
 
-            TextView textView = new TextView(this);
-            textView.setTextColor(Color.parseColor("#ffffff"));
-            textView.setText(desert[i]);
-            textView.setLayoutParams(new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
-            if (status==1) {
+                    TextView textView = new TextView(getBaseContext());
+                    textView.setTextColor(Color.parseColor("#ffffff"));
+                    textView.setText(desert[i]);
+                    textView.setLayoutParams(new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
 
-                LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
-                params.setMargins(0, 30, 0, 0);
-                textView.setBackgroundResource(hexagon_top);
-                textView.setLayoutParams(params);
+                    if (status == 1) {
 
-            } else if (status==2) {
+                        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
+                        params.setMargins(0, 30, 0, 0);
+                        textView.setBackgroundResource(hexagon_top);
+                        textView.setLayoutParams(params);
 
-                textView.setBackgroundColor(Color.parseColor("#ff219c"));
-                textView.setWidth(Math.round(getResources().getDimension(R.dimen.image_width)));
-                textView.setGravity(Gravity.CENTER);
+                    } else if (status == 2) {
 
-            } else if (status==3) {
+                        textView.setBackgroundColor(Color.parseColor("#ff219c"));
+                        textView.setWidth(Math.round(getResources().getDimension(R.dimen.image_width)));
+                        textView.setGravity(Gravity.CENTER);
 
-                textView.setBackgroundResource(hexagon_bottom);
-                textView.setGravity(Gravity.RIGHT);
+                    } else if (status == 3) {
+
+                        textView.setBackgroundResource(hexagon_bottom);
+                        textView.setGravity(Gravity.RIGHT);
+                    }
+
+                    if (status == 3) {
+
+                        status = 1;
+
+                    } else {
+
+                        status++;
+
+                    }
+
+                    schema_space.addView(textView);
+                }
             }
-
-            if (status==3) {
-
-                status = 1;
-
-            } else {
-
-                status++;
-
-            }
-
-            schema_space.addView(textView);
-            String lel = "öpö";
-        }
+        });
     }
 
     public void drawing()  {
