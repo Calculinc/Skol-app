@@ -435,7 +435,6 @@ public class MainActivity extends AppCompatActivity
                     URL url = new URL("http://www.novasoftware.se/ImgGen/schedulegenerator.aspx?format=pdf&schoolid=81530/sv-se&type=0&id=" + fileid  + "&period=&week=" + fileweek + "&mode=0&printer=0&colors=32&head=5&clock=7&foot=1&day=" + Math.round(Math.pow(2,i)) + "&width=400&height=640");
                     HttpURLConnection urlConnection = (HttpURLConnection)url.openConnection();
                     urlConnection.connect();
-                    //following code won't execute on connection failure {
 
                     InputStream inputStream = urlConnection.getInputStream();
                     FileOutputStream fileOutputStream = openFileOutput(tempFileName,MODE_PRIVATE);
