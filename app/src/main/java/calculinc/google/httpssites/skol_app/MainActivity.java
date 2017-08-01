@@ -62,14 +62,17 @@ public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     long id_number;
-    int day = GregorianCalendar.getInstance().get(Calendar.DAY_OF_WEEK);
-    int week = GregorianCalendar.getInstance().get(Calendar.WEEK_OF_YEAR);
-    String pdfFileName = "Nova.pdf";
-    File pdfFile;
+    int currentWeek = GregorianCalendar.getInstance().get(Calendar.WEEK_OF_YEAR);
+    int currentDay = GregorianCalendar.getInstance().get(Calendar.DAY_OF_WEEK);
+    int currentHour = GregorianCalendar.getInstance().get(Calendar.HOUR_OF_DAY);
+    int currentMinute = GregorianCalendar.getInstance().get(Calendar.MINUTE);
+
+    int downloadWeek = currentWeek;
+
+    String schemaFileName = "Nova.txt";
+    File schemaFile;
     String loginFileName = "login.txt";
     File loginFile;
-    String päron;
-    String[] desert;
     boolean downloadSuccess;
 
     @Override
@@ -98,9 +101,7 @@ public class MainActivity extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
 
         TextView kek = (TextView) findViewById(R.id.öpö);
-        kek.setText(String.valueOf(week));
-
-        pdfFile = new File(getFilesDir() + "/" + pdfFileName);
+        kek.setText(String.valueOf(currentMinute));
 
         loginFile = new File(getFilesDir() + "/" + loginFileName);
 
@@ -170,7 +171,6 @@ public class MainActivity extends AppCompatActivity
         return true;
     }
 
-
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
@@ -208,7 +208,7 @@ public class MainActivity extends AppCompatActivity
             drawer.closeDrawer(GravityCompat.START);
             //start loading animation here (spinning circle and "laddar..." text
 
-            onSchemaSelect öpö = new onSchemaSelect();
+            schemaRefresh öpö = new schemaRefresh();
             öpö.start();
 
         } else if (id == R.id.nav_matsedel) {
@@ -241,27 +241,27 @@ public class MainActivity extends AppCompatActivity
         return true;
     }
 
-    class onSchemaSelect extends Thread {
+    public void schemaTimeRefresh() {
+
+        currentWeek = GregorianCalendar.getInstance().get(Calendar.WEEK_OF_YEAR);
+        currentDay = GregorianCalendar.getInstance().get(Calendar.DAY_OF_WEEK);
+        currentHour = GregorianCalendar.getInstance().get(Calendar.HOUR_OF_DAY);
+        currentMinute = GregorianCalendar.getInstance().get(Calendar.MINUTE);
+
+    }
+
+    private class schemaRefresh extends Thread {
         public void run() {
 
-            DownloadFile M = new DownloadFile("http://www.novasoftware.se/ImgGen/schedulegenerator.aspx?format=pdf&schoolid=81530/sv-se&type=0&id=" + id_number  + "&period=&week=" + 20 + "&mode=0&printer=0&colors=32&head=5&clock=7&foot=1&day=" + 1 + "&width=400&height=640");
+            downloadWeek = 20;
+            String nameOfFile = "id:" + id_number + "week:" + downloadWeek + "_" + schemaFileName;
+            schemaFile = new File(getFilesDir() + "/" + nameOfFile);
+            String downloadID = String.valueOf(id_number);
+
+            DownloadFile M = new DownloadFile(downloadID,downloadWeek,nameOfFile);
             M.start();
             try {
                 M.join();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-
-            pdfParse.start();
-            try {
-                pdfParse.join();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-
-            schema_text.start();
-            try {
-                schema_text.join();
             } catch (InterruptedException e) {
                 e.printStackTrace();
             }
@@ -270,91 +270,75 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
-    Thread pdfParse = new Thread(){
-        public void run() {
-            try {
-                PdfReader reader = new PdfReader(pdfFile.getPath());
-                päron = PdfTextExtractor.getTextFromPage(reader, 1);
-                reader.close();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
-    };
-
-    Thread schema_text = new Thread(){
-        public void run() {
-            String[] single = päron.split("\n");
-            StringBuilder förädlat = new StringBuilder();
-            String banan;
-
-            for (int i = 1; i < single.length; i++) {
-
-                String[] testing = single[i].split(":");
-                if (testing.length <= 2) {
-                    förädlat.append(single[i]);
-                } else {
-                    String[] tempArray = single[i].split(" ");
-                    förädlat.append(tempArray[0]);
-                    förädlat.append("\n");
-                    förädlat.append(tempArray[1]);
-                }
-
-                if (i != single.length - 1) {
-                    förädlat.append("\n");
-                }
-            }
-
-            banan = förädlat.toString();
-            desert = banan.split("\n");
-        }
-    };
-
     public void drawSchema() {
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-
                 LinearLayout schema_space = (LinearLayout) findViewById(R.id.schema_layout);
-                int status = 1;
 
-                for (int i = 0; i < desert.length; i++) {
-
-                    TextView textView = new TextView(getBaseContext());
-                    textView.setTextColor(Color.parseColor("#ffffff"));
-                    textView.setText(desert[i]);
-                    textView.setLayoutParams(new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
-
-                    if (status == 1) {
-
-                        LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
-                        params.setMargins(0, 30, 0, 0);
-                        textView.setBackgroundResource(hexagon_top);
-                        textView.setLayoutParams(params);
-
-                    } else if (status == 2) {
-
-                        textView.setBackgroundColor(Color.parseColor("#ff219c"));
-                        textView.setWidth(Math.round(getResources().getDimension(R.dimen.image_width)));
-                        textView.setGravity(Gravity.CENTER);
-
-                    } else if (status == 3) {
-
-                        textView.setBackgroundResource(hexagon_bottom);
-                        textView.setGravity(Gravity.RIGHT);
+                StringBuilder sb = new StringBuilder();
+                try {
+                    String nameOfFile = "id:" + id_number + "week:" + downloadWeek + "_" + schemaFileName;
+                    FileInputStream fis = openFileInput(nameOfFile);
+                    InputStreamReader isr = new InputStreamReader(fis);
+                    BufferedReader bufferedReader = new BufferedReader(isr);
+                    String line;
+                    while ((line = bufferedReader.readLine()) != null) {
+                        sb.append(line);
                     }
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
 
-                    if (status == 3) {
+                if (schemaFile.exists()) {
+                    String[] druvor = sb.toString().split("%day%");
+                    for (int i = 0; i <= 4; i++) {
+                        String[] desert = druvor[i].split("%maq1ekax%");
 
-                        status = 1;
+                        int status = 1;
+                        for (int j = 0; j < desert.length; j++) {
 
-                    } else {
+                            TextView textView = new TextView(getBaseContext());
+                            textView.setTextColor(Color.parseColor("#ffffff"));
+                            textView.setText(desert[j]);
+                            textView.setLayoutParams(new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
 
-                        status++;
+                            if (status == 1) {
 
+                                LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
+                                params.setMargins(0, 30, 0, 0);
+                                textView.setBackgroundResource(hexagon_top);
+                                textView.setLayoutParams(params);
+
+                            } else if (status == 2) {
+
+                                textView.setBackgroundColor(Color.parseColor("#ff219c"));
+                                textView.setWidth(Math.round(getResources().getDimension(R.dimen.image_width)));
+                                textView.setGravity(Gravity.CENTER);
+
+                            } else if (status == 3) {
+
+                                textView.setBackgroundResource(hexagon_bottom);
+                                textView.setGravity(Gravity.RIGHT);
+                            }
+
+                            if (status == 3) {
+
+                                status = 1;
+
+                            } else {
+
+                                status++;
+
+                            }
+
+                            schema_space.addView(textView);
+                        }
                     }
-
-                    schema_space.addView(textView);
+                } else {
+                    //no file to draw
+                    String fail = "fail";
+                    String megafail = "fail";
                 }
             }
         });
@@ -427,70 +411,92 @@ public class MainActivity extends AppCompatActivity
 
     private class DownloadFile extends Thread{
 
-        String fileUrl;
-        DownloadFile(String fileUrl){
-            this.fileUrl = fileUrl;
+        String fileid;
+        String fileweek;
+        String filename;
+        DownloadFile(String fileid, int fileweek, String filename){
+            this.fileid = fileid;
+            this.fileweek = String.valueOf(fileweek);
+            this.filename = filename;
         }
 
         public void run() {
 
             final int  MEGABYTE = 1024 * 1024;
 
-            try {
+            StringBuilder förädlat = new StringBuilder();
+            String päron = "";
+            downloadSuccess = true;
 
-                URL url = new URL(fileUrl);
-                HttpURLConnection urlConnection = (HttpURLConnection)url.openConnection();
-                urlConnection.connect();
+            for (int i = 0; i <= 4; i++) {
+                String tempFileName = "temppdffile" + i;
+                File tempFile = new File(getFilesDir() + "/" + tempFileName);
+                try {
+                    URL url = new URL("http://www.novasoftware.se/ImgGen/schedulegenerator.aspx?format=pdf&schoolid=81530/sv-se&type=0&id=" + fileid  + "&period=&week=" + fileweek + "&mode=0&printer=0&colors=32&head=5&clock=7&foot=1&day=" + Math.round(Math.pow(2,i)) + "&width=400&height=640");
+                    HttpURLConnection urlConnection = (HttpURLConnection)url.openConnection();
+                    urlConnection.connect();
+                    //following code won't execute on connection failure {
 
-                InputStream inputStream = urlConnection.getInputStream();
-                if (pdfFile.exists()) {
-                    pdfFile.delete();
+                    InputStream inputStream = urlConnection.getInputStream();
+                    FileOutputStream fileOutputStream = openFileOutput(tempFileName,MODE_PRIVATE);
+                    int totalSize = urlConnection.getContentLength();
+
+                    byte[] buffer = new byte[MEGABYTE];
+                    int bufferLength = 0;
+                    while((bufferLength = inputStream.read(buffer))>0 ){
+                        fileOutputStream.write(buffer, 0, bufferLength);
+                    }
+                    fileOutputStream.close();
+
+                    try {
+                        PdfReader reader = new PdfReader(tempFile.getPath());
+                        päron = PdfTextExtractor.getTextFromPage(reader, 1);
+                        reader.close();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                        downloadSuccess = false;
+                    }
+
+                    String[] single = päron.split("\n");
+                    for (int j = 1; j < single.length; j++) {
+                        String[] testing = single[j].split(":");
+                        if (testing.length <= 2) {
+                            förädlat.append(single[j]);
+                        } else {
+                            String[] tempArray = single[j].split(" ");
+                            förädlat.append(tempArray[0]);
+                            förädlat.append("%maq1ekax%");
+                            förädlat.append(tempArray[1]);
+                        }
+                        if (j != single.length - 1) {
+                            förädlat.append("%maq1ekax%");
+                        }
+                    }
+
+                    if (i != 4) {
+                        förädlat.append("%day%");
+                    }
+
+                } catch (IOException e) {
+                    e.printStackTrace();
+                    downloadSuccess = false;
                 }
-                FileOutputStream fileOutputStream = openFileOutput(pdfFileName,MODE_PRIVATE);
-                int totalSize = urlConnection.getContentLength();
 
-                byte[] buffer = new byte[MEGABYTE];
-                int bufferLength = 0;
-                while((bufferLength = inputStream.read(buffer))>0 ){
-                    fileOutputStream.write(buffer, 0, bufferLength);
+                tempFile.delete();
+            }
+            if (downloadSuccess) {
+                FileOutputStream outputStream;
+                try {
+                    schemaFile.delete();
+
+                    outputStream = openFileOutput(filename,MODE_PRIVATE);
+                    outputStream.write(förädlat.toString().getBytes());
+                    outputStream.close();
+                } catch (Exception e) {
+                    e.printStackTrace();
+                    downloadSuccess = false;
                 }
-                downloadSuccess = true;
-                fileOutputStream.close();
-
-            } catch (IOException e) {
-                e.printStackTrace();
-                downloadSuccess = false;
             }
-
-            // The following is purely for testing in the debugger
-            String kek;
-
-            if (pdfFile.exists()) {
-                kek = "pdfFile exists";
-            } else {
-                kek = "pdfFile doesn't exist";
-            }
-
-            if (pdfFile.isDirectory()) {
-                kek = "pdfFile is a directory";
-            } else {
-                kek = "pdfFile ain't a directory";
-            }
-
-            if (pdfFile.isFile()) {
-                kek = "pdfFile is a file";
-            } else {
-                kek = "pdfFile ain't a file";
-            }
-
-            if (pdfFile.length() > 1000) {
-                kek = "pdfFile is loooong " + pdfFile.length();
-            } else {
-                kek = "pdfFile is short " + pdfFile.length();
-            }
-            //delete when not needed
-
-            //http://developers.itextpdf.com/examples/content-extraction-and-redaction-itext5/parsing-pdfs
         }
     }
 
