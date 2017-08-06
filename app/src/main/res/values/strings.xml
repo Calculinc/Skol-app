@@ -31,4 +31,11 @@
         <item>Annat</item>
     </string-array>
 
+    <string-array name="typ_array">
+        <item>Elev</item>
+        <item>Sal</item>
+        <item>Lärare</item>
+        <item>Klass</item>
+    </string-array>
+
 </resources>

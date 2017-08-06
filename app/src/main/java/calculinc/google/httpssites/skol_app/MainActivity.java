@@ -30,10 +30,12 @@ import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
+import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.Toast;
 import android.widget.ViewFlipper;
@@ -210,6 +212,7 @@ public class MainActivity extends AppCompatActivity
 
             schemaRefresh öpö = new schemaRefresh();
             öpö.start();
+            theSwtich();
 
         } else if (id == R.id.nav_matsedel) {
 
@@ -312,7 +315,7 @@ public class MainActivity extends AppCompatActivity
 
                             } else if (status == 2) {
 
-                                textView.setBackgroundColor(Color.parseColor("#ff219c"));
+                                textView.setBackgroundColor(Color.parseColor("#FF414141"));
                                 textView.setWidth(Math.round(getResources().getDimension(R.dimen.image_width)));
                                 textView.setGravity(Gravity.CENTER);
 
@@ -330,6 +333,13 @@ public class MainActivity extends AppCompatActivity
 
                                 status++;
 
+                            }
+
+                            if (j == desert.length -1) {
+
+                                LinearLayout.LayoutParams params2 = new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
+                                params2.setMargins(0, 0, 0, 30);
+                                textView.setLayoutParams(params2);
                             }
 
                             schema_space.addView(textView);
@@ -364,6 +374,28 @@ public class MainActivity extends AppCompatActivity
         canvas.drawText("( ͡° ͜ʖ ͡°)",120,200,textpaint);
         ImageView föfan = (ImageView) findViewById(R.id.föfan);
         föfan.setImageBitmap(bg);
+    }
+
+    public void theSwtich() {
+        Switch the_switch = (Switch) findViewById(R.id.the_switch);
+        final LinearLayout schema_space = (LinearLayout) findViewById(R.id.schema_layout);
+        final LinearLayout schema_space_week = (LinearLayout) findViewById(R.id.schema_layout_week);
+        the_switch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
+                if (isChecked) {
+
+                    schema_space.setVisibility(View.GONE);
+                    schema_space_week.setVisibility(View.VISIBLE);
+
+                } else {
+
+                    schema_space.setVisibility(View.VISIBLE);
+                    schema_space_week.setVisibility(View.GONE);
+
+                }
+            }
+        });
     }
 
     public void ggfunktion() {
