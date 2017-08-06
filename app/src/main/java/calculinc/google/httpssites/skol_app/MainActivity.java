@@ -213,6 +213,7 @@ public class MainActivity extends AppCompatActivity
             schemaRefresh öpö = new schemaRefresh();
             öpö.start();
             theSwtich();
+            fidget_spinner();
 
         } else if (id == R.id.nav_matsedel) {
 
@@ -377,6 +378,7 @@ public class MainActivity extends AppCompatActivity
     }
 
     public void theSwtich() {
+
         Switch the_switch = (Switch) findViewById(R.id.the_switch);
         final LinearLayout schema_space = (LinearLayout) findViewById(R.id.schema_layout);
         final LinearLayout schema_space_week = (LinearLayout) findViewById(R.id.schema_layout_week);
@@ -429,15 +431,21 @@ public class MainActivity extends AppCompatActivity
     public void fidget_spinner(){
 
         Spinner spinner = (Spinner) findViewById(R.id.fidget_spinner);
+        Spinner spinnerSchemaType = (Spinner) findViewById(R.id.typ_spinner);
 
 // Create an ArrayAdapter using the string array and a default spinner layout
         ArrayAdapter adapter = ArrayAdapter.createFromResource(this, R.array.gender_array, R.layout.spinner_layout);
         spinner.setAdapter(adapter);
 
+        ArrayAdapter adapterTyp = ArrayAdapter.createFromResource(this, R.array.typ_array, R.layout.spinner_layout);
+        spinnerSchemaType.setAdapter(adapterTyp);
+
 // Specify the layout to use when the list of choices appears
         adapter.setDropDownViewResource(R.layout.spinner_dropdown_layout);
+        adapterTyp.setDropDownViewResource(R.layout.spinner_dropdown_layout);
 // Apply the adapter to the spinner
         spinner.setAdapter(adapter);
+        spinnerSchemaType.setAdapter(adapterTyp);
 
     }
 

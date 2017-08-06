@@ -63,7 +63,7 @@
                 android:textColorHint="@color/colorHint"
                 android:popupBackground="@color/colorBackground"
                 android:dropDownSelector="@color/colorPrimary"
-                android:background="@drawable/text_box_spinner">
+                android:background="@drawable/text_box_spinner_alt">
 
             </Spinner>
 

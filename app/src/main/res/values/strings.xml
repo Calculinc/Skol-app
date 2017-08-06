@@ -32,10 +32,10 @@
     </string-array>
 
     <string-array name="typ_array">
-        <item>Elev</item>
-        <item>Sal</item>
-        <item>Lärare</item>
+        <item>Mitt Schema</item>
         <item>Klass</item>
+        <item>Lärare</item>
+        <item>Sal</item>
     </string-array>
 
 </resources>
