@@ -436,6 +436,7 @@ public class MainActivity extends AppCompatActivity
                                 LinearLayout.LayoutParams paramsBlank1 = new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
                                 paramsBlank1.weight = (float)starttid*10;
                                 blank1.setLayoutParams(paramsBlank1);
+                                blank1.setTextSize(0);
                                 linear.addView(blank1);
 
                                 TextView lektion = new TextView(getBaseContext());
@@ -452,6 +453,7 @@ public class MainActivity extends AppCompatActivity
                                 LinearLayout.LayoutParams paramsBlank2 = new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
                                 paramsBlank2.weight = (float)(10 - sluttid)*10;
                                 blank2.setLayoutParams(paramsBlank2);
+                                blank2.setTextSize(0);
                                 linear.addView(blank2);
 
                                 schema_space.addView(linear);

@@ -70,14 +70,14 @@
             android:orientation="horizontal">
 
             <RelativeLayout
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:id="@+id/relativt_vänster"
                 android:clipChildren="false"
-                android:layout_weight="3.4" />
+                android:layout_weight="1" />
 
             <RelativeLayout
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:id="@+id/relativt_schema1"
                 android:clipChildren="false"
@@ -91,7 +91,7 @@
                 android:clipChildren="false" />
 
             <RelativeLayout
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:id="@+id/relativt_schema2"
                 android:clipChildren="false"
@@ -105,7 +105,7 @@
                 android:clipChildren="false" />
 
             <RelativeLayout
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:id="@+id/relativt_schema3"
                 android:clipChildren="false"
@@ -119,7 +119,7 @@
                 android:clipChildren="false" />
 
             <RelativeLayout
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:id="@+id/relativt_schema4"
                 android:clipChildren="false"
@@ -133,7 +133,7 @@
                 android:clipChildren="false" />
 
             <RelativeLayout
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:id="@+id/relativt_schema5"
                 android:clipChildren="false"
@@ -141,11 +141,11 @@
                 android:background="@color/colorSchemaBackground" />
 
             <RelativeLayout
-                android:layout_width="match_parent"
+                android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:id="@+id/relativt_höger"
                 android:clipChildren="false"
-                android:layout_weight="3.4" />
+                android:layout_weight="1" />
 
         </LinearLayout>
 
