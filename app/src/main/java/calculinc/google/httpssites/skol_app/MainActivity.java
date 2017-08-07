@@ -382,6 +382,8 @@ public class MainActivity extends AppCompatActivity
         Switch the_switch = (Switch) findViewById(R.id.the_switch);
         final LinearLayout schema_space = (LinearLayout) findViewById(R.id.schema_layout);
         final LinearLayout schema_space_week = (LinearLayout) findViewById(R.id.schema_layout_week);
+        final Spinner spinner1 = (Spinner) findViewById(R.id.flexible_spinner);
+
         the_switch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
@@ -389,11 +391,13 @@ public class MainActivity extends AppCompatActivity
 
                     schema_space.setVisibility(View.GONE);
                     schema_space_week.setVisibility(View.VISIBLE);
+                    spinner1.setVisibility(View.GONE);
 
                 } else {
 
                     schema_space.setVisibility(View.VISIBLE);
                     schema_space_week.setVisibility(View.GONE);
+                    spinner1.setVisibility(View.VISIBLE);
 
                 }
             }
