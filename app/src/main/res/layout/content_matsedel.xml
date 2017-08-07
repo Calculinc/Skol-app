@@ -57,6 +57,8 @@
             android:layout_marginTop="70dp"
             android:text="Nu jävlar ska det ätas!"
             android:textColor="#ffffff"
+            android:clickable="true"
+            android:onClick="loginSubmit"
             android:textSize="20dp" />
 
         <TextView

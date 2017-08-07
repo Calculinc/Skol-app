@@ -26,6 +26,7 @@ import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
 import android.view.ViewDebug;
+import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ArrayAdapter;
@@ -34,6 +35,7 @@ import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.Switch;
 import android.widget.TextView;
@@ -59,6 +61,7 @@ import java.util.GregorianCalendar;
 import static calculinc.google.httpssites.skol_app.R.drawable.hexagon_bottom;
 import static calculinc.google.httpssites.skol_app.R.drawable.hexagon_top;
 import static calculinc.google.httpssites.skol_app.R.drawable.rainbowcolor;
+import static calculinc.google.httpssites.skol_app.R.drawable.ya_blew_it;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -210,7 +213,7 @@ public class MainActivity extends AppCompatActivity
             drawer.closeDrawer(GravityCompat.START);
             //start loading animation here (spinning circle and "laddar..." text
 
-            schemaRefresh öpö = new schemaRefresh();
+            schemaSelect öpö = new schemaSelect();
             öpö.start();
             theSwtich();
             fidget_spinner();
@@ -254,7 +257,7 @@ public class MainActivity extends AppCompatActivity
 
     }
 
-    private class schemaRefresh extends Thread {
+    private class schemaSelect extends Thread {
         public void run() {
 
             downloadWeek = 20;
@@ -270,8 +273,12 @@ public class MainActivity extends AppCompatActivity
                 e.printStackTrace();
             }
 
-            drawSchema();
+            drawSchema2();
         }
+    }
+
+    private class schemaRefresh extends Thread {
+
     }
 
     public void drawSchema() {
@@ -344,6 +351,113 @@ public class MainActivity extends AppCompatActivity
                             }
 
                             schema_space.addView(textView);
+                        }
+                    }
+                } else {
+                    //no file to draw
+                    String fail = "fail";
+                    String megafail = "fail";
+                }
+            }
+        });
+    }
+
+    public void drawSchema2() {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+
+                StringBuilder sb = new StringBuilder();
+                try {
+                    String nameOfFile = "id:" + id_number + "week:" + downloadWeek + "_" + schemaFileName;
+                    FileInputStream fis = openFileInput(nameOfFile);
+                    InputStreamReader isr = new InputStreamReader(fis);
+                    BufferedReader bufferedReader = new BufferedReader(isr);
+                    String line;
+                    while ((line = bufferedReader.readLine()) != null) {
+                        sb.append(line);
+                    }
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+                if (schemaFile.exists()) {
+                    String[] druvor = sb.toString().split("%day%");
+                    RelativeLayout schema_space = (RelativeLayout) findViewById(R.id.relativt_schema1);
+                    for (int i = 0; i <= 4; i++) {
+                        String[] desert = druvor[i].split("%maq1ekax%");
+
+                        if (i == 0){
+                            schema_space = (RelativeLayout) findViewById(R.id.relativt_schema1);
+                        }
+                        if (i == 1){
+                            schema_space = (RelativeLayout) findViewById(R.id.relativt_schema2);
+                        }
+                        if (i == 2){
+                            schema_space = (RelativeLayout) findViewById(R.id.relativt_schema3);
+                        }
+                        if (i == 3){
+                            schema_space = (RelativeLayout) findViewById(R.id.relativt_schema4);
+                        }
+                        if (i == 4){
+                            schema_space = (RelativeLayout) findViewById(R.id.relativt_schema5);
+                        }
+
+                        int status = 0;
+
+                        double starttid = 0;
+                        double sluttid;
+                        String öpö = "ö";
+
+                        for (int j = 0; j < desert.length; j++) {
+                            status++;
+                            if (status == 1) {
+                                //lite matte här
+                                String[] time = desert[j].split(":");
+                                starttid = Double.parseDouble(time[0]) - 8 + (Double.parseDouble(time[1])) / 60;
+
+                            }
+                            if (status == 2) {
+                                //hämta lektionstext
+                                öpö = desert[j];
+                            }
+                            if (status == 3) {
+                                //lite mer matte
+                                String[] time = desert[j].split(":");
+                                sluttid = Double.parseDouble(time[0]) - 8 + Double.parseDouble(time[1]) / 60;
+
+                                LinearLayout linear = new LinearLayout(getBaseContext());
+                                linear.setWeightSum(100);
+                                LinearLayout.LayoutParams params2 = new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
+                                linear.setOrientation(LinearLayout.VERTICAL);
+                                linear.setLayoutParams(params2);
+
+                                TextView blank1 = new TextView(getBaseContext());
+                                LinearLayout.LayoutParams paramsBlank1 = new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
+                                paramsBlank1.weight = (float)starttid*10;
+                                blank1.setLayoutParams(paramsBlank1);
+                                linear.addView(blank1);
+
+                                TextView lektion = new TextView(getBaseContext());
+                                LinearLayout.LayoutParams paramsLektion = new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
+                                paramsLektion.weight = (float)(sluttid - starttid)*10;
+                                lektion.setLayoutParams(paramsLektion);
+                                lektion.setBackgroundColor(Color.parseColor("#70ff5a36"));
+                                lektion.setTextSize(0);
+                                //lektion.setBackgroundResource(ya_blew_it);
+                                //lektion.setText(öpö);
+                                linear.addView(lektion);
+
+                                TextView blank2 = new TextView(getBaseContext());
+                                LinearLayout.LayoutParams paramsBlank2 = new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
+                                paramsBlank2.weight = (float)(10 - sluttid)*10;
+                                blank2.setLayoutParams(paramsBlank2);
+                                linear.addView(blank2);
+
+                                schema_space.addView(linear);
+                                status = 0;
+                            }
+
                         }
                     }
                 } else {

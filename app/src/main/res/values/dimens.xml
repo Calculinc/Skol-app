@@ -6,5 +6,6 @@
     <dimen name="nav_header_height">160dp</dimen>
     <dimen name="fab_margin">16dp</dimen>
     <dimen name="dp_unit">1dp</dimen>
+    <dimen name="dp_unit2">0dp</dimen>
     <dimen name="image_width">280dp</dimen>
 </resources>
