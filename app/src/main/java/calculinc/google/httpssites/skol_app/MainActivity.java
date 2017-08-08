@@ -87,15 +87,6 @@ public class MainActivity extends AppCompatActivity
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
 
-        FloatingActionButton fab = (FloatingActionButton) findViewById(R.id.fab);
-        fab.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Snackbar.make(view, "Replace with your own action", Snackbar.LENGTH_LONG)
-                        .setAction("Action", null).show();
-            }
-        });
-
         DrawerLayout drawer = (DrawerLayout) findViewById(R.id.drawer_layout);
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                 this, drawer, toolbar, R.string.navigation_drawer_open, R.string.navigation_drawer_close);
@@ -260,7 +251,7 @@ public class MainActivity extends AppCompatActivity
     private class schemaSelect extends Thread {
         public void run() {
 
-            downloadWeek = 20;
+            downloadWeek = 34;
             String nameOfFile = "id:" + id_number + "week:" + downloadWeek + "_" + schemaFileName;
             schemaFile = new File(getFilesDir() + "/" + nameOfFile);
             String downloadID = String.valueOf(id_number);
@@ -273,7 +264,7 @@ public class MainActivity extends AppCompatActivity
                 e.printStackTrace();
             }
 
-            drawSchema2();
+            drawSchema();
         }
     }
 
@@ -282,87 +273,6 @@ public class MainActivity extends AppCompatActivity
     }
 
     public void drawSchema() {
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                LinearLayout schema_space = (LinearLayout) findViewById(R.id.schema_layout);
-
-                StringBuilder sb = new StringBuilder();
-                try {
-                    String nameOfFile = "id:" + id_number + "week:" + downloadWeek + "_" + schemaFileName;
-                    FileInputStream fis = openFileInput(nameOfFile);
-                    InputStreamReader isr = new InputStreamReader(fis);
-                    BufferedReader bufferedReader = new BufferedReader(isr);
-                    String line;
-                    while ((line = bufferedReader.readLine()) != null) {
-                        sb.append(line);
-                    }
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-
-                if (schemaFile.exists()) {
-                    String[] druvor = sb.toString().split("%day%");
-                    for (int i = 0; i <= 4; i++) {
-                        String[] desert = druvor[i].split("%maq1ekax%");
-
-                        int status = 1;
-                        for (int j = 0; j < desert.length; j++) {
-
-                            TextView textView = new TextView(getBaseContext());
-                            textView.setTextColor(Color.parseColor("#ffffff"));
-                            textView.setText(desert[j]);
-                            textView.setLayoutParams(new LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT));
-
-                            if (status == 1) {
-
-                                LinearLayout.LayoutParams params = new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
-                                params.setMargins(0, 30, 0, 0);
-                                textView.setBackgroundResource(hexagon_top);
-                                textView.setLayoutParams(params);
-
-                            } else if (status == 2) {
-
-                                textView.setBackgroundColor(Color.parseColor("#FF414141"));
-                                textView.setWidth(Math.round(getResources().getDimension(R.dimen.image_width)));
-                                textView.setGravity(Gravity.CENTER);
-
-                            } else if (status == 3) {
-
-                                textView.setBackgroundResource(hexagon_bottom);
-                                textView.setGravity(Gravity.RIGHT);
-                            }
-
-                            if (status == 3) {
-
-                                status = 1;
-
-                            } else {
-
-                                status++;
-
-                            }
-
-                            if (j == desert.length -1) {
-
-                                LinearLayout.LayoutParams params2 = new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
-                                params2.setMargins(0, 0, 0, 30);
-                                textView.setLayoutParams(params2);
-                            }
-
-                            schema_space.addView(textView);
-                        }
-                    }
-                } else {
-                    //no file to draw
-                    String fail = "fail";
-                    String megafail = "fail";
-                }
-            }
-        });
-    }
-
-    public void drawSchema2() {
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
@@ -385,7 +295,12 @@ public class MainActivity extends AppCompatActivity
                     String[] druvor = sb.toString().split("%day%");
                     RelativeLayout schema_space = (RelativeLayout) findViewById(R.id.relativt_schema1);
                     for (int i = 0; i <= 4; i++) {
-                        String[] desert = druvor[i].split("%maq1ekax%");
+                        String[] desert;
+                        if (druvor.length > 0){
+                            desert = druvor[i].split("%maq1ekax%");
+                        } else {
+                            desert = druvor;
+                        }
 
                         if (i == 0){
                             schema_space = (RelativeLayout) findViewById(R.id.relativt_schema1);
@@ -427,21 +342,21 @@ public class MainActivity extends AppCompatActivity
                                 sluttid = Double.parseDouble(time[0]) - 8 + Double.parseDouble(time[1]) / 60;
 
                                 LinearLayout linear = new LinearLayout(getBaseContext());
-                                linear.setWeightSum(100);
+                                linear.setWeightSum(11);
                                 LinearLayout.LayoutParams params2 = new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
                                 linear.setOrientation(LinearLayout.VERTICAL);
                                 linear.setLayoutParams(params2);
 
                                 TextView blank1 = new TextView(getBaseContext());
                                 LinearLayout.LayoutParams paramsBlank1 = new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
-                                paramsBlank1.weight = (float)starttid*10;
+                                paramsBlank1.weight = (float)(starttid+1);
                                 blank1.setLayoutParams(paramsBlank1);
                                 blank1.setTextSize(0);
                                 linear.addView(blank1);
 
                                 TextView lektion = new TextView(getBaseContext());
                                 LinearLayout.LayoutParams paramsLektion = new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
-                                paramsLektion.weight = (float)(sluttid - starttid)*10;
+                                paramsLektion.weight = (float)(sluttid - starttid);
                                 lektion.setLayoutParams(paramsLektion);
                                 lektion.setBackgroundColor(Color.parseColor("#70ff5a36"));
                                 lektion.setTextSize(0);
@@ -451,7 +366,7 @@ public class MainActivity extends AppCompatActivity
 
                                 TextView blank2 = new TextView(getBaseContext());
                                 LinearLayout.LayoutParams paramsBlank2 = new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
-                                paramsBlank2.weight = (float)(10 - sluttid)*10;
+                                paramsBlank2.weight = (float)(10 - sluttid);
                                 blank2.setLayoutParams(paramsBlank2);
                                 blank2.setTextSize(0);
                                 linear.addView(blank2);
@@ -496,8 +411,6 @@ public class MainActivity extends AppCompatActivity
     public void theSwtich() {
 
         Switch the_switch = (Switch) findViewById(R.id.the_switch);
-        final LinearLayout schema_space = (LinearLayout) findViewById(R.id.schema_layout);
-        final LinearLayout schema_space_week = (LinearLayout) findViewById(R.id.schema_layout_week);
         final Spinner spinner1 = (Spinner) findViewById(R.id.flexible_spinner);
 
         the_switch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -505,14 +418,10 @@ public class MainActivity extends AppCompatActivity
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked) {
 
-                    schema_space.setVisibility(View.GONE);
-                    schema_space_week.setVisibility(View.VISIBLE);
                     spinner1.setVisibility(View.GONE);
 
                 } else {
 
-                    schema_space.setVisibility(View.VISIBLE);
-                    schema_space_week.setVisibility(View.GONE);
                     spinner1.setVisibility(View.VISIBLE);
 
                 }
