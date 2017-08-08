@@ -203,7 +203,8 @@
                                 android:gravity="center"
                                 android:textColor="@color/colorAccent"
                                 android:background="@drawable/day_box"
-                                android:text="M"/>
+                                android:text="Mån"
+                                android:textSize="15sp"/>
                         </LinearLayout>
                         <TextView
                             android:layout_width="match_parent"
@@ -240,7 +241,8 @@
                                 android:gravity="center"
                                 android:textColor="@color/colorAccent"
                                 android:background="@drawable/day_box"
-                                android:text="T"/>
+                                android:text="Tis"
+                                android:textSize="15sp"/>
                         </LinearLayout>
                         <TextView
                             android:layout_width="match_parent"
@@ -277,7 +279,8 @@
                                 android:gravity="center"
                                 android:textColor="@color/colorAccent"
                                 android:background="@drawable/day_box"
-                                android:text="O"/>
+                                android:text="Ons"
+                                android:textSize="15sp"/>
                         </LinearLayout>
                         <TextView
                             android:layout_width="match_parent"
@@ -314,7 +317,8 @@
                                 android:gravity="center"
                                 android:textColor="@color/colorAccent"
                                 android:background="@drawable/day_box"
-                                android:text="T"/>
+                                android:text="Tor"
+                                android:textSize="15sp"/>
                         </LinearLayout>
                         <TextView
                             android:layout_width="match_parent"
@@ -351,7 +355,8 @@
                                 android:gravity="center"
                                 android:textColor="@color/colorAccent"
                                 android:background="@drawable/day_box"
-                                android:text="F"/>
+                                android:text="Fre"
+                                android:textSize="15sp"/>
                         </LinearLayout>
                         <TextView
                             android:layout_width="match_parent"
