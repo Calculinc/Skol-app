@@ -43,6 +43,7 @@ import android.widget.Toast;
 import android.widget.ViewFlipper;
 
 import com.itextpdf.text.pdf.PdfReader;
+import com.itextpdf.text.pdf.parser.Line;
 import com.itextpdf.text.pdf.parser.PdfTextExtractor;
 
 import java.io.BufferedReader;
@@ -412,6 +413,20 @@ public class MainActivity extends AppCompatActivity
 
         Switch the_switch = (Switch) findViewById(R.id.the_switch);
         final Spinner spinner1 = (Spinner) findViewById(R.id.flexible_spinner);
+        final RelativeLayout relativeLayout1 = (RelativeLayout) findViewById(R.id.relativt_schema1);
+        final RelativeLayout relativeLayout2 = (RelativeLayout) findViewById(R.id.relativt_schema2);
+        final RelativeLayout relativeLayout3 = (RelativeLayout) findViewById(R.id.relativt_schema3);
+        final RelativeLayout relativeLayout4 = (RelativeLayout) findViewById(R.id.relativt_schema4);
+        final RelativeLayout relativeLayout5 = (RelativeLayout) findViewById(R.id.relativt_schema5);
+
+        final LinearLayout relativtvänster = (LinearLayout) findViewById(R.id.relativt_vänster);
+        final LinearLayout relativthöger = (LinearLayout) findViewById(R.id.relativt_höger);
+
+        final RelativeLayout relativtsep1 = (RelativeLayout) findViewById(R.id.relativt_sep1);
+        final RelativeLayout relativtsep2 = (RelativeLayout) findViewById(R.id.relativt_sep2);
+        final RelativeLayout relativtsep3 = (RelativeLayout) findViewById(R.id.relativt_sep3);
+        final RelativeLayout relativtsep4 = (RelativeLayout) findViewById(R.id.relativt_sep4);
+
 
         the_switch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
@@ -420,9 +435,43 @@ public class MainActivity extends AppCompatActivity
 
                     spinner1.setVisibility(View.GONE);
 
+                    LinearLayout.LayoutParams paramsBlank2 = new LinearLayout.LayoutParams(0, LayoutParams.MATCH_PARENT, 0);
+                    relativeLayout1.setLayoutParams(paramsBlank2);
+                    relativeLayout2.setLayoutParams(paramsBlank2);
+                    relativeLayout3.setLayoutParams(paramsBlank2);
+                    relativeLayout5.setLayoutParams(paramsBlank2);
+
+                    LinearLayout.LayoutParams paramsExpand = new LinearLayout.LayoutParams(0, LayoutParams.MATCH_PARENT, 10);
+                    LinearLayout.LayoutParams paramsExpand2 = new LinearLayout.LayoutParams(0, LayoutParams.MATCH_PARENT, 2.6f);
+                    relativeLayout4.setLayoutParams(paramsExpand);
+                    relativthöger.setLayoutParams(paramsExpand2);
+                    relativtvänster.setLayoutParams(paramsExpand2);
+
+                    relativtsep1.setVisibility(View.GONE);
+                    relativtsep2.setVisibility(View.GONE);
+                    relativtsep3.setVisibility(View.GONE);
+                    relativtsep4.setVisibility(View.GONE);
+
+
                 } else {
 
                     spinner1.setVisibility(View.VISIBLE);
+
+                    LinearLayout.LayoutParams paramsBlank2 = new LinearLayout.LayoutParams( 0, LayoutParams.MATCH_PARENT, 2);
+                    LinearLayout.LayoutParams paramsBlank3 = new LinearLayout.LayoutParams( 0, LayoutParams.MATCH_PARENT, 1);
+                    relativeLayout1.setLayoutParams(paramsBlank2);
+                    relativeLayout2.setLayoutParams(paramsBlank2);
+                    relativeLayout3.setLayoutParams(paramsBlank2);
+                    relativeLayout4.setLayoutParams(paramsBlank2);
+                    relativeLayout5.setLayoutParams(paramsBlank2);
+
+                    relativthöger.setLayoutParams(paramsBlank3);
+                    relativtvänster.setLayoutParams(paramsBlank3);
+
+                    relativtsep1.setVisibility(View.VISIBLE);
+                    relativtsep2.setVisibility(View.VISIBLE);
+                    relativtsep3.setVisibility(View.VISIBLE);
+                    relativtsep4.setVisibility(View.VISIBLE);
 
                 }
             }

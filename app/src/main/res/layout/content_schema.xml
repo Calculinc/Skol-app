@@ -69,6 +69,7 @@
                 android:layout_height="match_parent"
                 android:orientation="vertical"
                 android:id="@+id/relativt_vänster"
+                android:backgroundTint="@color/colorPrimaryDark"
                 android:clipChildren="false"
                 android:layout_weight="1">
 
@@ -367,6 +368,7 @@
                 android:layout_height="match_parent"
                 android:orientation="vertical"
                 android:id="@+id/relativt_höger"
+                android:backgroundTint="@color/colorPrimaryDark"
                 android:clipChildren="false"
                 android:layout_weight="1">
 
