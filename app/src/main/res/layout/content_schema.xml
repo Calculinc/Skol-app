@@ -67,11 +67,20 @@
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
+                android:layout_weight="0"
+                android:orientation="vertical"
+                android:id="@+id/vänsterPOOSH"/>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
                 android:orientation="vertical"
                 android:id="@+id/relativt_vänster"
                 android:backgroundTint="@color/colorPrimaryDark"
                 android:clipChildren="false"
-                android:layout_weight="1">
+                android:layout_weight="1"
+                android:layout_marginLeft="2dp"
+                android:layout_marginStart="2dp">
 
                 <TextView
                     android:layout_width="match_parent"
@@ -180,6 +189,7 @@
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
                 android:orientation="horizontal"
+                android:id="@+id/schema_vecka"
                 android:layout_weight="8">
 
                 <RelativeLayout
@@ -375,7 +385,9 @@
                 android:id="@+id/relativt_höger"
                 android:backgroundTint="@color/colorPrimaryDark"
                 android:clipChildren="false"
-                android:layout_weight="1">
+                android:layout_weight="1"
+                android:layout_marginRight="2dp"
+                android:layout_marginEnd="2dp">
 
                 <TextView
                     android:layout_width="match_parent"
@@ -479,6 +491,13 @@
                     android:layout_weight="1"
                     android:textSize="6sp" />
             </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0"
+                android:orientation="vertical"
+                android:id="@+id/högerPOOSH"/>
 
         </LinearLayout>
 
