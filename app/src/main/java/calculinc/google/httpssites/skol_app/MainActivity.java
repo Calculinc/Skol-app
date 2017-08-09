@@ -13,6 +13,7 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v4.widget.DrawerLayout.LayoutParams;
 import android.support.v7.view.menu.MenuView;
+import android.text.Html;
 import android.text.TextPaint;
 import android.util.Log;
 import android.view.Gravity;
@@ -45,6 +46,9 @@ import android.widget.ViewFlipper;
 import com.itextpdf.text.pdf.PdfReader;
 import com.itextpdf.text.pdf.parser.Line;
 import com.itextpdf.text.pdf.parser.PdfTextExtractor;
+
+import org.jsoup.Jsoup;
+import org.jsoup.nodes.Document;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -80,6 +84,9 @@ public class MainActivity extends AppCompatActivity
     String loginFileName = "login.txt";
     File loginFile;
     boolean downloadSuccess;
+
+    String title;
+    String simple;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -131,6 +138,9 @@ public class MainActivity extends AppCompatActivity
     public void loginSubmit (View view) {
         final EditText personal_id = (EditText) findViewById(R.id.editText);
         final Animation anim_button_click = AnimationUtils.loadAnimation(this, R.anim.anim_button_click);
+        TextView textView = (TextView) findViewById(R.id.test_text);
+
+        textView.setText(title);
 
         view.startAnimation(anim_button_click);
 
@@ -216,6 +226,8 @@ public class MainActivity extends AppCompatActivity
             vf.setDisplayedChild(2);
             drawer.closeDrawer(GravityCompat.START);
             ggfunktion();
+            htmldownloader test = new htmldownloader();
+            test.start();
 
         } else if (id == R.id.nav_laxor) {
 
@@ -481,6 +493,20 @@ public class MainActivity extends AppCompatActivity
         });
     }
 
+    private class htmldownloader extends Thread {
+        public void run() {
+            Document doc;
+            Document test;
+            try {
+                doc = Jsoup.connect("https://skolmaten.se/norra-real/").get();
+                title = doc.select("div").text();
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+    };
+
     public void ggfunktion() {
 
         Button button = (Button) findViewById(R.id.plebknapp);
@@ -553,7 +579,8 @@ public class MainActivity extends AppCompatActivity
                 String tempFileName = "temppdffile" + i;
                 File tempFile = new File(getFilesDir() + "/" + tempFileName);
                 try {
-                    URL url = new URL("http://www.novasoftware.se/ImgGen/schedulegenerator.aspx?format=pdf&schoolid=81530/sv-se&type=0&id=" + fileid  + "&period=&week=" + fileweek + "&mode=0&printer=0&colors=32&head=5&clock=7&foot=1&day=" + Math.round(Math.pow(2,i)) + "&width=400&height=640");
+                    //URL url = new URL("http://www.novasoftware.se/ImgGen/schedulegenerator.aspx?format=pdf&schoolid=81530/sv-se&type=0&id=" + fileid  + "&period=&week=" + fileweek + "&mode=0&printer=0&colors=32&head=5&clock=7&foot=1&day=" + Math.round(Math.pow(2,i)) + "&width=400&height=640");
+                    URL url = new URL("http://www.novasoftware.se/ImgGen/schedulegenerator.aspx?format=pdf&schoolid=81660/sv-se&type=0&id=" + "7bB92529B7-0EDF-426A-A636-8D300715ACD3%7d" + "&period=&week=" + fileweek + "&mode=0&printer=0&colors=32&head=5&clock=7&foot=1&day=" + Math.round(Math.pow(2,i)) + "&width=400&height=640");
                     HttpURLConnection urlConnection = (HttpURLConnection)url.openConnection();
                     urlConnection.connect();
 
