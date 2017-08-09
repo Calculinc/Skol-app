@@ -84,6 +84,8 @@ public class MainActivity extends AppCompatActivity
     String loginFileName = "login.txt";
     File loginFile;
     boolean downloadSuccess;
+    boolean DayPref;
+    File DayPrefFile;
 
     String title;
     String simple;
@@ -106,6 +108,13 @@ public class MainActivity extends AppCompatActivity
 
         TextView kek = (TextView) findViewById(R.id.öpö);
         kek.setText(String.valueOf(currentMinute));
+
+        if (currentDay == 7) {
+            currentDay = 1;
+        }
+        if (currentDay != 1) {
+            currentDay--;
+        }
 
         loginFile = new File(getFilesDir() + "/" + loginFileName);
 
@@ -431,17 +440,34 @@ public class MainActivity extends AppCompatActivity
 
     public void theSwtich() {
 
+        final String DayPrefFileName = "DayPref.txt";
+        DayPrefFile = new File(getFilesDir() + "/" + DayPrefFileName);
+        DayPref = DayPrefFile.exists();
+
         Switch the_switch = (Switch) findViewById(R.id.the_switch);
+        the_switch.setChecked(!DayPref);
+        if (DayPref) {
+            makeSchemaDag(currentDay);
+        }
 
         the_switch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked) {
                     makeSchemaVecka();
-
+                    DayPref = false;
+                    DayPrefFile.delete();
                 } else {
                     makeSchemaDag(currentDay);
-
+                    DayPref = true;
+                    FileOutputStream outputStream;
+                    try {
+                        outputStream = openFileOutput(DayPrefFileName,MODE_PRIVATE);
+                        outputStream.write(DayPrefFileName.getBytes());
+                        outputStream.close();
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
                 }
             }
         });
