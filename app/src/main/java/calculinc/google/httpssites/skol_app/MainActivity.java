@@ -309,8 +309,12 @@ public class MainActivity extends AppCompatActivity
                     RelativeLayout schema_space = (RelativeLayout) findViewById(R.id.relativt_schema1);
                     for (int i = 0; i <= 4; i++) {
                         String[] desert;
-                        if (druvor.length > 0){
-                            desert = druvor[i].split("%maq1ekax%");
+                        if (druvor.length > 4){
+                            if (!druvor[i].equals("")) {
+                                desert = druvor[i].split("%maq1ekax%");
+                            } else {
+                                desert = druvor;
+                            }
                         } else {
                             desert = druvor;
                         }
@@ -339,53 +343,57 @@ public class MainActivity extends AppCompatActivity
 
                         for (int j = 0; j < desert.length; j++) {
                             status++;
-                            if (status == 1) {
-                                //lite matte här
-                                String[] time = desert[j].split(":");
-                                starttid = Double.parseDouble(time[0]) - 8 + (Double.parseDouble(time[1])) / 60;
+                            try {
+                                if (status == 1) {
+                                    //lite matte här
+                                    String[] time = desert[j].split(":");
+                                    starttid = Double.parseDouble(time[0]) - 8 + (Double.parseDouble(time[1])) / 60;
 
-                            }
-                            if (status == 2) {
-                                //hämta lektionstext
-                                öpö = desert[j];
-                            }
-                            if (status == 3) {
-                                //lite mer matte
-                                String[] time = desert[j].split(":");
-                                sluttid = Double.parseDouble(time[0]) - 8 + Double.parseDouble(time[1]) / 60;
+                                }
+                                if (status == 2) {
+                                    //hämta lektionstext
+                                    öpö = desert[j];
+                                }
+                                if (status == 3) {
+                                    //lite mer matte
+                                    String[] time = desert[j].split(":");
+                                    sluttid = Double.parseDouble(time[0]) - 8 + Double.parseDouble(time[1]) / 60;
 
-                                LinearLayout linear = new LinearLayout(getBaseContext());
-                                linear.setWeightSum(11);
-                                LinearLayout.LayoutParams params2 = new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
-                                linear.setOrientation(LinearLayout.VERTICAL);
-                                linear.setLayoutParams(params2);
+                                    LinearLayout linear = new LinearLayout(getBaseContext());
+                                    linear.setWeightSum(11);
+                                    LinearLayout.LayoutParams params2 = new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
+                                    linear.setOrientation(LinearLayout.VERTICAL);
+                                    linear.setLayoutParams(params2);
 
-                                TextView blank1 = new TextView(getBaseContext());
-                                LinearLayout.LayoutParams paramsBlank1 = new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
-                                paramsBlank1.weight = (float)(starttid+1);
-                                blank1.setLayoutParams(paramsBlank1);
-                                blank1.setTextSize(0);
-                                linear.addView(blank1);
+                                    TextView blank1 = new TextView(getBaseContext());
+                                    LinearLayout.LayoutParams paramsBlank1 = new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
+                                    paramsBlank1.weight = (float)(starttid+1);
+                                    blank1.setLayoutParams(paramsBlank1);
+                                    blank1.setTextSize(0);
+                                    linear.addView(blank1);
 
-                                TextView lektion = new TextView(getBaseContext());
-                                LinearLayout.LayoutParams paramsLektion = new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
-                                paramsLektion.weight = (float)(sluttid - starttid);
-                                lektion.setLayoutParams(paramsLektion);
-                                lektion.setBackgroundColor(Color.parseColor("#70ff5a36"));
-                                lektion.setTextSize(0);
-                                //lektion.setBackgroundResource(ya_blew_it);
-                                //lektion.setText(öpö);
-                                linear.addView(lektion);
+                                    TextView lektion = new TextView(getBaseContext());
+                                    LinearLayout.LayoutParams paramsLektion = new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
+                                    paramsLektion.weight = (float)(sluttid - starttid);
+                                    lektion.setLayoutParams(paramsLektion);
+                                    lektion.setBackgroundColor(Color.parseColor("#70ff5a36"));
+                                    lektion.setTextSize(0);
+                                    //lektion.setBackgroundResource(ya_blew_it);
+                                    //lektion.setText(öpö);
+                                    linear.addView(lektion);
 
-                                TextView blank2 = new TextView(getBaseContext());
-                                LinearLayout.LayoutParams paramsBlank2 = new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
-                                paramsBlank2.weight = (float)(10 - sluttid);
-                                blank2.setLayoutParams(paramsBlank2);
-                                blank2.setTextSize(0);
-                                linear.addView(blank2);
+                                    TextView blank2 = new TextView(getBaseContext());
+                                    LinearLayout.LayoutParams paramsBlank2 = new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
+                                    paramsBlank2.weight = (float)(10 - sluttid);
+                                    blank2.setLayoutParams(paramsBlank2);
+                                    blank2.setTextSize(0);
+                                    linear.addView(blank2);
 
-                                schema_space.addView(linear);
-                                status = 0;
+                                    schema_space.addView(linear);
+                                    status = 0;
+                                }
+                            } catch (NumberFormatException e) {
+                                e.printStackTrace();
                             }
 
                         }
@@ -424,73 +432,95 @@ public class MainActivity extends AppCompatActivity
     public void theSwtich() {
 
         Switch the_switch = (Switch) findViewById(R.id.the_switch);
-        final Spinner spinner1 = (Spinner) findViewById(R.id.flexible_spinner);
-        final RelativeLayout relativeLayout1 = (RelativeLayout) findViewById(R.id.relativt_schema1);
-        final RelativeLayout relativeLayout2 = (RelativeLayout) findViewById(R.id.relativt_schema2);
-        final RelativeLayout relativeLayout3 = (RelativeLayout) findViewById(R.id.relativt_schema3);
-        final RelativeLayout relativeLayout4 = (RelativeLayout) findViewById(R.id.relativt_schema4);
-        final RelativeLayout relativeLayout5 = (RelativeLayout) findViewById(R.id.relativt_schema5);
-
-        final LinearLayout vänsterPOOSH = (LinearLayout) findViewById(R.id.vänsterPOOSH);
-        final LinearLayout högerPOOSH = (LinearLayout) findViewById(R.id.högerPOOSH);
-        final LinearLayout schemaVecka = (LinearLayout) findViewById(R.id.schema_vecka);
-
-        final RelativeLayout relativtsep1 = (RelativeLayout) findViewById(R.id.relativt_sep1);
-        final RelativeLayout relativtsep2 = (RelativeLayout) findViewById(R.id.relativt_sep2);
-        final RelativeLayout relativtsep3 = (RelativeLayout) findViewById(R.id.relativt_sep3);
-        final RelativeLayout relativtsep4 = (RelativeLayout) findViewById(R.id.relativt_sep4);
-
 
         the_switch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked) {
-
-                    //spinner1.setVisibility(View.GONE);
-
-                    LinearLayout.LayoutParams paramsBlank2 = new LinearLayout.LayoutParams(0, LayoutParams.MATCH_PARENT, 0);
-                    relativeLayout1.setLayoutParams(paramsBlank2);
-                    relativeLayout2.setLayoutParams(paramsBlank2);
-                    relativeLayout3.setLayoutParams(paramsBlank2);
-                    relativeLayout5.setLayoutParams(paramsBlank2);
-
-                    LinearLayout.LayoutParams paramsExpand2 = new LinearLayout.LayoutParams(0, LayoutParams.MATCH_PARENT, 1.6f);
-                    LinearLayout.LayoutParams paramsExpand3 = new LinearLayout.LayoutParams(0, LayoutParams.MATCH_PARENT, 5.4f);
-
-                    vänsterPOOSH.setLayoutParams(paramsExpand2);
-                    högerPOOSH.setLayoutParams(paramsExpand2);
-                    schemaVecka.setLayoutParams(paramsExpand3);
-
-                    relativtsep1.setVisibility(View.GONE);
-                    relativtsep2.setVisibility(View.GONE);
-                    relativtsep3.setVisibility(View.GONE);
-                    relativtsep4.setVisibility(View.GONE);
+                    makeSchemaVecka();
 
                 } else {
-
-                    //spinner1.setVisibility(View.VISIBLE);
-
-                    LinearLayout.LayoutParams paramsBlank = new LinearLayout.LayoutParams( 0, LayoutParams.MATCH_PARENT, 10);
-                    LinearLayout.LayoutParams paramsBlank2 = new LinearLayout.LayoutParams( 0, LayoutParams.MATCH_PARENT, 2);
-                    LinearLayout.LayoutParams paramsBlank3 = new LinearLayout.LayoutParams( 0, LayoutParams.MATCH_PARENT, 0);
-                    relativeLayout1.setLayoutParams(paramsBlank2);
-                    relativeLayout2.setLayoutParams(paramsBlank2);
-                    relativeLayout3.setLayoutParams(paramsBlank2);
-                    relativeLayout4.setLayoutParams(paramsBlank2);
-                    relativeLayout5.setLayoutParams(paramsBlank2);
-
-                    vänsterPOOSH.setLayoutParams(paramsBlank3);
-                    högerPOOSH.setLayoutParams(paramsBlank3);
-                    schemaVecka.setLayoutParams(paramsBlank);
-
-                    relativtsep1.setVisibility(View.VISIBLE);
-                    relativtsep2.setVisibility(View.VISIBLE);
-                    relativtsep3.setVisibility(View.VISIBLE);
-                    relativtsep4.setVisibility(View.VISIBLE);
+                    makeSchemaDag(currentDay);
 
                 }
             }
         });
+    }
+
+    public void makeSchemaDag(int dag) {
+
+        final RelativeLayout relativeLayout1 = (RelativeLayout) findViewById(R.id.relativt_schema1);
+        final RelativeLayout relativeLayout2 = (RelativeLayout) findViewById(R.id.relativt_schema2);
+        final RelativeLayout relativeLayout3 = (RelativeLayout) findViewById(R.id.relativt_schema3);
+        final RelativeLayout relativeLayout4 = (RelativeLayout) findViewById(R.id.relativt_schema4);
+        final RelativeLayout relativeLayout5 = (RelativeLayout) findViewById(R.id.relativt_schema5);
+        final LinearLayout vänsterPOOSH = (LinearLayout) findViewById(R.id.vänsterPOOSH);
+        final LinearLayout högerPOOSH = (LinearLayout) findViewById(R.id.högerPOOSH);
+        final LinearLayout schemaVecka = (LinearLayout) findViewById(R.id.schema_vecka);
+        final RelativeLayout relativtsep1 = (RelativeLayout) findViewById(R.id.relativt_sep1);
+        final RelativeLayout relativtsep2 = (RelativeLayout) findViewById(R.id.relativt_sep2);
+        final RelativeLayout relativtsep3 = (RelativeLayout) findViewById(R.id.relativt_sep3);
+        final RelativeLayout relativtsep4 = (RelativeLayout) findViewById(R.id.relativt_sep4);
+
+        LinearLayout.LayoutParams paramsBlank2 = new LinearLayout.LayoutParams(0, LayoutParams.MATCH_PARENT, 0);
+
+        if (dag != 1) {
+            relativeLayout1.setLayoutParams(paramsBlank2);
+        } if (dag != 2) {
+            relativeLayout2.setLayoutParams(paramsBlank2);
+        } if (dag != 3) {
+            relativeLayout3.setLayoutParams(paramsBlank2);
+        } if (dag != 4) {
+            relativeLayout4.setLayoutParams(paramsBlank2);
+        } if (dag != 5) {
+            relativeLayout5.setLayoutParams(paramsBlank2);
+        }
+
+        LinearLayout.LayoutParams paramsExpand2 = new LinearLayout.LayoutParams(0, LayoutParams.MATCH_PARENT, 1.6f);
+        LinearLayout.LayoutParams paramsExpand3 = new LinearLayout.LayoutParams(0, LayoutParams.MATCH_PARENT, 5.4f);
+
+        vänsterPOOSH.setLayoutParams(paramsExpand2);
+        högerPOOSH.setLayoutParams(paramsExpand2);
+        schemaVecka.setLayoutParams(paramsExpand3);
+
+        relativtsep1.setVisibility(View.GONE);
+        relativtsep2.setVisibility(View.GONE);
+        relativtsep3.setVisibility(View.GONE);
+        relativtsep4.setVisibility(View.GONE);
+    }
+
+    public void makeSchemaVecka() {
+
+        final RelativeLayout relativeLayout1 = (RelativeLayout) findViewById(R.id.relativt_schema1);
+        final RelativeLayout relativeLayout2 = (RelativeLayout) findViewById(R.id.relativt_schema2);
+        final RelativeLayout relativeLayout3 = (RelativeLayout) findViewById(R.id.relativt_schema3);
+        final RelativeLayout relativeLayout4 = (RelativeLayout) findViewById(R.id.relativt_schema4);
+        final RelativeLayout relativeLayout5 = (RelativeLayout) findViewById(R.id.relativt_schema5);
+        final LinearLayout vänsterPOOSH = (LinearLayout) findViewById(R.id.vänsterPOOSH);
+        final LinearLayout högerPOOSH = (LinearLayout) findViewById(R.id.högerPOOSH);
+        final LinearLayout schemaVecka = (LinearLayout) findViewById(R.id.schema_vecka);
+        final RelativeLayout relativtsep1 = (RelativeLayout) findViewById(R.id.relativt_sep1);
+        final RelativeLayout relativtsep2 = (RelativeLayout) findViewById(R.id.relativt_sep2);
+        final RelativeLayout relativtsep3 = (RelativeLayout) findViewById(R.id.relativt_sep3);
+        final RelativeLayout relativtsep4 = (RelativeLayout) findViewById(R.id.relativt_sep4);
+
+        LinearLayout.LayoutParams paramsBlank = new LinearLayout.LayoutParams( 0, LayoutParams.MATCH_PARENT, 8);
+        LinearLayout.LayoutParams paramsBlank2 = new LinearLayout.LayoutParams( 0, LayoutParams.MATCH_PARENT, 2);
+        LinearLayout.LayoutParams paramsBlank3 = new LinearLayout.LayoutParams( 0, LayoutParams.MATCH_PARENT, 0);
+        relativeLayout1.setLayoutParams(paramsBlank2);
+        relativeLayout2.setLayoutParams(paramsBlank2);
+        relativeLayout3.setLayoutParams(paramsBlank2);
+        relativeLayout4.setLayoutParams(paramsBlank2);
+        relativeLayout5.setLayoutParams(paramsBlank2);
+
+        vänsterPOOSH.setLayoutParams(paramsBlank3);
+        högerPOOSH.setLayoutParams(paramsBlank3);
+        schemaVecka.setLayoutParams(paramsBlank);
+
+        relativtsep1.setVisibility(View.VISIBLE);
+        relativtsep2.setVisibility(View.VISIBLE);
+        relativtsep3.setVisibility(View.VISIBLE);
+        relativtsep4.setVisibility(View.VISIBLE);
     }
 
     private class htmldownloader extends Thread {
@@ -580,7 +610,7 @@ public class MainActivity extends AppCompatActivity
                 File tempFile = new File(getFilesDir() + "/" + tempFileName);
                 try {
                     //URL url = new URL("http://www.novasoftware.se/ImgGen/schedulegenerator.aspx?format=pdf&schoolid=81530/sv-se&type=0&id=" + fileid  + "&period=&week=" + fileweek + "&mode=0&printer=0&colors=32&head=5&clock=7&foot=1&day=" + Math.round(Math.pow(2,i)) + "&width=400&height=640");
-                    URL url = new URL("http://www.novasoftware.se/ImgGen/schedulegenerator.aspx?format=pdf&schoolid=81660/sv-se&type=0&id=" + "7bB92529B7-0EDF-426A-A636-8D300715ACD3%7d" + "&period=&week=" + fileweek + "&mode=0&printer=0&colors=32&head=5&clock=7&foot=1&day=" + Math.round(Math.pow(2,i)) + "&width=400&height=640");
+                    URL url = new URL("http://www.novasoftware.se/ImgGen/schedulegenerator.aspx?format=pdf&schoolid=81660/sv-se&type=0&id=" + "na16b" + "&period=&week=" + fileweek + "&mode=0&printer=0&colors=32&head=5&clock=7&foot=1&day=" + Math.round(Math.pow(2,i)) + "&width=400&height=640");
                     HttpURLConnection urlConnection = (HttpURLConnection)url.openConnection();
                     urlConnection.connect();
 

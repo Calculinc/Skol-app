@@ -26,34 +26,41 @@
             android:background="@color/colorPrimaryDark"
             android:orientation="horizontal"
             android:gravity="center"
-            android:elevation="3dp">
+            android:elevation="3dp" >
 
             <Switch
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
                 android:id="@+id/the_switch"
                 android:hint="Dag/Vecka"
-                android:textColorHint="@color/colorText" />
+                android:textColorHint="@color/colorText"
+                android:layout_marginLeft="10dp"
+                android:layout_marginStart="10dp"/>
 
             <Spinner
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
                 android:dropDownSelector="@color/colorPrimary"
                 android:background="@drawable/text_box_spinner_alt"
                 android:id="@+id/typ_spinner"
-                android:textColor="@color/colorHint"
+                android:textColor="@color/colorText"
                 android:textColorHint="@color/colorHint"
                 android:popupBackground="@color/colorBackground" />
 
-            <Spinner
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:id="@+id/flexible_spinner"
-                android:textColor="@color/colorHint"
+            <EditText
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1"
+                android:hint=""
+                android:textColor="@color/colorText"
                 android:textColorHint="@color/colorHint"
-                android:popupBackground="@color/colorBackground"
-                android:dropDownSelector="@color/colorPrimary"
-                android:background="@drawable/text_box_spinner_alt" />
+                android:inputType="text"
+                android:id="@+id/schemaIDEditText"
+                android:imeOptions="actionDone"
+                android:maxLength="10"
+                android:cursorVisible="false" />
 
         </LinearLayout>
 
