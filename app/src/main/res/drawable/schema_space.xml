@@ -7,8 +7,9 @@
     <group android:name="foreground">
         <path
             android:strokeColor="@color/colorPrimary"
+            android:fillColor="@color/colorSchemaBackground"
             android:strokeWidth="1"
-            android:pathData="M201,1 L201,11 L191,21 L11,21 L1,11 L1,1" />
+            android:pathData="M201,0 L201,10 L191,20 L11,20 L1,10 L1,0" />
     </group>
 
 </vector>

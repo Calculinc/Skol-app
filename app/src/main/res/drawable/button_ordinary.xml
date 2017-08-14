@@ -1,0 +1,20 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="78dp"
+    android:height="33dp"
+    android:viewportHeight="22"
+    android:viewportWidth="52">
+
+    <group android:name="foreground">
+        <path
+            android:strokeColor="@color/colorPrimary"
+            android:strokeWidth="1"
+            android:pathData="M51,3 L51,11 L41,21 L1,21" />
+    </group>
+    <group android:name="background">
+        <path
+            android:strokeColor="@color/colorPrimary"
+            android:strokeWidth="1"
+            android:pathData="M1,19 L1,11 L11,1 L51,1" />
+    </group>
+
+</vector>

@@ -87,8 +87,74 @@ public class MainActivity extends AppCompatActivity
     boolean DayPref;
     File DayPrefFile;
 
+    String[] mat;
+    String realDeal = "";
     String title;
     String simple;
+    Document doc1 = Jsoup.parse("<html><head>\n" +
+            "\t<meta charset=\"utf-8\">\n" +
+            "\t<title>Skolmaten - Östra Real</title>\n" +
+            "\t<meta name=\"apple-itunes-app\" content=\"app-id=416550379, app-argument=schoolmeal://ostra-real/\">\n" +
+            "\t<link rel=\"apple-touch-icon\" href=\"/apple-touch-icon.png\">\n" +
+            "\t<link rel=\"icon\" href=\"/favicon.ico\">\n" +
+            "\t<link rel=\"mask-icon\" href=\"/img/me/pin-icon.svg\" color=\"#2194F9\"><meta name=\"viewport\" content=\"width=device-width,initial-scale=1.0\"><link rel=\"stylesheet\" type=\"text/css\" href=\"/css/me/base.css?4-0-3\">\n" +
+            "\t\t<link rel=\"stylesheet\" type=\"text/css\" href=\"/css/theme.css?4-0-3\"><link rel=\"stylesheet\" type=\"text/css\" href=\"/css/me/viewer.css?4-0-3\"><script async=\"\" src=\"https://www.google-analytics.com/analytics.js\"></script><script type=\"text/javascript\" src=\"/environment.js?4-0-3\"></script>\n" +
+            "\t\t<script type=\"text/javascript\" src=\"/js/me/base.js?4-0-3\"></script><script type=\"text/javascript\" src=\"/js/me/viewer.js?4-0-3\"></script><script>\n" +
+            "\t\t(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){\n" +
+            "\t\t(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),\n" +
+            "\t\tm=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)\n" +
+            "\t\t})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');ga('create', 'UA-68155234-2', 'auto');\n" +
+            "\t\t\tga('send', 'pageview');</script>\n" +
+            "</head>\n" +
+            "<body><header>\n" +
+            "\t<ul>\n" +
+            "\t\t<li><a href=\"/admin/authorize/\">Logga in</a></li>\n" +
+            "\t</ul>\n" +
+            "</header><main class=\"tiny\"><a href=\"/d/stockholms-stad/\" class=\"back\">Stockholms stad</a>\n" +
+            "\t<h2><img src=\"https://lh3.googleusercontent.com/sNDdvgfu7HQL_I7XxzEXJgA3WHkmqBEvsTaWD25faQrXdTzpSjTbWA42ozKSRuiSg3vRDDdS5r1DVKpMW7k\" alt=\"Östra Real\">Östra Real\n" +
+            "\t</h2>\n" +
+            "\t\n" +
+            "\t<div id=\"menu\" data-id=\"5562614612492288\">\n" +
+            "\t\t<div id=\"weeks\">\n" +
+            "\t\t\t<div class=\"week  \" id=\"week-2017-32\" data-year=\"2017\" data-week-of-year=\"32\">\n" +
+            "\t\t\t\t<h3>Vecka  <span>32</span></h3><span class=\"week-reason missing\">Menyn saknas.<br>Kolla med ditt skolkök.</span></div>\n" +
+            "\t\t<div id=\"week-2017-33\" class=\"week  visible\" data-year=\"2017\" data-week-of-year=\"33\"><h3>Vecka <span>33</span></h3><div class=\"row\"><div class=\"date\"><span class=\"weekday\">Måndag</span><span class=\"weekday min\">Mån</span><span class=\"date\">2017-08-14</span></div><div class=\"items\"><p class=\"missing\">Menyn saknas.</p></div></div><div class=\"row\"><div class=\"date\"><span class=\"weekday\">Tisdag</span><span class=\"weekday min\">Tis</span><span class=\"date\">2017-08-15</span></div><div class=\"items\"><p class=\"missing\">Menyn saknas.</p></div></div><div class=\"row\"><div class=\"date\"><span class=\"weekday\">Onsdag</span><span class=\"weekday min\">Ons</span><span class=\"date\">2017-08-16</span></div><div class=\"items\"><p class=\"missing\">Menyn saknas.</p></div></div><div class=\"row\"><div class=\"date\"><span class=\"weekday\">Torsdag</span><span class=\"weekday min\">Tors</span><span class=\"date\">2017-08-17</span></div><div class=\"items\"><p><span>Spagetti med sojafärssås</span></p><p><span>Spagetti med köttfärssås</span></p></div></div><div class=\"row\"><div class=\"date\"><span class=\"weekday\">Fredag</span><span class=\"weekday min\">Fre</span><span class=\"date\">2017-08-18</span></div><div class=\"items\"><p class=\"missing\">Menyn saknas.</p></div></div></div></div>\n" +
+            "\t\t<div id=\"bulletins\"></div>\n" +
+            "\t</div>\n" +
+            "\t\n" +
+            "\t<div id=\"controls\">\n" +
+            "\t\t<a href=\"javascript:$viewer.fetchNextWeek();\" class=\"next\"><span>Nästa vecka</span></a>\n" +
+            "\t\t<a href=\"javascript:$viewer.fetchPreviousWeek();\" class=\"previous\"><span>Föregående vecka</span></a>\n" +
+            "\t</div>\n" +
+            "\t\n" +
+            "\t<ul class=\"links\">\n" +
+            "\t\t<li>\n" +
+            "\t\t\t<ul>\n" +
+            "\t\t\t\t<li><a href=\"print/\">Skriv ut</a></li>\n" +
+            "\t\t\t\t<li><a href=\"/about/calendar/ostra-real/\">Kalender</a></li>\n" +
+            "\t\t\t\t<li><a href=\"/about/rss/ostra-real/\">RSS flöde</a></li>\n" +
+            "\t\t\t</ul>\n" +
+            "\t\t</li>\n" +
+            "\t</ul></main><footer>\n" +
+            "\t<div><ul>\n" +
+            "\t\t<li><h2>Skolmaten</h2></li>\n" +
+            "\t\t<li><p>v.4-0-3</p></li>\n" +
+            "\t</ul></div>\n" +
+            "\t<div><ul>\n" +
+            "\t\t<li>Om Skolmaten</li>\n" +
+            "\t\t<li><a href=\"http://www.dinskolmat.se/\">Information</a></li>\n" +
+            "\t\t<li><a href=\"/about/cookies/\">Cookies</a></li>\n" +
+            "\t\t<li><a href=\"mailto:info@dinskolmat.se\">Kontakta oss</a></li></ul></div>\n" +
+            "\t<div><ul>\n" +
+            "\t\t<li>Appar</li>\n" +
+            "\t\t<li><a href=\"https://itunes.apple.com/se/app/skolmaten/id416550379\" target=\"_blank\">iOS</a></li>\n" +
+            "\t\t<li><a href=\"https://play.google.com/store/apps/details?id=se.yo.android.skolmat&amp;hl=sv\" target=\"_blank\">Android</a></li>\n" +
+            "\t</ul></div><div><ul>\n" +
+            "\t\t<li>Administration</li>\n" +
+            "\t\t<li><a href=\"/admin/authorize/\">Logga in</a></li>\n" +
+            "\t</ul></div></footer>\n" +
+            "\n" +
+            "</body></html>");
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -147,9 +213,20 @@ public class MainActivity extends AppCompatActivity
     public void loginSubmit (View view) {
         final EditText personal_id = (EditText) findViewById(R.id.editText);
         final Animation anim_button_click = AnimationUtils.loadAnimation(this, R.anim.anim_button_click);
-        TextView textView = (TextView) findViewById(R.id.test_text);
+        TextView textView1 = (TextView) findViewById(R.id.test_text1);
+        TextView textView2 = (TextView) findViewById(R.id.test_text2);
+        TextView textView3 = (TextView) findViewById(R.id.test_text3);
+        TextView textView4 = (TextView) findViewById(R.id.test_text4);
+        TextView textView5 = (TextView) findViewById(R.id.test_text5);
 
-        textView.setText(title);
+        mat = realDeal.split("/maq1/");
+
+
+        textView1.setText(mat[1].substring(11));
+        textView2.setText(mat[2].substring(11));
+        textView3.setText(mat[3].substring(11));
+        textView4.setText(mat[4].substring(11));
+        textView5.setText(mat[5].substring(11));
 
         view.startAnimation(anim_button_click);
 
@@ -234,7 +311,6 @@ public class MainActivity extends AppCompatActivity
             toolbar.setTitle(R.string.Tab_3);
             vf.setDisplayedChild(2);
             drawer.closeDrawer(GravityCompat.START);
-            ggfunktion();
             htmldownloader test = new htmldownloader();
             test.start();
 
@@ -416,28 +492,6 @@ public class MainActivity extends AppCompatActivity
         });
     }
 
-    public void drawing()  {
-
-        Paint paint = new Paint();
-        paint.setAntiAlias(true);
-        Paint plebpaint = new Paint();
-        plebpaint.setColor(Color.parseColor("#ffffff"));
-        plebpaint.setStyle(Paint.Style.STROKE);
-        paint.setColor(Color.parseColor("#61b0ae"));
-        TextPaint textpaint = new TextPaint();
-        textpaint.setColor(Color.parseColor("#ffffff"));
-        textpaint.setAntiAlias(true);
-
-        Bitmap bg = Bitmap.createBitmap(480,800, Bitmap.Config.ARGB_8888);
-        Canvas canvas = new Canvas(bg);
-        canvas.drawRect(12,120,468,250,paint);
-        canvas.drawRect(17,125,463,245,plebpaint);
-        textpaint.setTextSize(32);
-        canvas.drawText("( ͡° ͜ʖ ͡°)",120,200,textpaint);
-        ImageView föfan = (ImageView) findViewById(R.id.föfan);
-        föfan.setImageBitmap(bg);
-    }
-
     public void theSwtich() {
 
         final String DayPrefFileName = "DayPref.txt";
@@ -487,6 +541,11 @@ public class MainActivity extends AppCompatActivity
         final RelativeLayout relativtsep2 = (RelativeLayout) findViewById(R.id.relativt_sep2);
         final RelativeLayout relativtsep3 = (RelativeLayout) findViewById(R.id.relativt_sep3);
         final RelativeLayout relativtsep4 = (RelativeLayout) findViewById(R.id.relativt_sep4);
+        final LinearLayout schemaVeckaLayout = (LinearLayout) findViewById(R.id.schema_vecka_layout);
+        final LinearLayout schemaDagLayout = (LinearLayout) findViewById(R.id.schema_dag_layout);
+        final TextView dagensDag = (TextView) findViewById(R.id.dag_text);
+
+        String[] veckodagar = {"Calculinc", "Måndag", "Tisdag", "Onsdag", "Torsdag", "Fredag", "Lördag", "Söndag"};
 
         LinearLayout.LayoutParams paramsBlank2 = new LinearLayout.LayoutParams(0, LayoutParams.MATCH_PARENT, 0);
 
@@ -513,6 +572,11 @@ public class MainActivity extends AppCompatActivity
         relativtsep2.setVisibility(View.GONE);
         relativtsep3.setVisibility(View.GONE);
         relativtsep4.setVisibility(View.GONE);
+
+        schemaVeckaLayout.setVisibility(View.GONE);
+        schemaDagLayout.setVisibility(View.VISIBLE);
+
+        dagensDag.setText(veckodagar[dag]);
     }
 
     public void makeSchemaVecka() {
@@ -529,6 +593,8 @@ public class MainActivity extends AppCompatActivity
         final RelativeLayout relativtsep2 = (RelativeLayout) findViewById(R.id.relativt_sep2);
         final RelativeLayout relativtsep3 = (RelativeLayout) findViewById(R.id.relativt_sep3);
         final RelativeLayout relativtsep4 = (RelativeLayout) findViewById(R.id.relativt_sep4);
+        final LinearLayout schemaVeckaLayout = (LinearLayout) findViewById(R.id.schema_vecka_layout);
+        final LinearLayout schemaDagLayout = (LinearLayout) findViewById(R.id.schema_dag_layout);
 
         LinearLayout.LayoutParams paramsBlank = new LinearLayout.LayoutParams( 0, LayoutParams.MATCH_PARENT, 8);
         LinearLayout.LayoutParams paramsBlank2 = new LinearLayout.LayoutParams( 0, LayoutParams.MATCH_PARENT, 2);
@@ -547,49 +613,59 @@ public class MainActivity extends AppCompatActivity
         relativtsep2.setVisibility(View.VISIBLE);
         relativtsep3.setVisibility(View.VISIBLE);
         relativtsep4.setVisibility(View.VISIBLE);
+
+        schemaDagLayout.setVisibility(View.GONE);
+        schemaVeckaLayout.setVisibility(View.VISIBLE);
     }
 
     private class htmldownloader extends Thread {
         public void run() {
             Document doc;
-            Document test;
+            String stringtemp;
+            String[] veckodagar = {"MåndagMån", "TisdagTis", "OnsdagOns", "TorsdagTors", "FredagFre"};
+            String[] stringarraytemp;
+            int size;
+
             try {
                 doc = Jsoup.connect("https://skolmaten.se/norra-real/").get();
-                title = doc.select("div").text();
+                title = doc1.select("div[class=row]").text();
+                size = doc1.select("div[class=row]").size();
+                stringtemp = title;
+                int status = 0;
+
+                for (int i = 0; i < 5 ; i++) {
+
+                    stringarraytemp = stringtemp.split(veckodagar[i]);
+
+                    if (stringarraytemp.length == 2 ) {
+
+                        status ++;
+
+                        if ( status == size ) {
+
+                            realDeal = realDeal + "/maq1/" + stringarraytemp[0] + "/maq1/" + stringarraytemp[1];
+                        } else {
+
+                            if ( status == 1 ) {
+
+                                stringtemp = stringarraytemp[1];
+                            } else {
+
+                                realDeal = realDeal + "/maq1/" + stringarraytemp[0];
+                                stringtemp = stringarraytemp[1];
+                            }
+
+                        }
+
+                    }
+
+                }
 
             } catch (IOException e) {
                 e.printStackTrace();
             }
         }
     };
-
-    public void ggfunktion() {
-
-        Button button = (Button) findViewById(R.id.plebknapp);
-        final LinearLayout linearlayout = (LinearLayout) findViewById(R.id.linearlayout);
-        final TextView ggboistext = (TextView) findViewById(R.id.gg_bois);
-        final ImageView hexa = (ImageView) findViewById(R.id.hexagon);
-        final TextView clock = (TextView) findViewById(R.id.klockan);
-        final LinearLayout midbox = (LinearLayout) findViewById(R.id.mid_box);
-        final ImageView hexa2 = (ImageView) findViewById(R.id.hexagon2);
-
-        button.setOnClickListener(new View.OnClickListener() {
-            int status = 1;
-            int test = 1;
-            @Override
-            public void onClick(View view) {
-
-                ggboistext.setText("GG BOIS");
-                linearlayout.setBackgroundResource(rainbowcolor);
-                hexa.setColorFilter(Color.parseColor("#16aba0"), PorterDuff.Mode.SRC_ATOP);
-                hexa2.setColorFilter(Color.parseColor("#16aba0"), PorterDuff.Mode.SRC_ATOP);
-                clock.setText(String.valueOf(GregorianCalendar.getInstance().get(Calendar.HOUR_OF_DAY)) + ":" + String.valueOf(GregorianCalendar.getInstance().get(Calendar.MINUTE)));
-                midbox.setBackgroundColor(Color.parseColor("#16aba0"));
-                midbox.getLayoutParams().height = ((int) getResources().getDimension(R.dimen.dp_unit))*180;
-                midbox.requestLayout();
-            }
-        });
-    }
 
     public void fidget_spinner(){
 
