@@ -75,7 +75,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:id="@+id/schema_dag_layout"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:visibility="gone">
 
                 <TextView
                     android:layout_width="match_parent"
@@ -95,6 +96,7 @@
                 android:background="@color/colorBackground"
                 android:orientation="horizontal"
                 android:id="@+id/schema_vecka_layout"
+                android:animateLayoutChanges="true"
                 android:baselineAligned="false">
 
                 <LinearLayout

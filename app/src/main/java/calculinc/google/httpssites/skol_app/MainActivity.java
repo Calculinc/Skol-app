@@ -47,8 +47,11 @@ import com.itextpdf.text.pdf.PdfReader;
 import com.itextpdf.text.pdf.parser.Line;
 import com.itextpdf.text.pdf.parser.PdfTextExtractor;
 
+import org.jsoup.Connection;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.nodes.FormElement;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -86,6 +89,8 @@ public class MainActivity extends AppCompatActivity
     boolean downloadSuccess;
     boolean DayPref;
     File DayPrefFile;
+
+    Document docpsdgh = Jsoup.parse("ll");
 
     String[] mat;
     String realDeal = "";
@@ -319,6 +324,8 @@ public class MainActivity extends AppCompatActivity
             toolbar.setTitle(R.string.Tab_4);
             vf.setDisplayedChild(3);
             drawer.closeDrawer(GravityCompat.START);
+            schemaArrayFixer lloldawd = new schemaArrayFixer();
+            lloldawd.start();
 
         } else if (id == R.id.nav_login) {
 
@@ -616,6 +623,17 @@ public class MainActivity extends AppCompatActivity
 
         schemaDagLayout.setVisibility(View.GONE);
         schemaVeckaLayout.setVisibility(View.VISIBLE);
+    }
+
+    private class schemaArrayFixer extends Thread{
+        public void run() {
+            try {
+                Document doc = Jsoup.connect("http://192.168.1.70").get();
+                String llol = doc.toString();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
     }
 
     private class htmldownloader extends Thread {
