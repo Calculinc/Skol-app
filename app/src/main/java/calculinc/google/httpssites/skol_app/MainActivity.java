@@ -11,6 +11,12 @@ import android.os.Bundle;
 import android.os.Environment;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.design.widget.TabLayout;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.view.PagerAdapter;
+import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout.LayoutParams;
 import android.support.v7.view.menu.MenuView;
 import android.text.Html;
@@ -210,6 +216,43 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
+    public class FixedTabsPagerAdapter extends FragmentPagerAdapter {
+
+        public FixedTabsPagerAdapter(FragmentManager fm) {
+            super(fm);
+        }
+
+        @Override
+        public int getCount() {
+            return 2;
+        }
+
+        @Override
+        public Fragment getItem(int position) {
+            switch(position) {
+
+                case 0:
+                    return new FirstFragment();
+                case 1:
+                    return new SecondFragment();
+                default:
+                    return null;
+            }
+        }
+
+    }
+
+
+    public void viewFuckingPager() {
+
+        ViewPager pager = (ViewPager) findViewById(R.id.view_pager);
+        PagerAdapter pagerAdapter = new FixedTabsPagerAdapter(getSupportFragmentManager());
+        pager.setAdapter(pagerAdapter);
+
+        TabLayout tabLayout = (TabLayout) findViewById(R.id.tab_layout);
+        tabLayout.setupWithViewPager(pager);
+    }
+
     public void loginSubmit (View view) {
         final EditText personal_id = (EditText) findViewById(R.id.editText);
         final Animation anim_button_click = AnimationUtils.loadAnimation(this, R.anim.anim_button_click);
@@ -313,6 +356,7 @@ public class MainActivity extends AppCompatActivity
             drawer.closeDrawer(GravityCompat.START);
             htmldownloader test = new htmldownloader();
             test.start();
+            viewFuckingPager();
 
         } else if (id == R.id.nav_laxor) {
 
