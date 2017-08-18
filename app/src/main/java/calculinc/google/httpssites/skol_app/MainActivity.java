@@ -1,16 +1,7 @@
 package calculinc.google.httpssites.skol_app;
 
-import android.content.ClipData;
-import android.graphics.Bitmap;
-import android.graphics.Canvas;
 import android.graphics.Color;
-import android.graphics.Paint;
-import android.graphics.PorterDuff;
-import android.os.AsyncTask;
 import android.os.Bundle;
-import android.os.Environment;
-import android.support.design.widget.FloatingActionButton;
-import android.support.design.widget.Snackbar;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
@@ -18,11 +9,6 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout.LayoutParams;
-import android.support.v7.view.menu.MenuView;
-import android.text.Html;
-import android.text.TextPaint;
-import android.util.Log;
-import android.view.Gravity;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -32,37 +18,27 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.ViewDebug;
-import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ArrayAdapter;
-import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.Switch;
 import android.widget.TextView;
-import android.widget.Toast;
 import android.widget.ViewFlipper;
 
 import com.itextpdf.text.pdf.PdfReader;
-import com.itextpdf.text.pdf.parser.Line;
 import com.itextpdf.text.pdf.parser.PdfTextExtractor;
 
-import org.jsoup.Connection;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
-import org.jsoup.nodes.Element;
-import org.jsoup.nodes.FormElement;
 
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -72,10 +48,13 @@ import java.net.URL;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 
-import static calculinc.google.httpssites.skol_app.R.drawable.hexagon_bottom;
-import static calculinc.google.httpssites.skol_app.R.drawable.hexagon_top;
-import static calculinc.google.httpssites.skol_app.R.drawable.rainbowcolor;
-import static calculinc.google.httpssites.skol_app.R.drawable.ya_blew_it;
+import calculinc.google.httpssites.skol_app.Matsedel.FirstFragment;
+import calculinc.google.httpssites.skol_app.Matsedel.SecondFragment;
+import calculinc.google.httpssites.skol_app.days.Friday;
+import calculinc.google.httpssites.skol_app.days.Monday;
+import calculinc.google.httpssites.skol_app.days.Thursday;
+import calculinc.google.httpssites.skol_app.days.Tuesday;
+import calculinc.google.httpssites.skol_app.days.Wednesday;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -247,6 +226,48 @@ public class MainActivity extends AppCompatActivity
 
     }
 
+    public class FixedDayPagerAdapter extends FragmentPagerAdapter {
+
+        public FixedDayPagerAdapter(FragmentManager fm) {
+            super(fm);
+        }
+
+        @Override
+        public int getCount() {
+            return 5;
+        }
+
+        @Override
+        public Fragment getItem(int position) {
+            switch(position) {
+
+                case 0:
+                    return new Monday();
+                case 1:
+                    return new Tuesday();
+                case 2:
+                    return new Wednesday();
+                case 3:
+                    return new Thursday();
+                case 4:
+                    return new Friday();
+                default:
+                    return null;
+            }
+        }
+
+    }
+
+    public void viewPager() {
+
+        ViewPager pager = (ViewPager) findViewById(R.id.view_pager2);
+        PagerAdapter pagerAdapter = new FixedDayPagerAdapter(getSupportFragmentManager());
+        pager.setAdapter(pagerAdapter);
+        pager.setCurrentItem( currentDay -1 );
+
+        TabLayout tabLayout = (TabLayout) findViewById(R.id.tab_layout2);
+        tabLayout.setupWithViewPager(pager);
+    }
 
     public void viewFuckingPager() {
 
@@ -353,6 +374,7 @@ public class MainActivity extends AppCompatActivity
             öpö.start();
             theSwtich();
             fidget_spinner();
+            viewPager();
 
         } else if (id == R.id.nav_matsedel) {
 
@@ -552,7 +574,7 @@ public class MainActivity extends AppCompatActivity
         Switch the_switch = (Switch) findViewById(R.id.the_switch);
         the_switch.setChecked(!DayPref);
         if (DayPref) {
-            makeSchemaDag(currentDay);
+            makeSchemaDag();
         }
 
         the_switch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
@@ -563,7 +585,7 @@ public class MainActivity extends AppCompatActivity
                     DayPref = false;
                     DayPrefFile.delete();
                 } else {
-                    makeSchemaDag(currentDay);
+                    makeSchemaDag();
                     DayPref = true;
                     FileOutputStream outputStream;
                     try {
@@ -578,92 +600,20 @@ public class MainActivity extends AppCompatActivity
         });
     }
 
-    public void makeSchemaDag(int dag) {
+    public void makeSchemaDag() {
 
-        final RelativeLayout relativeLayout1 = (RelativeLayout) findViewById(R.id.relativt_schema1);
-        final RelativeLayout relativeLayout2 = (RelativeLayout) findViewById(R.id.relativt_schema2);
-        final RelativeLayout relativeLayout3 = (RelativeLayout) findViewById(R.id.relativt_schema3);
-        final RelativeLayout relativeLayout4 = (RelativeLayout) findViewById(R.id.relativt_schema4);
-        final RelativeLayout relativeLayout5 = (RelativeLayout) findViewById(R.id.relativt_schema5);
-        final LinearLayout vänsterPOOSH = (LinearLayout) findViewById(R.id.vänsterPOOSH);
-        final LinearLayout högerPOOSH = (LinearLayout) findViewById(R.id.högerPOOSH);
-        final LinearLayout schemaVecka = (LinearLayout) findViewById(R.id.schema_vecka);
-        final RelativeLayout relativtsep1 = (RelativeLayout) findViewById(R.id.relativt_sep1);
-        final RelativeLayout relativtsep2 = (RelativeLayout) findViewById(R.id.relativt_sep2);
-        final RelativeLayout relativtsep3 = (RelativeLayout) findViewById(R.id.relativt_sep3);
-        final RelativeLayout relativtsep4 = (RelativeLayout) findViewById(R.id.relativt_sep4);
         final LinearLayout schemaVeckaLayout = (LinearLayout) findViewById(R.id.schema_vecka_layout);
         final LinearLayout schemaDagLayout = (LinearLayout) findViewById(R.id.schema_dag_layout);
-        final TextView dagensDag = (TextView) findViewById(R.id.dag_text);
-
-        String[] veckodagar = {"Calculinc", "Måndag", "Tisdag", "Onsdag", "Torsdag", "Fredag", "Lördag", "Söndag"};
-
-        LinearLayout.LayoutParams paramsBlank2 = new LinearLayout.LayoutParams(0, LayoutParams.MATCH_PARENT, 0);
-
-        if (dag != 1) {
-            relativeLayout1.setLayoutParams(paramsBlank2);
-        } if (dag != 2) {
-            relativeLayout2.setLayoutParams(paramsBlank2);
-        } if (dag != 3) {
-            relativeLayout3.setLayoutParams(paramsBlank2);
-        } if (dag != 4) {
-            relativeLayout4.setLayoutParams(paramsBlank2);
-        } if (dag != 5) {
-            relativeLayout5.setLayoutParams(paramsBlank2);
-        }
-
-        LinearLayout.LayoutParams paramsExpand2 = new LinearLayout.LayoutParams(0, LayoutParams.MATCH_PARENT, 1.6f);
-        LinearLayout.LayoutParams paramsExpand3 = new LinearLayout.LayoutParams(0, LayoutParams.MATCH_PARENT, 5.4f);
-
-        vänsterPOOSH.setLayoutParams(paramsExpand2);
-        högerPOOSH.setLayoutParams(paramsExpand2);
-        schemaVecka.setLayoutParams(paramsExpand3);
-
-        relativtsep1.setVisibility(View.GONE);
-        relativtsep2.setVisibility(View.GONE);
-        relativtsep3.setVisibility(View.GONE);
-        relativtsep4.setVisibility(View.GONE);
 
         schemaVeckaLayout.setVisibility(View.GONE);
         schemaDagLayout.setVisibility(View.VISIBLE);
 
-        dagensDag.setText(veckodagar[dag]);
     }
 
     public void makeSchemaVecka() {
 
-        final RelativeLayout relativeLayout1 = (RelativeLayout) findViewById(R.id.relativt_schema1);
-        final RelativeLayout relativeLayout2 = (RelativeLayout) findViewById(R.id.relativt_schema2);
-        final RelativeLayout relativeLayout3 = (RelativeLayout) findViewById(R.id.relativt_schema3);
-        final RelativeLayout relativeLayout4 = (RelativeLayout) findViewById(R.id.relativt_schema4);
-        final RelativeLayout relativeLayout5 = (RelativeLayout) findViewById(R.id.relativt_schema5);
-        final LinearLayout vänsterPOOSH = (LinearLayout) findViewById(R.id.vänsterPOOSH);
-        final LinearLayout högerPOOSH = (LinearLayout) findViewById(R.id.högerPOOSH);
-        final LinearLayout schemaVecka = (LinearLayout) findViewById(R.id.schema_vecka);
-        final RelativeLayout relativtsep1 = (RelativeLayout) findViewById(R.id.relativt_sep1);
-        final RelativeLayout relativtsep2 = (RelativeLayout) findViewById(R.id.relativt_sep2);
-        final RelativeLayout relativtsep3 = (RelativeLayout) findViewById(R.id.relativt_sep3);
-        final RelativeLayout relativtsep4 = (RelativeLayout) findViewById(R.id.relativt_sep4);
         final LinearLayout schemaVeckaLayout = (LinearLayout) findViewById(R.id.schema_vecka_layout);
         final LinearLayout schemaDagLayout = (LinearLayout) findViewById(R.id.schema_dag_layout);
-
-        LinearLayout.LayoutParams paramsBlank = new LinearLayout.LayoutParams( 0, LayoutParams.MATCH_PARENT, 8);
-        LinearLayout.LayoutParams paramsBlank2 = new LinearLayout.LayoutParams( 0, LayoutParams.MATCH_PARENT, 2);
-        LinearLayout.LayoutParams paramsBlank3 = new LinearLayout.LayoutParams( 0, LayoutParams.MATCH_PARENT, 0);
-        relativeLayout1.setLayoutParams(paramsBlank2);
-        relativeLayout2.setLayoutParams(paramsBlank2);
-        relativeLayout3.setLayoutParams(paramsBlank2);
-        relativeLayout4.setLayoutParams(paramsBlank2);
-        relativeLayout5.setLayoutParams(paramsBlank2);
-
-        vänsterPOOSH.setLayoutParams(paramsBlank3);
-        högerPOOSH.setLayoutParams(paramsBlank3);
-        schemaVecka.setLayoutParams(paramsBlank);
-
-        relativtsep1.setVisibility(View.VISIBLE);
-        relativtsep2.setVisibility(View.VISIBLE);
-        relativtsep3.setVisibility(View.VISIBLE);
-        relativtsep4.setVisibility(View.VISIBLE);
 
         schemaDagLayout.setVisibility(View.GONE);
         schemaVeckaLayout.setVisibility(View.VISIBLE);

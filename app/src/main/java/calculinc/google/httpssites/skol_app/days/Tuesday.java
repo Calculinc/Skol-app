@@ -1,21 +1,23 @@
-package calculinc.google.httpssites.skol_app;
+package calculinc.google.httpssites.skol_app.days;
 
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.TextView;
+
+import calculinc.google.httpssites.skol_app.Matsedel.FirstFragment;
+import calculinc.google.httpssites.skol_app.R;
 
 /**
  * Created by Ruboss on 8/15/2017.
  */
 
-public class FirstFragment extends Fragment {
+public class Tuesday extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.first_frag, container, false);
+        View v = inflater.inflate(R.layout.tuesday_frag, container, false);
 
 
         return v;
