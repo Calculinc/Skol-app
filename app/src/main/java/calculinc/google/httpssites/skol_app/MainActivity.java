@@ -282,20 +282,8 @@ public class MainActivity extends AppCompatActivity
     public void loginSubmit (View view) {
         final EditText personal_id = (EditText) findViewById(R.id.editText);
         final Animation anim_button_click = AnimationUtils.loadAnimation(this, R.anim.anim_button_click);
-        TextView textView1 = (TextView) findViewById(R.id.test_text1);
-        TextView textView2 = (TextView) findViewById(R.id.test_text2);
-        TextView textView3 = (TextView) findViewById(R.id.test_text3);
-        TextView textView4 = (TextView) findViewById(R.id.test_text4);
-        TextView textView5 = (TextView) findViewById(R.id.test_text5);
 
-        mat = realDeal.split("/maq1/");
-
-
-        textView1.setText(mat[1].substring(11));
-        textView2.setText(mat[2].substring(11));
-        textView3.setText(mat[3].substring(11));
-        textView4.setText(mat[4].substring(11));
-        textView5.setText(mat[5].substring(11));
+        matsedel();
 
         view.startAnimation(anim_button_click);
 
@@ -640,44 +628,82 @@ public class MainActivity extends AppCompatActivity
 
             try {
                 doc = Jsoup.connect("https://skolmaten.se/norra-real/").get();
-                title = doc1.select("div[class=row]").text();
-                size = doc1.select("div[class=row]").size();
+                title = doc.select("div[class=row]").text();
+                size = doc.select("div[class=row]").size();
                 stringtemp = title;
                 int status = 0;
 
-                for (int i = 0; i < 5 ; i++) {
+                if (size > 0){
 
-                    stringarraytemp = stringtemp.split(veckodagar[i]);
+                    for (int i = 0; i < 5 ; i++) {
 
-                    if (stringarraytemp.length == 2 ) {
+                        stringarraytemp = stringtemp.split(veckodagar[i]);
 
-                        status ++;
+                        if (stringarraytemp.length == 2 ) {
 
-                        if ( status == size ) {
+                            status ++;
 
-                            realDeal = realDeal + "/maq1/" + stringarraytemp[0] + "/maq1/" + stringarraytemp[1];
-                        } else {
+                            if ( status == size ) {
 
-                            if ( status == 1 ) {
-
-                                stringtemp = stringarraytemp[1];
+                                realDeal = realDeal + "/maq1/" + stringarraytemp[0] + "/maq1/" + stringarraytemp[1];
                             } else {
 
-                                realDeal = realDeal + "/maq1/" + stringarraytemp[0];
-                                stringtemp = stringarraytemp[1];
+                                if ( status == 1 ) {
+
+                                    stringtemp = stringarraytemp[1];
+                                } else {
+
+                                    realDeal = realDeal + "/maq1/" + stringarraytemp[0];
+                                    stringtemp = stringarraytemp[1];
+                                }
+
                             }
 
                         }
 
                     }
 
+                } else {
+
+                    realDeal = "/maq1/Meny saknas/maq1/Meny saknas/maq1/Meny saknas/maq1/Meny saknas/maq1/Meny saknas/maq1/";
                 }
+
 
             } catch (IOException e) {
                 e.printStackTrace();
             }
+
         }
+
     };
+
+
+    public void matsedel() {
+
+        TextView textView1 = (TextView) findViewById(R.id.test_text1);
+        TextView textView2 = (TextView) findViewById(R.id.test_text2);
+        TextView textView3 = (TextView) findViewById(R.id.test_text3);
+        TextView textView4 = (TextView) findViewById(R.id.test_text4);
+        TextView textView5 = (TextView) findViewById(R.id.test_text5);
+
+        mat = realDeal.split("/maq1/");
+
+        if (mat.length == 6) {
+
+            textView1.setText(mat[1]);
+            textView2.setText(mat[2]);
+            textView3.setText(mat[3]);
+            textView4.setText(mat[4]);
+            textView5.setText(mat[5]);
+        } else {
+
+            textView1.setText(mat[1].substring(11));
+            textView2.setText(mat[2].substring(11));
+            textView3.setText(mat[3].substring(11));
+            textView4.setText(mat[4].substring(11));
+            textView5.setText(mat[5].substring(11));
+        }
+    }
 
     public void fidget_spinner(){
 

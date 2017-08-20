@@ -1,0 +1,20 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="303dp"
+    android:height="123dp"
+    android:viewportHeight="82"
+    android:viewportWidth="202">
+
+    <group android:name="foreground">
+        <path
+            android:strokeColor="@color/colorPrimary"
+            android:strokeWidth="1"
+            android:fillColor="@color/colorSchemaBackground"
+            android:pathData="M201,61 L201,81 L21,81  L1,61 L1,1 L181,1 L201,21 Z" />
+    </group>
+    <group android:name="background">
+        <path
+            android:fillColor="@color/colorBackground"
+            android:pathData="M86,31 L81,36 L81,46 L86,51 L116,51 L121,46 L121,36 L116,31 Z" />
+    </group>
+
+</vector>
