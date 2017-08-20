@@ -11,10 +11,5 @@
             android:fillColor="@color/colorSchemaBackground"
             android:pathData="M201,61 L201,81 L21,81  L1,61 L1,1 L181,1 L201,21 Z" />
     </group>
-    <group android:name="background">
-        <path
-            android:fillColor="@color/colorBackground"
-            android:pathData="M86,41 L81,46 L81,56 L86,61 L116,61 L121,56 L121,46 L116,41 Z" />
-    </group>
 
 </vector>

@@ -20,6 +20,96 @@
             android:layout_height="200dp"
             android:orientation="vertical" >
 
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="54dp">
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="146dp"
+                android:orientation="vertical"
+                android:layout_gravity="center_horizontal">
+
+                <RelativeLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:gravity="center"
+                    android:clipChildren="false">
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:gravity="center">
+
+                        <TextView
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:gravity="center"
+                            android:background="@drawable/big_hexagon"
+                            android:text="C11"
+                            android:paddingTop="30dp"
+                            android:textColor="#ffffff"/>
+
+                    </LinearLayout>
+
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="123dp"
+                        android:orientation="vertical"
+                        android:gravity="center"
+                        android:layout_marginTop="10dp">
+
+                        <LinearLayout
+                            android:layout_width="303dp"
+                            android:layout_height="20dp"
+                            android:orientation="vertical">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="20dp"
+                                android:paddingLeft="8dp"
+                                android:text="08:20"
+                                android:textColor="#ffffff"/>
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="303dp"
+                            android:layout_height="40dp"
+                            android:orientation="vertical"
+                            android:gravity="center">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="20dp"
+                                android:text="ENGENG07 JHA"
+                                android:textSize="18sp"
+                                android:textColor="#ffffff"/>
+
+                        </LinearLayout>
+
+                        <LinearLayout
+                            android:layout_width="303dp"
+                            android:layout_height="60dp"
+                            android:orientation="vertical"
+                            android:gravity="bottom|right">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="20dp"
+                                android:text="09:35"
+                                android:paddingRight="8dp"
+                                android:textColor="#ffffff"/>
+
+                        </LinearLayout>
+
+                    </LinearLayout>
+
+                </RelativeLayout>
+
+            </LinearLayout>
 
         </LinearLayout>
 
@@ -52,18 +142,16 @@
                 android:textColorHint="@color/colorHint"
                 android:popupBackground="@color/colorBackground" />
 
-            <EditText
+            <Spinner
                 android:layout_width="0dp"
-                android:layout_height="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:hint=""
+                android:dropDownSelector="@color/colorPrimary"
+                android:background="@drawable/text_box_spinner_alt"
+                android:id="@+id/typ_spinner2"
                 android:textColor="@color/colorText"
                 android:textColorHint="@color/colorHint"
-                android:inputType="text"
-                android:id="@+id/schemaIDEditText"
-                android:imeOptions="actionDone"
-                android:maxLength="10"
-                android:cursorVisible="false" />
+                android:popupBackground="@color/colorBackground" />
 
         </LinearLayout>
 

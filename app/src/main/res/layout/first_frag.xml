@@ -22,7 +22,7 @@
             android:textColor="#ffffff"
             android:textSize="14sp"
             android:gravity="center"
-            android:background="@drawable/big_hexagon" />
+            android:background="@drawable/big_matsedelhexagon" />
 
     </LinearLayout>
 
