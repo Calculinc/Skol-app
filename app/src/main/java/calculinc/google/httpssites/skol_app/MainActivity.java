@@ -502,6 +502,7 @@ public class MainActivity extends AppCompatActivity
                                 }
                                 if (status == 3) {
                                     //lite mer matte
+                                    status = 0;
                                     String[] time = desert[j].split(":");
                                     sluttid = Double.parseDouble(time[0]) - 8 + Double.parseDouble(time[1]) / 60;
 
@@ -536,7 +537,6 @@ public class MainActivity extends AppCompatActivity
                                     linear.addView(blank2);
 
                                     schema_space.addView(linear);
-                                    status = 0;
                                 }
                             } catch (NumberFormatException e) {
                                 e.printStackTrace();
