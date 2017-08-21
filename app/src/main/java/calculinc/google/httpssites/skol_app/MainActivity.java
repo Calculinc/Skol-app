@@ -452,7 +452,22 @@ public class MainActivity extends AppCompatActivity
 
                 if (schemaFile.exists()) {
                     String[] druvor = sb.toString().split("%day%");
-                    RelativeLayout schema_space = (RelativeLayout) findViewById(R.id.relativt_schema1);
+
+                    final int[] relWeekIDS = {
+                            R.id.relativt_schema1,
+                            R.id.relativt_schema2,
+                            R.id.relativt_schema3,
+                            R.id.relativt_schema4,
+                            R.id.relativt_schema5
+                    };
+                    final int[] relDayIDS = {
+                            R.id.relative_layout_monday,
+                            R.id.relativt_schema2,
+                            R.id.relativt_schema3,
+                            R.id.relativt_schema4,
+                            R.id.relativt_schema5
+                    };
+
                     for (int i = 0; i <= 4; i++) {
                         String[] desert;
                         if (druvor.length > 4){
@@ -465,24 +480,10 @@ public class MainActivity extends AppCompatActivity
                             desert = druvor;
                         }
 
-                        if (i == 0){
-                            schema_space = (RelativeLayout) findViewById(R.id.relativt_schema1);
-                        }
-                        if (i == 1){
-                            schema_space = (RelativeLayout) findViewById(R.id.relativt_schema2);
-                        }
-                        if (i == 2){
-                            schema_space = (RelativeLayout) findViewById(R.id.relativt_schema3);
-                        }
-                        if (i == 3){
-                            schema_space = (RelativeLayout) findViewById(R.id.relativt_schema4);
-                        }
-                        if (i == 4){
-                            schema_space = (RelativeLayout) findViewById(R.id.relativt_schema5);
-                        }
+                        RelativeLayout schema_space = (RelativeLayout) findViewById(relWeekIDS[i]);
+                        RelativeLayout schema_dayce = (RelativeLayout) findViewById(relDayIDS[i]);
 
                         int status = 0;
-
                         double starttid = 0;
                         double sluttid;
                         String öpö = "ö";
@@ -507,7 +508,7 @@ public class MainActivity extends AppCompatActivity
                                     sluttid = Double.parseDouble(time[0]) - 8 + Double.parseDouble(time[1]) / 60;
 
                                     LinearLayout linear = new LinearLayout(getBaseContext());
-                                    linear.setWeightSum(11);
+                                    //linear.setWeightSum(11);
                                     LinearLayout.LayoutParams params2 = new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
                                     linear.setOrientation(LinearLayout.VERTICAL);
                                     linear.setLayoutParams(params2);
@@ -537,6 +538,15 @@ public class MainActivity extends AppCompatActivity
                                     linear.addView(blank2);
 
                                     schema_space.addView(linear);
+
+
+
+                                    LinearLayout linearDay = new LinearLayout(getBaseContext());
+                                    linearDay.setOrientation(LinearLayout.VERTICAL);
+                                    linearDay.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, (int)((sluttid - starttid) * 75 * getResources().getDimension(R.dimen.dp_unit))));
+
+                                    TextView dayTop = new TextView(getBaseContext());
+
                                 }
                             } catch (NumberFormatException e) {
                                 e.printStackTrace();
@@ -676,7 +686,6 @@ public class MainActivity extends AppCompatActivity
         }
 
     };
-
 
     public void matsedel() {
 
