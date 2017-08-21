@@ -1,11 +1,17 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#013c06</color>
-    <color name="colorPrimaryDark">#000000</color>
-    <color name="colorAccent">#013c06</color>
+    <color name="colorPrimary">#002147</color>
+    <color name="colorPrimaryDark">#bebebe</color>
+    <color name="colorAccent">#253153</color>
     <color name="colorLight">#ffffff</color>
     <color name="colorBackground">#ffffff</color>
-    <color name="colorText">#013c06</color>
-    <color name="colorHint">#ff6638</color>
-    <color name="colorSchemaBackground">#ceffd2</color>
+    <color name="colorText">#1c4783</color>
+    <color name="colorTextAlt">#707070</color>
+    <color name="colorHint">#425c8c</color>
+    <color name="colorRect">#d9d9d9</color>
+    <color name="colorSchemaBackground">#d9d9d9</color>
+    <color name="colorDay">#6a728b</color>
+    <color name="colorFade1">#002147</color>
+    <color name="colorFade2">#253153</color>
+    <color name="colorFade3">#6a728b</color>
 </resources>
