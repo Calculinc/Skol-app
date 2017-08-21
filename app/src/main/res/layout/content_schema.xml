@@ -50,7 +50,7 @@
                             android:background="@drawable/big_hexagon"
                             android:text="C11"
                             android:paddingTop="30dp"
-                            android:textColor="#ffffff"/>
+                            android:textColor="@color/colorText"/>
 
                     </LinearLayout>
 
@@ -71,7 +71,7 @@
                                 android:layout_height="20dp"
                                 android:paddingLeft="8dp"
                                 android:text="08:20"
-                                android:textColor="#ffffff"/>
+                                android:textColor="@color/colorText"/>
 
                         </LinearLayout>
 
@@ -86,7 +86,7 @@
                                 android:layout_height="20dp"
                                 android:text="ENGENG07 JHA"
                                 android:textSize="18sp"
-                                android:textColor="#ffffff"/>
+                                android:textColor="@color/colorText"/>
 
                         </LinearLayout>
 
@@ -101,7 +101,7 @@
                                 android:layout_height="20dp"
                                 android:text="09:35"
                                 android:paddingRight="8dp"
-                                android:textColor="#ffffff"/>
+                                android:textColor="@color/colorText"/>
 
                         </LinearLayout>
 

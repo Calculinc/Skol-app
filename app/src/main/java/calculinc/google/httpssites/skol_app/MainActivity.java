@@ -9,6 +9,7 @@ import android.support.v4.app.FragmentPagerAdapter;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout.LayoutParams;
+import android.view.Gravity;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -18,6 +19,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ArrayAdapter;
@@ -484,16 +486,19 @@ public class MainActivity extends AppCompatActivity
                         RelativeLayout schema_dayce = (RelativeLayout) findViewById(relDayIDS[i]);
 
                         int status = 0;
+                        String StartTid = "";
                         double starttid = 0;
+                        String SlutTid;
                         double sluttid;
-                        String öpö = "ö";
+                        String öpö = "";
 
                         for (int j = 0; j < desert.length; j++) {
                             status++;
                             try {
                                 if (status == 1) {
                                     //lite matte här
-                                    String[] time = desert[j].split(":");
+                                    StartTid = desert[j];
+                                    String[] time = StartTid.split(":");
                                     starttid = Double.parseDouble(time[0]) - 8 + (Double.parseDouble(time[1])) / 60;
 
                                 }
@@ -504,7 +509,8 @@ public class MainActivity extends AppCompatActivity
                                 if (status == 3) {
                                     //lite mer matte
                                     status = 0;
-                                    String[] time = desert[j].split(":");
+                                    SlutTid = desert[j];
+                                    String[] time = SlutTid.split(":");
                                     sluttid = Double.parseDouble(time[0]) - 8 + Double.parseDouble(time[1]) / 60;
 
                                     LinearLayout linear = new LinearLayout(getBaseContext());
@@ -543,9 +549,39 @@ public class MainActivity extends AppCompatActivity
 
                                     LinearLayout linearDay = new LinearLayout(getBaseContext());
                                     linearDay.setOrientation(LinearLayout.VERTICAL);
-                                    linearDay.setLayoutParams(new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, (int)((sluttid - starttid) * 75 * getResources().getDimension(R.dimen.dp_unit))));
+                                    LinearLayout.LayoutParams LinDayParams = new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, (int)((sluttid - starttid) * 90 * getResources().getDimension(R.dimen.dp_unit)));
+                                    LinDayParams.setMargins(0,(int)(starttid * 90 * getResources().getDimension(R.dimen.dp_unit)),0,0);
+                                    linearDay.setLayoutParams(LinDayParams);
+                                    //linearDay.setBackgroundColor(Color.parseColor("#70ff5a36"));
 
                                     TextView dayTop = new TextView(getBaseContext());
+                                    LinearLayout.LayoutParams TopDayParams = new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, (int)(15 * getResources().getDimension(R.dimen.dp_unit)));
+                                    dayTop.setLayoutParams(TopDayParams);
+                                    dayTop.setGravity(Gravity.START | Gravity.CENTER_VERTICAL);
+                                    dayTop.setTextSize(12);
+                                    dayTop.setTextColor(Color.parseColor("#1f1f1f"));
+                                    dayTop.setText(StartTid);
+                                    linearDay.addView(dayTop);
+
+                                    TextView dayMid = new TextView(getBaseContext());
+                                    LinearLayout.LayoutParams MidDayParams = new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, (int)(((sluttid - starttid) * 90 - 30) * getResources().getDimension(R.dimen.dp_unit)));
+                                    dayMid.setLayoutParams(TopDayParams);
+                                    dayMid.setGravity(Gravity.CENTER);
+                                    dayMid.setTextSize(20);
+                                    dayMid.setTextColor(Color.parseColor("#1f1f1f"));
+                                    dayMid.setText(öpö);
+                                    linearDay.addView(dayMid);
+
+                                    TextView dayBot = new TextView(getBaseContext());
+                                    LinearLayout.LayoutParams BotDayParams = new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, (int)(15 * getResources().getDimension(R.dimen.dp_unit)));
+                                    dayBot.setLayoutParams(TopDayParams);
+                                    dayBot.setGravity(Gravity.END | Gravity.CENTER_VERTICAL);
+                                    dayBot.setTextSize(12);
+                                    dayBot.setTextColor(Color.parseColor("#1f1f1f"));
+                                    dayBot.setText(SlutTid);
+                                    linearDay.addView(dayBot);
+
+                                    schema_dayce.addView(linearDay);
 
                                 }
                             } catch (NumberFormatException e) {
