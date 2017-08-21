@@ -44,10 +44,11 @@
                         android:gravity="center">
 
                         <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
+                            android:layout_width="303dp"
+                            android:layout_height="123dp"
                             android:gravity="center"
-                            android:background="@drawable/big_hexagon"
+                            android:background="@drawable/rect_test"
+                            android:elevation="3dp"
                             android:text="C11"
                             android:paddingTop="30dp"
                             android:textColor="#ffffff"/>
@@ -116,7 +117,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="50dp"
-            android:background="@color/colorPrimaryDark"
+            android:background="@color/colorLight"
             android:orientation="horizontal"
             android:gravity="center"
             android:elevation="3dp" >
@@ -320,37 +321,46 @@
                         android:id="@+id/relativt_schema1"
                         android:clipChildren="false"
                         android:layout_weight="2"
-                        android:background="@color/colorSchemaBackground">
+                        android:background="@drawable/rect_simple"
+                        android:elevation="3dp">
+
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:orientation="vertical">
+
                             <LinearLayout
                                 android:layout_width="match_parent"
                                 android:layout_height="0dp"
                                 android:layout_weight="1">
+
                                 <TextView
                                     android:layout_width="match_parent"
                                     android:layout_height="match_parent"
                                     android:gravity="center"
                                     android:textColor="@color/colorAccent"
-                                    android:background="@drawable/day_box"
+                                    android:background="@drawable/rect_day"
                                     android:text="Mån"
                                     android:textSize="15sp"/>
+
                             </LinearLayout>
+
                             <TextView
                                 android:layout_width="match_parent"
                                 android:layout_height="0dp"
                                 android:textSize="0sp"
                                 android:layout_weight="10"/>
+
                         </LinearLayout>
+
                     </RelativeLayout>
 
                     <RelativeLayout
                         android:layout_width="2dp"
                         android:layout_height="match_parent"
                         android:id="@+id/relativt_sep1"
-                        android:clipChildren="false" />
+                        android:clipChildren="false"
+                        />
 
                     <RelativeLayout
                         android:layout_width="0dp"
@@ -358,30 +368,38 @@
                         android:id="@+id/relativt_schema2"
                         android:clipChildren="false"
                         android:layout_weight="2"
-                        android:background="@color/colorSchemaBackground" >
+                        android:background="@drawable/rect_simple"
+                        android:elevation="3dp">
+
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:orientation="vertical">
+
                             <LinearLayout
                                 android:layout_width="match_parent"
                                 android:layout_height="0dp"
                                 android:layout_weight="1">
+
                                 <TextView
                                     android:layout_width="match_parent"
                                     android:layout_height="match_parent"
                                     android:gravity="center"
                                     android:textColor="@color/colorAccent"
-                                    android:background="@drawable/day_box"
+                                    android:background="@drawable/rect_day"
                                     android:text="Tis"
                                     android:textSize="15sp"/>
+
                             </LinearLayout>
+
                             <TextView
                                 android:layout_width="match_parent"
                                 android:layout_height="0dp"
                                 android:textSize="0sp"
                                 android:layout_weight="10"/>
+
                         </LinearLayout>
+
                     </RelativeLayout>
 
                     <RelativeLayout
@@ -396,30 +414,38 @@
                         android:id="@+id/relativt_schema3"
                         android:clipChildren="false"
                         android:layout_weight="2"
-                        android:background="@color/colorSchemaBackground">
+                        android:background="@drawable/rect_simple"
+                        android:elevation="3dp">
+
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:orientation="vertical">
+
                             <LinearLayout
                                 android:layout_width="match_parent"
                                 android:layout_height="0dp"
                                 android:layout_weight="1">
+
                                 <TextView
                                     android:layout_width="match_parent"
                                     android:layout_height="match_parent"
                                     android:gravity="center"
                                     android:textColor="@color/colorAccent"
-                                    android:background="@drawable/day_box"
+                                    android:background="@drawable/rect_day"
                                     android:text="Ons"
                                     android:textSize="15sp"/>
+
                             </LinearLayout>
+
                             <TextView
                                 android:layout_width="match_parent"
                                 android:layout_height="0dp"
                                 android:textSize="0sp"
                                 android:layout_weight="10"/>
+
                         </LinearLayout>
+
                     </RelativeLayout>
 
                     <RelativeLayout
@@ -434,30 +460,38 @@
                         android:id="@+id/relativt_schema4"
                         android:clipChildren="false"
                         android:layout_weight="2"
-                        android:background="@color/colorSchemaBackground">
+                        android:background="@drawable/rect_simple"
+                        android:elevation="3dp">
+
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:orientation="vertical">
+
                             <LinearLayout
                                 android:layout_width="match_parent"
                                 android:layout_height="0dp"
                                 android:layout_weight="1">
+
                                 <TextView
                                     android:layout_width="match_parent"
                                     android:layout_height="match_parent"
                                     android:gravity="center"
                                     android:textColor="@color/colorAccent"
-                                    android:background="@drawable/day_box"
+                                    android:background="@drawable/rect_day"
                                     android:text="Tor"
                                     android:textSize="15sp"/>
+
                             </LinearLayout>
+
                             <TextView
                                 android:layout_width="match_parent"
                                 android:layout_height="0dp"
                                 android:textSize="0sp"
                                 android:layout_weight="10"/>
+
                         </LinearLayout>
+
                     </RelativeLayout>
 
                     <RelativeLayout
@@ -472,30 +506,38 @@
                         android:id="@+id/relativt_schema5"
                         android:clipChildren="false"
                         android:layout_weight="2"
-                        android:background="@color/colorSchemaBackground">
+                        android:background="@drawable/rect_simple"
+                        android:elevation="3dp">
+
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:orientation="vertical">
+
                             <LinearLayout
                                 android:layout_width="match_parent"
                                 android:layout_height="0dp"
                                 android:layout_weight="1">
+
                                 <TextView
                                     android:layout_width="match_parent"
                                     android:layout_height="match_parent"
                                     android:gravity="center"
                                     android:textColor="@color/colorAccent"
-                                    android:background="@drawable/day_box"
+                                    android:background="@drawable/rect_day"
                                     android:text="Fre"
                                     android:textSize="15sp"/>
+
                             </LinearLayout>
+
                             <TextView
                                 android:layout_width="match_parent"
                                 android:layout_height="0dp"
                                 android:textSize="0sp"
                                 android:layout_weight="10"/>
+
                         </LinearLayout>
+
                     </RelativeLayout>
 
                 </LinearLayout>
