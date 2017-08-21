@@ -44,7 +44,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="50dp"
-            android:background="@color/colorPrimaryDark"
+            android:background="@color/colorLight"
             android:orientation="horizontal"
             android:gravity="center"
             android:elevation="3dp" >
@@ -62,7 +62,7 @@
                 android:textStyle="normal"
                 android:textColor="@color/colorText"
                 android:layout_gravity="center_vertical"
-                android:background="@drawable/button_ordinary"/>
+                android:background="@drawable/rect_test"/>
 
         </LinearLayout>
 
@@ -81,13 +81,16 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:paddingTop="15dp">
+                    android:background="@drawable/rect_test"
+                    android:elevation="3dp"
+                    android:paddingTop="10dp"
+                    android:layout_marginTop="10dp">
 
                     <TextView
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:background="@drawable/hexagon_top"
+                        android:layout_height="50dp"
                         android:text="Måndag"
+                        android:textSize="20sp"
                         android:textColor="@color/colorAccent"
                         android:gravity="center"/>
 
@@ -96,13 +99,14 @@
                         android:layout_height="wrap_content"
                         android:id="@+id/test_text1"
                         android:paddingLeft="8dp"
-                        android:textColor="#707070"
-                        android:background="@drawable/hexagon_middle"/>
+                        android:textSize="14sp"
+                        android:textColor="@color/colorTextAlt"/>
 
                     <TextView
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:background="@drawable/hexagon_bottom"/>
+                        android:layout_height="50dp"
+                        android:gravity="center"/>
+
 
                 </LinearLayout>
 
@@ -110,13 +114,16 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:paddingTop="15dp">
+                    android:elevation="3dp"
+                    android:paddingTop="10dp"
+                    android:background="@drawable/rect_test"
+                    android:layout_marginTop="10dp">
 
                     <TextView
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:background="@drawable/hexagon_top"
+                        android:layout_height="50dp"
                         android:text="Tisdag"
+                        android:textSize="20sp"
                         android:textColor="@color/colorAccent"
                         android:gravity="center"/>
 
@@ -125,14 +132,13 @@
                         android:layout_height="wrap_content"
                         android:id="@+id/test_text2"
                         android:paddingLeft="8dp"
-                        android:textColor="#707070"
-                        android:background="@drawable/hexagon_middle"/>
+                        android:textSize="14sp"
+                        android:textColor="@color/colorTextAlt"/>
 
                     <TextView
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:background="@drawable/hexagon_bottom"/>
-
+                        android:layout_height="50dp"
+                        android:gravity="center"/>
 
                 </LinearLayout>
 
@@ -140,13 +146,16 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:paddingTop="15dp">
+                    android:elevation="3dp"
+                    android:paddingTop="10dp"
+                    android:background="@drawable/rect_test"
+                    android:layout_marginTop="10dp">
 
                     <TextView
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:background="@drawable/hexagon_top"
+                        android:layout_height="50dp"
                         android:text="Onsdag"
+                        android:textSize="20sp"
                         android:textColor="@color/colorAccent"
                         android:gravity="center"/>
 
@@ -155,14 +164,13 @@
                         android:layout_height="wrap_content"
                         android:id="@+id/test_text3"
                         android:paddingLeft="8dp"
-                        android:textColor="#707070"
-                        android:background="@drawable/hexagon_middle"/>
+                        android:textSize="14sp"
+                        android:textColor="@color/colorTextAlt"/>
 
                     <TextView
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:background="@drawable/hexagon_bottom"/>
-
+                        android:layout_height="50dp"
+                        android:gravity="center"/>
 
                 </LinearLayout>
 
@@ -170,13 +178,16 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:paddingTop="15dp">
+                    android:elevation="3dp"
+                    android:paddingTop="10dp"
+                    android:background="@drawable/rect_test"
+                    android:layout_marginTop="10dp">
 
                     <TextView
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:background="@drawable/hexagon_top"
+                        android:layout_height="50dp"
                         android:text="Torsdag"
+                        android:textSize="20sp"
                         android:textColor="@color/colorAccent"
                         android:gravity="center"/>
 
@@ -185,14 +196,13 @@
                         android:layout_height="wrap_content"
                         android:id="@+id/test_text4"
                         android:paddingLeft="8dp"
-                        android:textColor="#707070"
-                        android:background="@drawable/hexagon_middle"/>
+                        android:textSize="14sp"
+                        android:textColor="@color/colorTextAlt"/>
 
                     <TextView
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:background="@drawable/hexagon_bottom"/>
-
+                        android:layout_height="50dp"
+                        android:gravity="center"/>
 
                 </LinearLayout>
 
@@ -200,13 +210,16 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="vertical"
-                    android:paddingTop="15dp">
+                    android:elevation="3dp"
+                    android:paddingTop="10dp"
+                    android:background="@drawable/rect_test"
+                    android:layout_marginTop="10dp">
 
                     <TextView
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:background="@drawable/hexagon_top"
+                        android:layout_height="50dp"
                         android:text="Fredag"
+                        android:textSize="20sp"
                         android:textColor="@color/colorAccent"
                         android:gravity="center"/>
 
@@ -215,19 +228,19 @@
                         android:layout_height="wrap_content"
                         android:id="@+id/test_text5"
                         android:paddingLeft="8dp"
-                        android:textColor="#707070"
-                        android:background="@drawable/hexagon_middle"/>
+                        android:textSize="14sp"
+                        android:textColor="@color/colorTextAlt"/>
 
                     <TextView
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:background="@drawable/hexagon_bottom"/>
+                        android:layout_height="50dp"
+                        android:gravity="center"/>
 
                 </LinearLayout>
 
                 <LinearLayout
                     android:layout_width="match_parent"
-                    android:layout_height="15dp"/>
+                    android:layout_height="10dp"/>
 
             </LinearLayout>
 

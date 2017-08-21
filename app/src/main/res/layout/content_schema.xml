@@ -44,12 +44,13 @@
                         android:gravity="center">
 
                         <TextView
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
+                            android:layout_width="303dp"
+                            android:layout_height="123dp"
                             android:gravity="center"
-                            android:background="@drawable/big_hexagon"
+                            android:background="@drawable/rect_test"
                             android:text="C11"
                             android:paddingTop="30dp"
+                            android:elevation="3dp"
                             android:textColor="#ffffff"/>
 
                     </LinearLayout>
@@ -116,7 +117,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="50dp"
-            android:background="@color/colorPrimaryDark"
+            android:background="@color/colorLight"
             android:orientation="horizontal"
             android:gravity="center"
             android:elevation="3dp" >
@@ -320,7 +321,8 @@
                         android:id="@+id/relativt_schema1"
                         android:clipChildren="false"
                         android:layout_weight="2"
-                        android:background="@color/colorSchemaBackground">
+                        android:background="@drawable/rect_simple"
+                        android:elevation="3dp">
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
@@ -334,7 +336,8 @@
                                     android:layout_height="match_parent"
                                     android:gravity="center"
                                     android:textColor="@color/colorAccent"
-                                    android:background="@drawable/day_box"
+                                    android:background="@drawable/rect_day"
+                                    android:elevation="2dp"
                                     android:text="Mån"
                                     android:textSize="15sp"/>
                             </LinearLayout>
@@ -358,7 +361,8 @@
                         android:id="@+id/relativt_schema2"
                         android:clipChildren="false"
                         android:layout_weight="2"
-                        android:background="@color/colorSchemaBackground" >
+                        android:background="@drawable/rect_simple"
+                        android:elevation="3dp" >
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
@@ -372,7 +376,8 @@
                                     android:layout_height="match_parent"
                                     android:gravity="center"
                                     android:textColor="@color/colorAccent"
-                                    android:background="@drawable/day_box"
+                                    android:background="@drawable/rect_day"
+                                    android:elevation="2dp"
                                     android:text="Tis"
                                     android:textSize="15sp"/>
                             </LinearLayout>
@@ -396,7 +401,8 @@
                         android:id="@+id/relativt_schema3"
                         android:clipChildren="false"
                         android:layout_weight="2"
-                        android:background="@color/colorSchemaBackground">
+                        android:background="@drawable/rect_simple"
+                        android:elevation="3dp">
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
@@ -410,7 +416,8 @@
                                     android:layout_height="match_parent"
                                     android:gravity="center"
                                     android:textColor="@color/colorAccent"
-                                    android:background="@drawable/day_box"
+                                    android:background="@drawable/rect_day"
+                                    android:elevation="2dp"
                                     android:text="Ons"
                                     android:textSize="15sp"/>
                             </LinearLayout>
@@ -434,7 +441,8 @@
                         android:id="@+id/relativt_schema4"
                         android:clipChildren="false"
                         android:layout_weight="2"
-                        android:background="@color/colorSchemaBackground">
+                        android:background="@drawable/rect_simple"
+                        android:elevation="3dp">
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
@@ -448,7 +456,8 @@
                                     android:layout_height="match_parent"
                                     android:gravity="center"
                                     android:textColor="@color/colorAccent"
-                                    android:background="@drawable/day_box"
+                                    android:background="@drawable/rect_day"
+                                    android:elevation="2dp"
                                     android:text="Tor"
                                     android:textSize="15sp"/>
                             </LinearLayout>
@@ -472,7 +481,8 @@
                         android:id="@+id/relativt_schema5"
                         android:clipChildren="false"
                         android:layout_weight="2"
-                        android:background="@color/colorSchemaBackground">
+                        android:background="@drawable/rect_simple"
+                        android:elevation="3dp">
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
@@ -486,7 +496,8 @@
                                     android:layout_height="match_parent"
                                     android:gravity="center"
                                     android:textColor="@color/colorAccent"
-                                    android:background="@drawable/day_box"
+                                    android:background="@drawable/rect_day"
+                                    android:elevation="2dp"
                                     android:text="Fre"
                                     android:textSize="15sp"/>
                             </LinearLayout>

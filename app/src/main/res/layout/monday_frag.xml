@@ -108,15 +108,17 @@
             <LinearLayout
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:layout_weight="8">
+                android:layout_weight="8"
+                android:gravity="center">
 
                 <TextView
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="288dp"
+                    android:layout_height="33dp"
                     android:textColor="@color/colorAccent"
                     android:gravity="center"
                     android:text="Måndag"
-                    android:background="@drawable/schema_space"/>
+                    android:elevation="3dp"
+                    android:background="@drawable/rect_day"/>
 
             </LinearLayout>
 

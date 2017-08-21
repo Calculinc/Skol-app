@@ -632,7 +632,7 @@ public class MainActivity extends AppCompatActivity
         public void run() {
             Document doc;
             String stringtemp;
-            String[] veckodagar = {"MåndagMån", "TisdagTis", "OnsdagOns", "TorsdagTors", "FredagFre"};
+            String[] veckodagar = {"Måndag Mån", "Tisdag Tis", "Onsdag Ons", "Torsdag Tors", "Fredag Fre"};
             String[] stringarraytemp;
             int size;
 
@@ -643,11 +643,16 @@ public class MainActivity extends AppCompatActivity
                 stringtemp = title;
                 int status = 0;
 
-                if (size > 0){
+                if (size == 0){
+
+                    realDeal = "/maq1/Meny saknas/maq1/Meny saknas/maq1/Meny saknas/maq1/Meny saknas/maq1/Meny saknas/maq1/1";
+
+                } else {
 
                     for (int i = 0; i < 5 ; i++) {
 
                         stringarraytemp = stringtemp.split(veckodagar[i]);
+
 
                         if (stringarraytemp.length == 2 ) {
 
@@ -672,12 +677,7 @@ public class MainActivity extends AppCompatActivity
                         }
 
                     }
-
-                } else {
-
-                    realDeal = "/maq1/Meny saknas/maq1/Meny saknas/maq1/Meny saknas/maq1/Meny saknas/maq1/Meny saknas/maq1/";
                 }
-
 
             } catch (IOException e) {
                 e.printStackTrace();
@@ -695,22 +695,29 @@ public class MainActivity extends AppCompatActivity
         TextView textView4 = (TextView) findViewById(R.id.test_text4);
         TextView textView5 = (TextView) findViewById(R.id.test_text5);
 
+        TextView dagens = (TextView) findViewById(R.id.dagens_mat);
+
         mat = realDeal.split("/maq1/");
 
-        if (mat.length == 6) {
+        if (mat.length == 7) {
 
             textView1.setText(mat[1]);
             textView2.setText(mat[2]);
             textView3.setText(mat[3]);
             textView4.setText(mat[4]);
             textView5.setText(mat[5]);
+
+            dagens.setText(mat[currentDay]);
+
         } else {
 
-            textView1.setText(mat[1].substring(11));
-            textView2.setText(mat[2].substring(11));
-            textView3.setText(mat[3].substring(11));
-            textView4.setText(mat[4].substring(11));
-            textView5.setText(mat[5].substring(11));
+            textView1.setText(mat[1].substring(12));
+            textView2.setText(mat[2].substring(12));
+            textView3.setText(mat[3].substring(12));
+            textView4.setText(mat[4].substring(12));
+            textView5.setText(mat[5].substring(12));
+
+            dagens.setText(mat[currentDay].substring(12));
         }
     }
 
