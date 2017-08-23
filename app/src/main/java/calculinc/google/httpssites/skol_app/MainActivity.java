@@ -25,6 +25,7 @@ import android.widget.ArrayAdapter;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.LinearLayout;
+import android.widget.RatingBar;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
 import android.widget.Switch;
@@ -370,7 +371,7 @@ public class MainActivity extends AppCompatActivity
             toolbar.setTitle(R.string.Tab_3);
             vf.setDisplayedChild(2);
             drawer.closeDrawer(GravityCompat.START);
-            htmldownloader test = new htmldownloader();
+            getMat test = new getMat();
             test.start();
             viewFuckingPager();
 
@@ -724,6 +725,39 @@ public class MainActivity extends AppCompatActivity
 
     };
 
+    public void skolMaten() {
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+
+                try {
+
+                    matsedel();
+
+                } catch (NumberFormatException e) {
+                    e.printStackTrace();
+                }
+            }
+
+        });
+    }
+
+    private class getMat extends Thread {
+        public void run() {
+
+
+            htmldownloader H = new htmldownloader();
+            H.start();
+            try {
+                H.join();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+
+            skolMaten();
+        }
+    }
+
     public void matsedel() {
 
         TextView textView1 = (TextView) findViewById(R.id.test_text1);
@@ -733,6 +767,10 @@ public class MainActivity extends AppCompatActivity
         TextView textView5 = (TextView) findViewById(R.id.test_text5);
 
         //TextView dagens = (TextView) findViewById(R.id.dagens_mat);
+
+        LinearLayout progressLayout = (LinearLayout) findViewById(R.id.progress_layout);
+
+        progressLayout.setVisibility(View.GONE);
 
         mat = realDeal.split("/maq1/");
 
@@ -756,6 +794,17 @@ public class MainActivity extends AppCompatActivity
 
             //dagens.setText(mat[currentDay].substring(12));
         }
+    }
+
+    public void röstning(View view) {
+
+        final RatingBar ratingBar = (RatingBar) findViewById(R.id.rating_bar);
+        final TextView ratingtext = (TextView) findViewById(R.id.rating_text);
+        final Animation anim_button_click = AnimationUtils.loadAnimation(this, R.anim.anim_button_click);
+
+        view.startAnimation(anim_button_click);
+        ratingtext.setText(String.valueOf(ratingBar.getRating()));
+
     }
 
     public void fidget_spinner(){

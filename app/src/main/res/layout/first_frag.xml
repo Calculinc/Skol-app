@@ -8,23 +8,45 @@
     tools:context="calculinc.google.httpssites.skol_app.MainActivity"
     tools:showIn="@layout/app_bar_main">
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:gravity="center"
-        android:background="@color/colorMatIdagBackground">
+        android:gravity="center_horizontal"
+        android:animateLayoutChanges="true">
+
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:gravity="center"
+            android:animateLayoutChanges="true">
+
+            <TextView
+                android:id="@+id/dagens_mat"
+                android:layout_width="303dp"
+                android:layout_height="123dp"
+                android:textColor="@color/colorTextAlt"
+                android:textSize="16sp"
+                android:ems="10"
+                android:paddingTop="52dp"
+                android:gravity="center_horizontal|top"
+                android:paddingRight="4dp"
+                android:paddingLeft="4dp"
+                android:elevation="3dp"
+                android:background="@drawable/rect_test" />
+
+        </LinearLayout>
 
         <TextView
-            android:id="@+id/öpö"
-            android:layout_width="wrap_content"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="PLEB"
-            android:textColor="@color/colorMatIdagText"
-            android:textSize="14sp"
-            android:gravity="center"
-            android:background="@drawable/big_matsedelhexagon" />
+            android:textColor="@color/colorAccent"
+            android:textSize="20sp"
+            android:text="Dagens mat"
+            android:paddingTop="15dp"
+            android:gravity="center_horizontal" />
 
-    </LinearLayout>
+    </RelativeLayout>
 
 </android.support.constraint.ConstraintLayout>
