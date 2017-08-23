@@ -3,7 +3,7 @@
 
     <!--  Global colors
       -->
-    <color name="colorBackground">#ffffff</color>
+    <color name="colorBackground">#000000</color>
 
     <color name="colorStatusBarBackground">@color/colorThird</color>
     <color name="colorTitleBarBackground">@color/colorSecondary</color>
