@@ -11,7 +11,8 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:orientation="vertical"
+        android:animateLayoutChanges="true">
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -51,18 +52,34 @@
 
             <RatingBar
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content" />
+                android:layout_height="wrap_content"
+                android:id="@+id/rating_bar"/>
 
             <Button
                 android:gravity="center"
                 android:layout_width="78dp"
                 android:layout_height="33dp"
-                android:onClick="loginSubmit"
                 android:text="@string/Buttontext_rösta"
+                android:onClick="röstning"
                 android:textStyle="normal"
                 android:textColor="@color/colorText"
                 android:layout_gravity="center_vertical"
                 android:background="@drawable/rect_test"/>
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:id="@+id/progress_layout"
+            android:gravity="center">
+
+            <ProgressBar
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+                android:progress="0"/>
+
 
         </LinearLayout>
 
@@ -84,7 +101,8 @@
                     android:background="@drawable/rect_test"
                     android:elevation="3dp"
                     android:paddingTop="10dp"
-                    android:layout_marginTop="10dp">
+                    android:layout_marginTop="10dp"
+                    android:animateLayoutChanges="true">
 
                     <TextView
                         android:layout_width="match_parent"
@@ -117,7 +135,8 @@
                     android:elevation="3dp"
                     android:paddingTop="10dp"
                     android:background="@drawable/rect_test"
-                    android:layout_marginTop="10dp">
+                    android:layout_marginTop="10dp"
+                    android:animateLayoutChanges="true">
 
                     <TextView
                         android:layout_width="match_parent"
@@ -149,7 +168,8 @@
                     android:elevation="3dp"
                     android:paddingTop="10dp"
                     android:background="@drawable/rect_test"
-                    android:layout_marginTop="10dp">
+                    android:layout_marginTop="10dp"
+                    android:animateLayoutChanges="true">
 
                     <TextView
                         android:layout_width="match_parent"
@@ -181,7 +201,8 @@
                     android:elevation="3dp"
                     android:paddingTop="10dp"
                     android:background="@drawable/rect_test"
-                    android:layout_marginTop="10dp">
+                    android:layout_marginTop="10dp"
+                    android:animateLayoutChanges="true">
 
                     <TextView
                         android:layout_width="match_parent"
@@ -213,7 +234,8 @@
                     android:elevation="3dp"
                     android:paddingTop="10dp"
                     android:background="@drawable/rect_test"
-                    android:layout_marginTop="10dp">
+                    android:layout_marginTop="10dp"
+                    android:animateLayoutChanges="true">
 
                     <TextView
                         android:layout_width="match_parent"

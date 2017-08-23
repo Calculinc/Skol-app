@@ -11,21 +11,23 @@
     <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:gravity="center_horizontal">
+        android:gravity="center_horizontal"
+        android:animateLayoutChanges="true">
 
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:orientation="vertical"
-            android:gravity="center">
+            android:gravity="center"
+            android:animateLayoutChanges="true">
 
             <TextView
                 android:id="@+id/dagens_mat"
                 android:layout_width="303dp"
                 android:layout_height="123dp"
                 android:textColor="@color/colorTextAlt"
-                android:textSize="14sp"
+                android:textSize="16sp"
                 android:ems="10"
                 android:paddingTop="52dp"
                 android:gravity="center_horizontal|top"
