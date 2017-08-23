@@ -6,9 +6,9 @@
 
     <group android:name="foreground">
         <path
-            android:strokeColor="@color/colorPrimary"
+            android:strokeColor="@color/colorMatIdagStroke"
             android:strokeWidth="1"
-            android:fillColor="@color/colorSchemaBackground"
+            android:fillColor="@color/colorMatIdagFill"
             android:pathData="M201,61 L201,81 L21,81  L1,61 L1,1 L181,1 L201,21 Z" />
     </group>
 

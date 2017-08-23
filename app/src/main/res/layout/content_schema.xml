@@ -44,14 +44,13 @@
                         android:gravity="center">
 
                         <TextView
-                            android:layout_width="303dp"
-                            android:layout_height="123dp"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
                             android:gravity="center"
-                            android:background="@drawable/rect_test"
-                            android:elevation="3dp"
+                            android:background="@drawable/big_hexagon"
                             android:text="C11"
                             android:paddingTop="30dp"
-                            android:textColor="#ffffff"/>
+                            android:textColor="@color/colorSchemaLektionMiniText"/>
 
                     </LinearLayout>
 
@@ -72,7 +71,7 @@
                                 android:layout_height="20dp"
                                 android:paddingLeft="8dp"
                                 android:text="08:20"
-                                android:textColor="#ffffff"/>
+                                android:textColor="@color/colorSchemaLektionText"/>
 
                         </LinearLayout>
 
@@ -87,7 +86,7 @@
                                 android:layout_height="20dp"
                                 android:text="ENGENG07 JHA"
                                 android:textSize="18sp"
-                                android:textColor="#ffffff"/>
+                                android:textColor="@color/colorSchemaLektionText"/>
 
                         </LinearLayout>
 
@@ -102,7 +101,7 @@
                                 android:layout_height="20dp"
                                 android:text="09:35"
                                 android:paddingRight="8dp"
-                                android:textColor="#ffffff"/>
+                                android:textColor="@color/colorSchemaLektionText"/>
 
                         </LinearLayout>
 
@@ -114,10 +113,12 @@
 
         </LinearLayout>
 
+
+
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="50dp"
-            android:background="@color/colorLight"
+            android:background="@color/colorSchemaBeltBackground"
             android:orientation="horizontal"
             android:gravity="center"
             android:elevation="3dp" >
@@ -128,7 +129,7 @@
                 android:layout_weight="1"
                 android:id="@+id/the_switch"
                 android:hint="Dag/Vecka"
-                android:textColorHint="@color/colorText"
+                android:textColorHint="@color/colorSchemaBeltText"
                 android:layout_marginLeft="10dp"
                 android:layout_marginStart="10dp"/>
 
@@ -136,23 +137,21 @@
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:dropDownSelector="@color/colorPrimary"
+                android:dropDownSelector="@color/colorSchemaBeltDropdownBackground"
                 android:background="@drawable/text_box_spinner_alt"
                 android:id="@+id/typ_spinner"
-                android:textColor="@color/colorText"
-                android:textColorHint="@color/colorHint"
-                android:popupBackground="@color/colorBackground" />
+                android:textColor="@color/colorSchemaBeltText"
+                android:popupBackground="@color/colorSchemaBeltDropdownSelected" />
 
             <Spinner
                 android:layout_width="0dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:dropDownSelector="@color/colorPrimary"
+                android:dropDownSelector="@color/colorSchemaBeltDropdownBackground"
                 android:background="@drawable/text_box_spinner_alt"
                 android:id="@+id/typ_spinner2"
-                android:textColor="@color/colorText"
-                android:textColorHint="@color/colorHint"
-                android:popupBackground="@color/colorBackground" />
+                android:textColor="@color/colorSchemaBeltText"
+                android:popupBackground="@color/colorSchemaBeltDropdownSelected" />
 
         </LinearLayout>
 
@@ -189,7 +188,7 @@
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="@color/colorBackground"
+                android:background="@color/colorSchemaViewVeckaBackground"
                 android:orientation="horizontal"
                 android:id="@+id/schema_vecka_layout"
                 android:animateLayoutChanges="true"
@@ -218,6 +217,7 @@
                         android:textSize="12sp"
                         android:gravity="center_vertical"
                         android:text="08"
+                        android:textColor="@color/colorSchemaViewVeckaTimelineText"
                         android:background="@drawable/schema_timeline"/>
 
                     <TextView
@@ -227,6 +227,7 @@
                         android:textSize="12sp"
                         android:gravity="center_vertical"
                         android:text="09"
+                        android:textColor="@color/colorSchemaViewVeckaTimelineText"
                         android:background="@drawable/schema_timeline"/>
 
                     <TextView
@@ -236,6 +237,7 @@
                         android:textSize="12sp"
                         android:gravity="center_vertical"
                         android:text="10"
+                        android:textColor="@color/colorSchemaViewVeckaTimelineText"
                         android:background="@drawable/schema_timeline"/>
 
                     <TextView
@@ -245,6 +247,7 @@
                         android:textSize="12sp"
                         android:gravity="center_vertical"
                         android:text="11"
+                        android:textColor="@color/colorSchemaViewVeckaTimelineText"
                         android:background="@drawable/schema_timeline"/>
 
                     <TextView
@@ -254,6 +257,7 @@
                         android:textSize="12sp"
                         android:gravity="center_vertical"
                         android:text="12"
+                        android:textColor="@color/colorSchemaViewVeckaTimelineText"
                         android:background="@drawable/schema_timeline"/>
 
                     <TextView
@@ -263,6 +267,7 @@
                         android:textSize="12sp"
                         android:gravity="center_vertical"
                         android:text="13"
+                        android:textColor="@color/colorSchemaViewVeckaTimelineText"
                         android:background="@drawable/schema_timeline"/>
 
                     <TextView
@@ -272,6 +277,7 @@
                         android:textSize="12sp"
                         android:gravity="center_vertical"
                         android:text="14"
+                        android:textColor="@color/colorSchemaViewVeckaTimelineText"
                         android:background="@drawable/schema_timeline"/>
 
                     <TextView
@@ -281,6 +287,7 @@
                         android:textSize="12sp"
                         android:gravity="center_vertical"
                         android:text="15"
+                        android:textColor="@color/colorSchemaViewVeckaTimelineText"
                         android:background="@drawable/schema_timeline"/>
 
                     <TextView
@@ -290,6 +297,7 @@
                         android:textSize="12sp"
                         android:gravity="center_vertical"
                         android:text="16"
+                        android:textColor="@color/colorSchemaViewVeckaTimelineText"
                         android:background="@drawable/schema_timeline"/>
 
                     <TextView
@@ -299,6 +307,7 @@
                         android:textSize="12sp"
                         android:gravity="center_vertical"
                         android:text="17"
+                        android:textColor="@color/colorSchemaViewVeckaTimelineText"
                         android:background="@drawable/schema_timeline"/>
 
                     <TextView
@@ -321,46 +330,37 @@
                         android:id="@+id/relativt_schema1"
                         android:clipChildren="false"
                         android:layout_weight="2"
-                        android:background="@drawable/rect_simple"
-                        android:elevation="3dp">
-
+                        android:background="@color/colorSchemaViewVeckaDays">
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:orientation="vertical">
-
                             <LinearLayout
                                 android:layout_width="match_parent"
                                 android:layout_height="0dp"
                                 android:layout_weight="1">
-
                                 <TextView
                                     android:layout_width="match_parent"
                                     android:layout_height="match_parent"
                                     android:gravity="center"
-                                    android:textColor="@color/colorAccent"
-                                    android:background="@drawable/rect_day"
+                                    android:textColor="@color/colorSchemaViewVeckaDayText"
+                                    android:background="@drawable/day_box"
                                     android:text="Mån"
                                     android:textSize="15sp"/>
-
                             </LinearLayout>
-
                             <TextView
                                 android:layout_width="match_parent"
                                 android:layout_height="0dp"
                                 android:textSize="0sp"
                                 android:layout_weight="10"/>
-
                         </LinearLayout>
-
                     </RelativeLayout>
 
                     <RelativeLayout
                         android:layout_width="2dp"
                         android:layout_height="match_parent"
                         android:id="@+id/relativt_sep1"
-                        android:clipChildren="false"
-                        />
+                        android:clipChildren="false" />
 
                     <RelativeLayout
                         android:layout_width="0dp"
@@ -368,38 +368,30 @@
                         android:id="@+id/relativt_schema2"
                         android:clipChildren="false"
                         android:layout_weight="2"
-                        android:background="@drawable/rect_simple"
-                        android:elevation="3dp">
-
+                        android:background="@color/colorSchemaViewVeckaDays" >
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:orientation="vertical">
-
                             <LinearLayout
                                 android:layout_width="match_parent"
                                 android:layout_height="0dp"
                                 android:layout_weight="1">
-
                                 <TextView
                                     android:layout_width="match_parent"
                                     android:layout_height="match_parent"
                                     android:gravity="center"
-                                    android:textColor="@color/colorAccent"
-                                    android:background="@drawable/rect_day"
+                                    android:textColor="@color/colorSchemaViewVeckaDayText"
+                                    android:background="@drawable/day_box"
                                     android:text="Tis"
                                     android:textSize="15sp"/>
-
                             </LinearLayout>
-
                             <TextView
                                 android:layout_width="match_parent"
                                 android:layout_height="0dp"
                                 android:textSize="0sp"
                                 android:layout_weight="10"/>
-
                         </LinearLayout>
-
                     </RelativeLayout>
 
                     <RelativeLayout
@@ -414,38 +406,30 @@
                         android:id="@+id/relativt_schema3"
                         android:clipChildren="false"
                         android:layout_weight="2"
-                        android:background="@drawable/rect_simple"
-                        android:elevation="3dp">
-
+                        android:background="@color/colorSchemaViewVeckaDays">
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:orientation="vertical">
-
                             <LinearLayout
                                 android:layout_width="match_parent"
                                 android:layout_height="0dp"
                                 android:layout_weight="1">
-
                                 <TextView
                                     android:layout_width="match_parent"
                                     android:layout_height="match_parent"
                                     android:gravity="center"
-                                    android:textColor="@color/colorAccent"
-                                    android:background="@drawable/rect_day"
+                                    android:textColor="@color/colorSchemaViewVeckaDayText"
+                                    android:background="@drawable/day_box"
                                     android:text="Ons"
                                     android:textSize="15sp"/>
-
                             </LinearLayout>
-
                             <TextView
                                 android:layout_width="match_parent"
                                 android:layout_height="0dp"
                                 android:textSize="0sp"
                                 android:layout_weight="10"/>
-
                         </LinearLayout>
-
                     </RelativeLayout>
 
                     <RelativeLayout
@@ -460,38 +444,30 @@
                         android:id="@+id/relativt_schema4"
                         android:clipChildren="false"
                         android:layout_weight="2"
-                        android:background="@drawable/rect_simple"
-                        android:elevation="3dp">
-
+                        android:background="@color/colorSchemaViewVeckaDays">
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:orientation="vertical">
-
                             <LinearLayout
                                 android:layout_width="match_parent"
                                 android:layout_height="0dp"
                                 android:layout_weight="1">
-
                                 <TextView
                                     android:layout_width="match_parent"
                                     android:layout_height="match_parent"
                                     android:gravity="center"
-                                    android:textColor="@color/colorAccent"
-                                    android:background="@drawable/rect_day"
+                                    android:textColor="@color/colorSchemaViewVeckaDayText"
+                                    android:background="@drawable/day_box"
                                     android:text="Tor"
                                     android:textSize="15sp"/>
-
                             </LinearLayout>
-
                             <TextView
                                 android:layout_width="match_parent"
                                 android:layout_height="0dp"
                                 android:textSize="0sp"
                                 android:layout_weight="10"/>
-
                         </LinearLayout>
-
                     </RelativeLayout>
 
                     <RelativeLayout
@@ -506,38 +482,30 @@
                         android:id="@+id/relativt_schema5"
                         android:clipChildren="false"
                         android:layout_weight="2"
-                        android:background="@drawable/rect_simple"
-                        android:elevation="3dp">
-
+                        android:background="@color/colorSchemaViewVeckaDays">
                         <LinearLayout
                             android:layout_width="match_parent"
                             android:layout_height="match_parent"
                             android:orientation="vertical">
-
                             <LinearLayout
                                 android:layout_width="match_parent"
                                 android:layout_height="0dp"
                                 android:layout_weight="1">
-
                                 <TextView
                                     android:layout_width="match_parent"
                                     android:layout_height="match_parent"
                                     android:gravity="center"
-                                    android:textColor="@color/colorAccent"
-                                    android:background="@drawable/rect_day"
+                                    android:textColor="@color/colorSchemaViewVeckaDayText"
+                                    android:background="@drawable/day_box"
                                     android:text="Fre"
                                     android:textSize="15sp"/>
-
                             </LinearLayout>
-
                             <TextView
                                 android:layout_width="match_parent"
                                 android:layout_height="0dp"
                                 android:textSize="0sp"
                                 android:layout_weight="10"/>
-
                         </LinearLayout>
-
                     </RelativeLayout>
 
                 </LinearLayout>
@@ -565,6 +533,7 @@
                         android:textSize="12sp"
                         android:gravity="center_vertical|end"
                         android:text="08"
+                        android:textColor="@color/colorSchemaViewVeckaTimelineText"
                         android:background="@drawable/schema_linetime"/>
 
                     <TextView
@@ -574,6 +543,7 @@
                         android:textSize="12sp"
                         android:gravity="center_vertical|end"
                         android:text="09"
+                        android:textColor="@color/colorSchemaViewVeckaTimelineText"
                         android:background="@drawable/schema_linetime"/>
 
                     <TextView
@@ -583,6 +553,7 @@
                         android:textSize="12sp"
                         android:gravity="center_vertical|end"
                         android:text="10"
+                        android:textColor="@color/colorSchemaViewVeckaTimelineText"
                         android:background="@drawable/schema_linetime"/>
 
                     <TextView
@@ -592,6 +563,7 @@
                         android:textSize="12sp"
                         android:gravity="center_vertical|end"
                         android:text="11"
+                        android:textColor="@color/colorSchemaViewVeckaTimelineText"
                         android:background="@drawable/schema_linetime"/>
 
                     <TextView
@@ -601,6 +573,7 @@
                         android:textSize="12sp"
                         android:gravity="center_vertical|end"
                         android:text="12"
+                        android:textColor="@color/colorSchemaViewVeckaTimelineText"
                         android:background="@drawable/schema_linetime"/>
 
                     <TextView
@@ -610,6 +583,7 @@
                         android:textSize="12sp"
                         android:gravity="center_vertical|end"
                         android:text="13"
+                        android:textColor="@color/colorSchemaViewVeckaTimelineText"
                         android:background="@drawable/schema_linetime"/>
 
                     <TextView
@@ -619,6 +593,7 @@
                         android:textSize="12sp"
                         android:gravity="center_vertical|end"
                         android:text="14"
+                        android:textColor="@color/colorSchemaViewVeckaTimelineText"
                         android:background="@drawable/schema_linetime"/>
 
                     <TextView
@@ -628,6 +603,7 @@
                         android:textSize="12sp"
                         android:gravity="center_vertical|end"
                         android:text="15"
+                        android:textColor="@color/colorSchemaViewVeckaTimelineText"
                         android:background="@drawable/schema_linetime"/>
 
                     <TextView
@@ -637,6 +613,7 @@
                         android:textSize="12sp"
                         android:gravity="center_vertical|end"
                         android:text="16"
+                        android:textColor="@color/colorSchemaViewVeckaTimelineText"
                         android:background="@drawable/schema_linetime"/>
 
                     <TextView
@@ -646,6 +623,7 @@
                         android:textSize="12sp"
                         android:gravity="center_vertical|end"
                         android:text="17"
+                        android:textColor="@color/colorSchemaViewVeckaTimelineText"
                         android:background="@drawable/schema_linetime"/>
 
                     <TextView

@@ -4,7 +4,7 @@
     android:viewportHeight="22"
     android:viewportWidth="102">
     <path
-        android:strokeColor="@color/colorPrimary"
+        android:strokeColor="@color/colorLoginInputsDrawable"
         android:strokeWidth="1"
         android:pathData="M101,11 L91,21 L1,21" />
 

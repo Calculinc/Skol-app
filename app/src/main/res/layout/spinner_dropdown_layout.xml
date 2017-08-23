@@ -6,4 +6,4 @@
     android:layout_width="match_parent"
     android:layout_height="48dp"
     android:ellipsize="middle"
-    android:textColor="@color/colorHint"/>
+    android:textColor="@color/colorSchemaBeltDropdownText"/>
