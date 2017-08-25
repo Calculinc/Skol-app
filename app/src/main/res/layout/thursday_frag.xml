@@ -3,40 +3,132 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
+    android:layout_height="134dp"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context="calculinc.google.httpssites.skol_app.MainActivity"
     tools:showIn="@layout/app_bar_main">
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:gravity="center_horizontal"
-        android:orientation="vertical">
-
-        <TextView
-            android:layout_width="288dp"
-            android:layout_height="33dp"
-            android:text="Torsdag"
-            android:textColor="@color/colorAccent"
-            android:gravity="center"
-            android:elevation="3dp"
-            android:background="@drawable/rect_day"/>
+        android:orientation="vertical"
+        android:clipChildren="false">
 
         <ScrollView
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:requiresFadingEdge="vertical"
-            android:fadingEdgeLength="25dp">
+            android:layout_height="match_parent">
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"/>
+
+                <RelativeLayout
+                    android:layout_width="0dp"
+                    android:layout_height="900dp"
+                    android:orientation="vertical"
+                    android:layout_weight="8"
+                    android:layout_marginTop="33dp"
+                    android:clipChildren="false"
+                    android:id="@+id/relative_layout_Thursday">
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="200dp"
+                        android:text="lol"
+                        android:textSize="30sp"
+                        android:textColor="@color/colorSchemaViewDayLektionText"
+                        android:background="@color/colorSchemaViewDayLektionBackground"/>
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="200dp"
+                        android:layout_marginTop="200dp"
+                        android:text="löööl"
+                        android:textSize="30sp"
+                        android:textColor="@color/colorSchemaViewDayLektionText"
+                        android:background="@color/colorSchemaViewDayLektionBackground"/>
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="200dp"
+                        android:layout_marginTop="400dp"
+                        android:text="lol"
+                        android:textSize="30sp"
+                        android:textColor="@color/colorSchemaViewDayLektionText"
+                        android:background="@color/colorSchemaViewDayLektionBackground"/>
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="200dp"
+                        android:layout_marginTop="600dp"
+                        android:text="löööl"
+                        android:textSize="30sp"
+                        android:textColor="@color/colorSchemaViewDayLektionText"
+                        android:background="@color/colorSchemaViewDayLektionBackground"/>
+
+                    <TextView
+                        android:layout_width="match_parent"
+                        android:layout_height="100dp"
+                        android:layout_marginTop="800dp"
+                        android:text="lolöpö"
+                        android:textSize="30sp"
+                        android:textColor="@color/colorSchemaViewDayLektionText"
+                        android:background="@color/colorSchemaViewDayLektionBackground"/>
+
+                </RelativeLayout>
+
+                <LinearLayout
+                    android:layout_width="0dp"
+                    android:layout_height="match_parent"
+                    android:layout_weight="1"/>
 
             </LinearLayout>
 
         </ScrollView>
 
-    </LinearLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1">
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="8">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:textColor="@color/colorSchemaViewDayText"
+                    android:gravity="center"
+                    android:text="Torsdag"
+                    android:background="@drawable/schema_space"/>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="1">
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </RelativeLayout>
 
 </android.support.constraint.ConstraintLayout>

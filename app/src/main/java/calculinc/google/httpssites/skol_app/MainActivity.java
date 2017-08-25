@@ -19,7 +19,6 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ArrayAdapter;
@@ -637,6 +636,8 @@ public class MainActivity extends AppCompatActivity
 
     public void makeSchemaDag() {
 
+        currentDay = 2;
+
         final LinearLayout schemaVeckaLayout = (LinearLayout) findViewById(R.id.schema_vecka_layout);
         final LinearLayout schemaDagLayout = (LinearLayout) findViewById(R.id.schema_dag_layout);
 
@@ -765,7 +766,7 @@ public class MainActivity extends AppCompatActivity
         TextView textView4 = (TextView) findViewById(R.id.test_text4);
         TextView textView5 = (TextView) findViewById(R.id.test_text5);
 
-        TextView dagens = (TextView) findViewById(R.id.dagens_mat);
+        //TextView dagens = (TextView) findViewById(R.id.dagens_mat);
 
         LinearLayout progressLayout = (LinearLayout) findViewById(R.id.progress_layout);
 
@@ -781,7 +782,7 @@ public class MainActivity extends AppCompatActivity
             textView4.setText(mat[4]);
             textView5.setText(mat[5]);
 
-            dagens.setText(mat[currentDay]);
+            //dagens.setText(mat[currentDay]);
 
         } else {
 
@@ -791,7 +792,7 @@ public class MainActivity extends AppCompatActivity
             textView4.setText(mat[4].substring(12));
             textView5.setText(mat[5].substring(12));
 
-            dagens.setText(mat[currentDay].substring(12));
+            //dagens.setText(mat[currentDay].substring(12));
         }
     }
 

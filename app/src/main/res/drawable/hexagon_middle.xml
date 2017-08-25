@@ -6,7 +6,7 @@
 
     <group android:name="Background">
         <path
-            android:fillColor="@color/colorSchemaBackground"
+            android:fillColor="@color/colorMatSedelFill"
             android:pathData="M0,0 L0,10 L80,10 L80,0 z" />
     </group>
 

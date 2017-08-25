@@ -6,13 +6,13 @@
 
     <group android:name="foreground">
         <path
-            android:strokeColor="@color/colorPrimary"
+            android:strokeColor="@color/colorLoginInputsDrawable"
             android:strokeWidth="1"
             android:pathData="M101,11 L91,21 L1,21" />
     </group>
     <group android:name="background">
         <path
-            android:fillColor="@color/colorPrimary"
+            android:fillColor="@color/colorLoginInputsDrawable"
             android:pathData="M101,11 L91,21 L91,11 z" />
     </group>
 

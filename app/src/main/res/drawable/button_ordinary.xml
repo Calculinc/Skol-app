@@ -6,13 +6,13 @@
 
     <group android:name="foreground">
         <path
-            android:strokeColor="@color/colorPrimary"
+            android:strokeColor="@color/colorMatBeltDrawable"
             android:strokeWidth="1"
             android:pathData="M51,3 L51,11 L41,21 L1,21" />
     </group>
     <group android:name="background">
         <path
-            android:strokeColor="@color/colorPrimary"
+            android:strokeColor="@color/colorMatBeltDrawable"
             android:strokeWidth="1"
             android:pathData="M1,19 L1,11 L11,1 L51,1" />
     </group>
