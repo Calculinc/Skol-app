@@ -636,8 +636,6 @@ public class MainActivity extends AppCompatActivity
 
     public void makeSchemaDag() {
 
-        currentDay = 2;
-
         final LinearLayout schemaVeckaLayout = (LinearLayout) findViewById(R.id.schema_vecka_layout);
         final LinearLayout schemaDagLayout = (LinearLayout) findViewById(R.id.schema_dag_layout);
 
