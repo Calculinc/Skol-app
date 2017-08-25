@@ -11,8 +11,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:background="@color/colorLoginBackground">
+        android:orientation="vertical">
 
         <ImageView
             android:layout_width="160dp"
@@ -41,11 +40,10 @@
                     android:id="@+id/name1"
                     android:layout_marginTop="32dp"
                     android:paddingLeft="8dp"
-                    android:background="@drawable/text_box"
                     android:hint="@string/Hint_förnamn"
                     android:inputType="text"
-                    android:textColor="@color/colorLoginText"
-                    android:textColorHint="@color/colorLoginTextHint" />
+                    android:textColor="@color/colorText"
+                    android:textColorHint="@color/colorHint" />
 
                 <EditText
                     android:layout_width="160dp"
@@ -53,11 +51,10 @@
                     android:id="@+id/mobile_number"
                     android:layout_marginTop="20dp"
                     android:paddingLeft="8dp"
-                    android:background="@drawable/text_box"
                     android:hint="@string/Hint_telefon"
                     android:inputType="phone"
-                    android:textColor="@color/colorLoginText"
-                    android:textColorHint="@color/colorLoginTextHint" />
+                    android:textColor="@color/colorText"
+                    android:textColorHint="@color/colorHint" />
 
                 <EditText
                     android:id="@+id/editText"
@@ -66,10 +63,9 @@
                     android:layout_marginTop="20dp"
                     android:hint="@string/Hint_personnummer"
                     android:paddingLeft="8dp"
-                    android:background="@drawable/text_box"
                     android:inputType="number"
-                    android:textColor="@color/colorLoginText"
-                    android:textColorHint="@color/colorLoginTextHint" />
+                    android:textColor="@color/colorText"
+                    android:textColorHint="@color/colorHint" />
 
             </LinearLayout>
 
@@ -87,11 +83,10 @@
                     android:id="@+id/name2"
                     android:layout_marginTop="32dp"
                     android:paddingLeft="8dp"
-                    android:background="@drawable/text_box"
                     android:hint="@string/Hint_efternamn"
                     android:inputType="text"
-                    android:textColor="@color/colorLoginText"
-                    android:textColorHint="@color/colorLoginTextHint" />
+                    android:textColor="@color/colorText"
+                    android:textColorHint="@color/colorHint" />
 
                 <EditText
                     android:layout_width="160dp"
@@ -99,22 +94,20 @@
                     android:id="@+id/city"
                     android:layout_marginTop="20dp"
                     android:paddingLeft="8dp"
-                    android:background="@drawable/text_box"
                     android:hint="@string/Hint_stad"
                     android:inputType="text"
-                    android:textColor="@color/colorLoginText"
-                    android:textColorHint="@color/colorLoginTextHint" />
+                    android:textColor="@color/colorText"
+                    android:textColorHint="@color/colorHint" />
 
                 <Spinner
                     android:layout_width="160dp"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="20dp"
-                    android:dropDownSelector="@color/colorLoginDropdownBackground"
-                    android:background="@drawable/text_box_spinner"
+                    android:dropDownSelector="@color/colorPrimary"
                     android:id="@+id/fidget_spinner"
-                    android:textColor="@color/colorLoginText"
-                    android:textColorHint="@color/colorLoginTextHint"
-                    android:popupBackground="@color/colorLoginDropdownSelected" />
+                    android:textColor="@color/colorHint"
+                    android:textColorHint="@color/colorHint"
+                    android:popupBackground="@color/colorBackground" />
 
             </LinearLayout>
 
@@ -127,9 +120,9 @@
             android:layout_marginTop="20dp"
             android:text="@string/Buttontext_registrera"
             android:textStyle="normal"
-            android:textColor="@color/colorLoginText"
+            android:textColor="@color/colorText"
             android:layout_gravity="center_horizontal"
-            android:background="@drawable/button_special"
+            android:background="@drawable/rect_day"
             android:onClick="loginSubmit" />
     </LinearLayout>
 

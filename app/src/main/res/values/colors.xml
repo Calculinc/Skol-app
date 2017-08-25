@@ -3,7 +3,6 @@
 
     <!--  Global colors
       -->
-    <color name="colorBackground">#000000</color>
 
     <color name="colorStatusBarBackground">@color/colorThird</color>
     <color name="colorTitleBarBackground">@color/colorSecondary</color>
@@ -12,15 +11,15 @@
 
     <!--  Drawer colors
           -->
-    <color name="colorDrawerGradientStart">#ffffff</color>
-    <color name="colorDrawerGradientCenter">#ffffff</color>
-    <color name="colorDrawerGradientEnd">#ffffff</color>
+    <color name="colorDrawerGradientStart">@color/colorFade1</color>
+    <color name="colorDrawerGradientCenter">@color/colorFade2</color>
+    <color name="colorDrawerGradientEnd">@color/colorFade3</color>
     <color name="colorDrawerGradientTextHeader">#ffffff</color>
     <color name="colorDrawerGradientText">#ffffff</color>
 
     <color name="colorDrawerMenuBackground">#ffffff</color>
-    <color name="colorDrawerMenuIcons">#ffffff</color>
-    <color name="colorDrawerMenuText">#ffffff</color>
+    <color name="colorDrawerMenuIcons">@color/colorAccent</color>
+    <color name="colorDrawerMenuText">@color/colorAccent</color>
 
 
     <!--  Schema colors
@@ -87,10 +86,10 @@
 
     <!--  Style colors
                   -->
-    <color name="colorStyleAppThemePrimary">#ffffff</color>
+    <color name="colorStyleAppThemePrimary">@color/colorFade2</color>
     <color name="colorStyleAppThemeSecondary">@color/colorStatusBarBackground</color>
     <!--  ratingbarfull and editText cursor color -->
-    <color name="colorStyleAppThemeThird">#ffffff</color>
+    <color name="colorStyleAppThemeThird">@color/colorText</color>
 
 
     <!--  Other colors
@@ -99,9 +98,23 @@
 
 
 
-    <color name="colorPrimary">#ffffff</color>
-    <color name="colorSecondary">#013c06</color>
-    <color name="colorThird">#F4BB56</color>
+    <color name="colorSecondary">#011a3c</color>
+    <color name="colorThird">#6a728b</color>
+
+    <color name="colorPrimary">#002147</color>
+    <color name="colorPrimaryDark">#bebebe</color>
+    <color name="colorAccent">#253153</color>
+    <color name="colorLight">#ffffff</color>
+    <color name="colorBackground">#ffffff</color>
+    <color name="colorText">#1c4783</color>
+    <color name="colorTextAlt">#707070</color>
+    <color name="colorHint">#425c8c</color>
+    <color name="colorRect">#d9d9d9</color>
+    <color name="colorSchemaBackground">#d9d9d9</color>
+    <color name="colorDay">#6a728b</color>
+    <color name="colorFade1">#002147</color>
+    <color name="colorFade2">#253153</color>
+    <color name="colorFade3">#6a728b</color>
 
 
 
