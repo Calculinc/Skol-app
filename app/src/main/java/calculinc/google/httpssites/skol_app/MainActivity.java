@@ -37,6 +37,8 @@ import com.itextpdf.text.pdf.parser.PdfTextExtractor;
 
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
+import org.jsoup.nodes.Element;
+import org.jsoup.select.Elements;
 
 import java.io.BufferedReader;
 import java.io.File;
@@ -80,7 +82,7 @@ public class MainActivity extends AppCompatActivity
     Document docpsdgh = Jsoup.parse("ll");
 
     String[] mat;
-    String realDeal = "";
+    String realDeal = "/maq1/För lång kö till matsalen. Kunde inte se matsedeln/maq1/För lång kö till matsalen. Kunde inte se matsedeln/maq1/För lång kö till matsalen. Kunde inte se matsedeln/maq1/För lång kö till matsalen. Kunde inte se matsedeln/maq1/För lång kö till matsalen. Kunde inte se matsedeln/maq1/1";
     String title;
     String simple;
     Document doc1 = Jsoup.parse("<html><head>\n" +
@@ -383,6 +385,7 @@ public class MainActivity extends AppCompatActivity
             schemaArrayFixer lloldawd = new schemaArrayFixer();
             lloldawd.start();
 
+
         } else if (id == R.id.nav_login) {
 
             toolbar.setTitle(R.string.Tab_5);
@@ -673,17 +676,50 @@ public class MainActivity extends AppCompatActivity
             int size;
 
             try {
-                doc = Jsoup.connect("https://skolmaten.se/norra-real/").get();
-                title = doc.select("div[class=row]").text();
-                size = doc.select("div[class=row]").size();
+                doc = Jsoup.connect("http://skolmaten.se/norra-real/rss/").get();
+                title = doc.select("description").text();
+                size = doc.select("description").size();
                 stringtemp = title;
                 int status = 0;
+                realDeal = "";
+                String lol = "topkeketh";
 
-                if (size == 0){
+                for (int i = 0; i < 6 ; i++) {
+                    
+                    if (i != 5) {
+
+                        Elements description = doc.select("description:eq(2)");
+
+                        Element singlePiece = description.get(i);
+
+                        realDeal = realDeal + "/maq1/" + singlePiece.text();
+                    } else {
+
+                        String[] temporary = realDeal.split("<br/>");
+                        realDeal = "";
+
+                        for (int j = 0; j < temporary.length ; j++) {
+
+                            if (j != temporary.length - 1) {
+
+                                realDeal = realDeal + temporary[j] + "\n\n";
+                            } else {
+
+                                realDeal = realDeal + temporary[j];
+                            }
+
+                            
+                        }
+                        
+                    }
+                    
+                }
+
+                if (size == 0 ){
 
                     realDeal = "/maq1/Meny saknas/maq1/Meny saknas/maq1/Meny saknas/maq1/Meny saknas/maq1/Meny saknas/maq1/1";
 
-                } else {
+                } else if (size == 32) {
 
                     for (int i = 0; i < 5 ; i++) {
 
@@ -721,7 +757,7 @@ public class MainActivity extends AppCompatActivity
 
         }
 
-    };
+    }
 
     public void skolMaten() {
         runOnUiThread(new Runnable() {
@@ -772,7 +808,7 @@ public class MainActivity extends AppCompatActivity
 
         mat = realDeal.split("/maq1/");
 
-        if (mat.length == 7) {
+        if (mat.length == 6) {
 
             textView1.setText(mat[1]);
             textView2.setText(mat[2]);

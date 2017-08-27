@@ -117,7 +117,9 @@
                         android:layout_height="wrap_content"
                         android:id="@+id/test_text1"
                         android:paddingLeft="8dp"
+                        android:paddingRight="8dp"
                         android:textSize="14sp"
+                        android:gravity="center_horizontal"
                         android:textColor="@color/colorTextAlt"/>
 
                     <TextView
@@ -151,7 +153,9 @@
                         android:layout_height="wrap_content"
                         android:id="@+id/test_text2"
                         android:paddingLeft="8dp"
+                        android:paddingRight="8dp"
                         android:textSize="14sp"
+                        android:gravity="center_horizontal"
                         android:textColor="@color/colorTextAlt"/>
 
                     <TextView
@@ -184,7 +188,9 @@
                         android:layout_height="wrap_content"
                         android:id="@+id/test_text3"
                         android:paddingLeft="8dp"
+                        android:paddingRight="8dp"
                         android:textSize="14sp"
+                        android:gravity="center_horizontal"
                         android:textColor="@color/colorTextAlt"/>
 
                     <TextView
@@ -217,7 +223,9 @@
                         android:layout_height="wrap_content"
                         android:id="@+id/test_text4"
                         android:paddingLeft="8dp"
+                        android:paddingRight="8dp"
                         android:textSize="14sp"
+                        android:gravity="center_horizontal"
                         android:textColor="@color/colorTextAlt"/>
 
                     <TextView
@@ -250,7 +258,9 @@
                         android:layout_height="wrap_content"
                         android:id="@+id/test_text5"
                         android:paddingLeft="8dp"
+                        android:paddingRight="8dp"
                         android:textSize="14sp"
+                        android:gravity="center_horizontal"
                         android:textColor="@color/colorTextAlt"/>
 
                     <TextView
