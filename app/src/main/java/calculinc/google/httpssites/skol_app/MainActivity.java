@@ -1,11 +1,11 @@
 package calculinc.google.httpssites.skol_app;
 
-import android.graphics.Color;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.content.ContextCompat;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout.LayoutParams;
@@ -533,7 +533,7 @@ public class MainActivity extends AppCompatActivity
                                     LinearLayout.LayoutParams paramsLektion = new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
                                     paramsLektion.weight = (float)(sluttid - starttid);
                                     lektion.setLayoutParams(paramsLektion);
-                                    lektion.setBackgroundColor(Color.parseColor("#70ff5a36"));
+                                    lektion.setBackgroundColor(ContextCompat.getColor(getBaseContext(), R.color.colorSchemaViewVeckaLektionBackground));
                                     lektion.setTextSize(0);
                                     //lektion.setBackgroundResource(ya_blew_it);
                                     //lektion.setText(öpö);
@@ -555,14 +555,14 @@ public class MainActivity extends AppCompatActivity
                                     LinearLayout.LayoutParams LinDayParams = new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, (int)((sluttid - starttid) * 90 * getResources().getDimension(R.dimen.dp_unit)));
                                     LinDayParams.setMargins(0,(int)(starttid * 90 * getResources().getDimension(R.dimen.dp_unit)),0,0);
                                     linearDay.setLayoutParams(LinDayParams);
-                                    //linearDay.setBackgroundColor(Color.parseColor("#70ff5a36"));
+                                    linearDay.setBackgroundColor(ContextCompat.getColor(getBaseContext(), R.color.colorSchemaViewDayLektionBackground));
 
                                     TextView dayTop = new TextView(getBaseContext());
                                     LinearLayout.LayoutParams TopDayParams = new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, (int)(15 * getResources().getDimension(R.dimen.dp_unit)));
                                     dayTop.setLayoutParams(TopDayParams);
                                     dayTop.setGravity(Gravity.START | Gravity.CENTER_VERTICAL);
                                     dayTop.setTextSize(12);
-                                    dayTop.setTextColor(Color.parseColor("#1f1f1f"));
+                                    dayTop.setTextColor(ContextCompat.getColor(getBaseContext(), R.color.colorSchemaViewDayLektionText));
                                     dayTop.setText(StartTid);
                                     linearDay.addView(dayTop);
 
@@ -571,7 +571,7 @@ public class MainActivity extends AppCompatActivity
                                     dayMid.setLayoutParams(TopDayParams);
                                     dayMid.setGravity(Gravity.CENTER);
                                     dayMid.setTextSize(20);
-                                    dayMid.setTextColor(Color.parseColor("#1f1f1f"));
+                                    dayMid.setTextColor(ContextCompat.getColor(getBaseContext(), R.color.colorSchemaViewDayLektionText));
                                     dayMid.setText(öpö);
                                     linearDay.addView(dayMid);
 
@@ -580,7 +580,7 @@ public class MainActivity extends AppCompatActivity
                                     dayBot.setLayoutParams(TopDayParams);
                                     dayBot.setGravity(Gravity.END | Gravity.CENTER_VERTICAL);
                                     dayBot.setTextSize(12);
-                                    dayBot.setTextColor(Color.parseColor("#1f1f1f"));
+                                    dayBot.setTextColor(ContextCompat.getColor(getBaseContext(), R.color.colorSchemaViewDayLektionText));
                                     dayBot.setText(SlutTid);
                                     linearDay.addView(dayBot);
 
@@ -843,21 +843,21 @@ public class MainActivity extends AppCompatActivity
 
     public void fidget_spinner(){
 
-        Spinner spinner = (Spinner) findViewById(R.id.fidget_spinner);
+        Spinner spinnerLoginGender = (Spinner) findViewById(R.id.fidget_spinner);
         Spinner spinnerSchemaType = (Spinner) findViewById(R.id.typ_spinner);
 
 // Create an ArrayAdapter using the string array and a default spinner layout
-        ArrayAdapter adapter = ArrayAdapter.createFromResource(this, R.array.gender_array, R.layout.spinner_layout);
-        spinner.setAdapter(adapter);
+        ArrayAdapter adapterGender = ArrayAdapter.createFromResource(this, R.array.gender_array, R.layout.spinner_login_layout);
+        spinnerLoginGender.setAdapter(adapterGender);
 
-        ArrayAdapter adapterTyp = ArrayAdapter.createFromResource(this, R.array.typ_array, R.layout.spinner_layout);
+        ArrayAdapter adapterTyp = ArrayAdapter.createFromResource(this, R.array.typ_array, R.layout.spinner_schema_layout);
         spinnerSchemaType.setAdapter(adapterTyp);
 
 // Specify the layout to use when the list of choices appears
-        adapter.setDropDownViewResource(R.layout.spinner_dropdown_layout);
-        adapterTyp.setDropDownViewResource(R.layout.spinner_dropdown_layout);
+        adapterGender.setDropDownViewResource(R.layout.spinner_login_dropdown_layout);
+        adapterTyp.setDropDownViewResource(R.layout.spinner_schema_dropdown_layout);
 // Apply the adapter to the spinner
-        spinner.setAdapter(adapter);
+        spinnerLoginGender.setAdapter(adapterGender);
         spinnerSchemaType.setAdapter(adapterTyp);
 
     }

@@ -1,19 +1,19 @@
 <vector xmlns:android="http://schemas.android.com/apk/res/android"
-    android:width="160dp"
+    android:width="120dp"
     android:height="33dp"
     android:viewportHeight="22"
-    android:viewportWidth="102">
+    android:viewportWidth="80">
 
     <group android:name="foreground">
         <path
-            android:strokeColor="@color/colorLoginInputsDrawable"
+            android:strokeColor="@color/colorLoginSpinnerDrawable"
             android:strokeWidth="1"
-            android:pathData="M101,11 L91,21 L1,21" />
+            android:pathData="M79,11 L69,21 L1,21" />
     </group>
     <group android:name="background">
         <path
-            android:fillColor="@color/colorLoginInputsDrawable"
-            android:pathData="M101,11 L91,21 L91,11 z" />
+            android:fillColor="@color/colorLoginSpinnerDrawable"
+            android:pathData="M79,11 L69,21 L69,11 z" />
     </group>
 
 </vector>

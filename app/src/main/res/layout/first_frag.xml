@@ -26,21 +26,21 @@
                 android:id="@+id/dagens_mat"
                 android:layout_width="303dp"
                 android:layout_height="123dp"
-                android:textColor="@color/colorTextAlt"
+                android:textColor="@color/colorMatIdagText"
                 android:textSize="15sp"
                 android:paddingTop="42dp"
                 android:gravity="center_horizontal|top"
                 android:paddingRight="8dp"
                 android:paddingLeft="8dp"
                 android:elevation="3dp"
-                android:background="@drawable/rect_test" />
+                android:background="@drawable/rect_matsedel_dagens" />
 
         </LinearLayout>
 
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textColor="@color/colorAccent"
+            android:textColor="@color/colorMatIdagHeaderText"
             android:textSize="20sp"
             android:text="Dagens mat"
             android:paddingTop="10dp"

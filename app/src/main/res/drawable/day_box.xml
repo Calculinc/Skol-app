@@ -6,7 +6,7 @@
 
     <group android:name="foreground">
         <path
-            android:strokeColor="@color/colorSchemaViewVeckaDaysDrawable"
+            android:strokeColor="@color/colorSchemaViewVeckaDaysHeader"
             android:strokeWidth="1"
             android:pathData="M1,1 L1,11 L11,21 L31,21 L41,11 L41,1 " />
     </group>
