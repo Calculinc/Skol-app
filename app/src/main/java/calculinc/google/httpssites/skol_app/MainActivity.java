@@ -82,7 +82,7 @@ public class MainActivity extends AppCompatActivity
     Document docpsdgh = Jsoup.parse("ll");
 
     String[] mat;
-    String realDeal = "/maq1/För lång kö till matsalen. Kunde inte se matsedeln/maq1/För lång kö till matsalen. Kunde inte se matsedeln/maq1/För lång kö till matsalen. Kunde inte se matsedeln/maq1/För lång kö till matsalen. Kunde inte se matsedeln/maq1/För lång kö till matsalen. Kunde inte se matsedeln/maq1/1";
+    String realDeal = "/maq1/För lång kö till matsalen. Kunde inte se matsedeln/maq1/För lång kö till matsalen. Kunde inte se matsedeln/maq1/För lång kö till matsalen. Kunde inte se matsedeln/maq1/För lång kö till matsalen. Kunde inte se matsedeln/maq1/För lång kö till matsalen. Kunde inte se matsedeln";
     String title;
     String simple;
     Document doc1 = Jsoup.parse("<html><head>\n" +
@@ -800,6 +800,12 @@ public class MainActivity extends AppCompatActivity
         TextView textView4 = (TextView) findViewById(R.id.test_text4);
         TextView textView5 = (TextView) findViewById(R.id.test_text5);
 
+        LinearLayout monday = (LinearLayout) findViewById(R.id.matsedel_monday);
+        LinearLayout tuesday = (LinearLayout) findViewById(R.id.matsedel_tuesday);
+        LinearLayout wednesday = (LinearLayout) findViewById(R.id.matsedel_wednesday);
+        LinearLayout thursday = (LinearLayout) findViewById(R.id.matsedel_thursday);
+        LinearLayout friday = (LinearLayout) findViewById(R.id.matsedel_friday);
+
         TextView dagens = (TextView) findViewById(R.id.dagens_mat);
 
         LinearLayout progressLayout = (LinearLayout) findViewById(R.id.progress_layout);
@@ -810,23 +816,65 @@ public class MainActivity extends AppCompatActivity
 
         if (mat.length == 6) {
 
+            if (currentDay < 2) {
+
+                monday.setVisibility(View.VISIBLE);
+                textView1.setText(mat[1]);
+
+            } else {
+
+                monday.setVisibility(View.GONE);
+            }
+
+            if (currentDay < 3) {
+
+                tuesday.setVisibility(View.VISIBLE);
+                textView2.setText(mat[3-currentDay]);
+
+            } else {
+
+                tuesday.setVisibility(View.GONE);
+            }
+
+            if (currentDay < 4) {
+                wednesday.setVisibility(View.VISIBLE);
+                textView3.setText(mat[4-currentDay]);
+
+            } else {
+
+                wednesday.setVisibility(View.GONE);
+            }
+
+            if (currentDay < 5) {
+                thursday.setVisibility(View.VISIBLE);
+                textView4.setText(mat[5-currentDay]);
+
+            } else {
+
+                thursday.setVisibility(View.GONE);
+            }
+
+            if (currentDay < 6) {
+                friday.setVisibility(View.VISIBLE);
+                textView5.setText(mat[6-currentDay]);
+
+            } else {
+
+                friday.setVisibility(View.GONE);
+            }
+
+
+            dagens.setText(mat[1]);
+
+        } else {
+
             textView1.setText(mat[1]);
             textView2.setText(mat[2]);
             textView3.setText(mat[3]);
             textView4.setText(mat[4]);
             textView5.setText(mat[5]);
 
-            dagens.setText(mat[currentDay]);
-
-        } else {
-
-            textView1.setText(mat[1].substring(12));
-            textView2.setText(mat[2].substring(12));
-            textView3.setText(mat[3].substring(12));
-            textView4.setText(mat[4].substring(12));
-            textView5.setText(mat[5].substring(12));
-
-            dagens.setText(mat[currentDay].substring(12));
+            dagens.setText(mat[1]);
         }
     }
 

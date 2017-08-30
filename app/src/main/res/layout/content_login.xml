@@ -106,7 +106,6 @@
                     android:layout_marginTop="20dp"
                     android:dropDownSelector="@color/colorLoginDropdownSelected"
                     android:id="@+id/fidget_spinner"
-                    android:background="@drawable/text_box_spinner_login"
                     android:textColor="@color/colorLoginText"
                     android:textColorHint="@color/colorLoginTextHint"
                     android:popupBackground="@color/colorLoginDropdownBackground" />

@@ -137,7 +137,6 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:dropDownSelector="@color/colorSchemaBeltDropdownSelected"
-                android:background="@drawable/text_box_spinner_schema"
                 android:id="@+id/typ_spinner"
                 android:popupBackground="@color/colorSchemaBeltDropdownBackground" />
 
@@ -146,7 +145,6 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:dropDownSelector="@color/colorSchemaBeltDropdownBackground"
-                android:background="@drawable/text_box_spinner_schema"
                 android:id="@+id/typ_spinner2"
                 android:popupBackground="@color/colorSchemaBeltDropdownSelected" />
 

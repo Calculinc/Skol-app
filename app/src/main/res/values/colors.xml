@@ -12,9 +12,9 @@
 
     <!--  Drawer colors
           -->
-    <color name="colorDrawerGradientStart">#ff80ff</color>
-    <color name="colorDrawerGradientCenter">#c060c0</color>
-    <color name="colorDrawerGradientEnd">#904090</color>
+    <color name="colorDrawerGradientStart">#0b1433</color>
+    <color name="colorDrawerGradientCenter">#1e3164</color>
+    <color name="colorDrawerGradientEnd">#5d6e93</color>
     <color name="colorDrawerGradientTextHeader">@color/colorThird</color>
     <color name="colorDrawerGradientText">@color/colorThird</color>
 
@@ -32,27 +32,27 @@
     <color name="colorSchemaLektionMiniFill">#ffffff</color>
     <color name="colorSchemaLektionMiniText">@color/colorSecondary</color>
 
-    <color name="colorSchemaBeltBackground">@color/colorSecondary</color>
-    <color name="colorSchemaBeltText">#ffffff</color>
+    <color name="colorSchemaBeltBackground">@color/colorBackground</color>
+    <color name="colorSchemaBeltText">#707070</color>
     <color name="colorSchemaBeltDropdownSelected">#ffffff</color>
     <color name="colorSchemaBeltDropdownText">@color/colorSecondary</color>
     <color name="colorSchemaBeltDropdownBackground">@color/colorThird</color>
     <color name="colorSchemaBeltSpinnerDrawable">#ffffff</color>
 
     <color name="colorSchemaViewVeckaBackground">#ffffff</color>
-    <color name="colorSchemaViewVeckaDaysHeader">@color/colorSecondary</color>
+    <color name="colorSchemaViewVeckaDaysHeader">@color/colorPrimary</color>
     <color name="colorSchemaViewVeckaDayText">#ffffff</color>
     <color name="colorSchemaViewVeckaDays">@color/colorThird</color>
-    <color name="colorSchemaViewVeckaLektionBackground">@color/colorSecondary</color>
+    <color name="colorSchemaViewVeckaLektionBackground">#ffffff</color>
     <color name="colorSchemaViewVeckaDayLines">#ffffff</color>
     <color name="colorSchemaViewVeckaTimelines">@color/colorSecondary</color>
     <color name="colorSchemaViewVeckaTimelineText">@color/colorSecondary</color>
 
     <color name="colorSchemaViewDayBackground">#ffffff</color>
-    <color name="colorSchemaViewDayHeader">@color/colorSecondary</color>
-    <color name="colorSchemaViewDayHeaderText">@color/colorPrimary</color>
+    <color name="colorSchemaViewDayHeader">@color/colorPrimary</color>
+    <color name="colorSchemaViewDayHeaderText">#ffffff</color>
     <color name="colorSchemaViewDayDays">@color/colorThird</color>
-    <color name="colorSchemaViewDayLektionBackground">@color/colorSecondary</color>
+    <color name="colorSchemaViewDayLektionBackground">#ffffff</color>
     <color name="colorSchemaViewDayLektionText">#ffffff</color>
 
 
@@ -61,19 +61,19 @@
     <color name="colorMatIdagBackground">#ffffff</color>
     <color name="colorMatIdagBox">@color/colorThird</color>
     <color name="colorMatIdagHeaderText">@color/colorSecondary</color>
-    <color name="colorMatIdagText">#ffffff</color>
+    <color name="colorMatIdagText">#707070</color>
 
-    <color name="colorMatBeltBackground">@color/colorSecondary</color>
-    <color name="colorMatBeltRatingFull">#ffffff</color>
-    <color name="colorMatBeltRatingEmpty">#ffffff</color>
-    <color name="colorMatBeltRatingHalf">#ffffff</color>
+    <color name="colorMatBeltBackground">@color/colorBackground</color>
+    <color name="colorMatBeltRatingFull">#ffb3dd</color>
+    <color name="colorMatBeltRatingEmpty">#ffb3dd</color>
+    <color name="colorMatBeltRatingHalf">#ffb3dd</color>
     <color name="colorMatBeltButton">@color/colorThird</color>
-    <color name="colorMatBeltButtonText">#ffffff</color>
+    <color name="colorMatBeltButtonText">@color/colorSecondary</color>
 
     <color name="colorMatSedelBackground">#ffffff</color>
     <color name="colorMatSedelBox">@color/colorThird</color>
     <color name="colorMatSedelBoxHeader">@color/colorSecondary</color>
-    <color name="colorMatSedelBoxText">#ffffff</color>
+    <color name="colorMatSedelBoxText">#707070</color>
 
 
     <!--  Login colors
@@ -94,7 +94,7 @@
                   -->
     <color name="colorStyleAppThemePrimary">@color/colorPrimary</color>
     <color name="colorStyleAppThemeSecondary">@color/colorStatusBarBackground</color><!--  Statusbar color -->
-    <color name="colorStyleAppThemeThird">@color/colorThird</color><!--  ratingbarfull, switch-day and editText cursor color -->
+    <color name="colorStyleAppThemeThird">@color/colorSecondary</color><!--  ratingbarfull, switch-day and editText cursor color -->
 
 
     <!--  Other colors
@@ -103,9 +103,9 @@
 
 
 
-    <color name="colorPrimary">#ffffff</color>
-    <color name="colorSecondary">#013c06</color>
-    <color name="colorThird">#8fc369</color>
+    <color name="colorPrimary">#6a728b</color>
+    <color name="colorSecondary">#011a3c</color>
+    <color name="colorThird">#d9d9d9</color>
 
 
 </resources>

@@ -24,11 +24,15 @@
 
             <TextView
                 android:id="@+id/dagens_mat"
-                android:layout_width="303dp"
-                android:layout_height="123dp"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
                 android:textColor="@color/colorMatIdagText"
+                android:layout_marginTop="10dp"
+                android:layout_marginBottom="10dp"
+                android:layout_marginRight="10dp"
+                android:layout_marginLeft="10dp"
                 android:textSize="15sp"
-                android:paddingTop="42dp"
+                android:paddingTop="32dp"
                 android:gravity="center_horizontal|top"
                 android:paddingRight="8dp"
                 android:paddingLeft="8dp"
