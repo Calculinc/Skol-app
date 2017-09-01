@@ -32,6 +32,9 @@ import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.ViewFlipper;
 
+import com.itextpdf.text.pdf.PdfContentParser;
+import com.itextpdf.text.pdf.PdfDocument;
+import com.itextpdf.text.pdf.PdfObject;
 import com.itextpdf.text.pdf.PdfReader;
 import com.itextpdf.text.pdf.parser.PdfTextExtractor;
 
@@ -65,11 +68,11 @@ public class MainActivity extends AppCompatActivity
 
     long id_number;
     int currentWeek = GregorianCalendar.getInstance().get(Calendar.WEEK_OF_YEAR);
-    int currentDay = GregorianCalendar.getInstance().get(Calendar.DAY_OF_WEEK);
+    int currentDay = GregorianCalendar.getInstance().get(Calendar.DAY_OF_WEEK) - 1;
     int currentHour = GregorianCalendar.getInstance().get(Calendar.HOUR_OF_DAY);
     int currentMinute = GregorianCalendar.getInstance().get(Calendar.MINUTE);
 
-    int downloadWeek = currentWeek;
+    int downloadWeek, focusDay;
 
     String schemaFileName = "Nova.txt";
     File schemaFile;
@@ -167,14 +170,10 @@ public class MainActivity extends AppCompatActivity
         navigationView.setNavigationItemSelectedListener(this);
 
         TextView kek = (TextView) findViewById(R.id.öpö);
-        kek.setText(String.valueOf(currentMinute));
+        kek.setText(String.valueOf(currentHour));
 
-        if (currentDay == 7) {
-            currentDay = 1;
-        }
-        if (currentDay != 1) {
-            currentDay--;
-        }
+        schemaTimeRefresh bootUpTimeSync = new schemaTimeRefresh();
+        bootUpTimeSync.start();
 
         loginFile = new File(getFilesDir() + "/" + loginFileName);
 
@@ -267,7 +266,7 @@ public class MainActivity extends AppCompatActivity
         ViewPager pager = (ViewPager) findViewById(R.id.view_pager2);
         PagerAdapter pagerAdapter = new FixedDayPagerAdapter(getSupportFragmentManager());
         pager.setAdapter(pagerAdapter);
-        pager.setCurrentItem( currentDay -1 );
+        pager.setCurrentItem(focusDay - 1);
 
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tab_layout2);
         tabLayout.setupWithViewPager(pager);
@@ -403,19 +402,39 @@ public class MainActivity extends AppCompatActivity
         return true;
     }
 
-    public void schemaTimeRefresh() {
+    private class schemaTimeRefresh extends Thread {
+        public void run() {
+            currentWeek = GregorianCalendar.getInstance().get(Calendar.WEEK_OF_YEAR);
+            currentDay = GregorianCalendar.getInstance().get(Calendar.DAY_OF_WEEK) - 1;
+            currentHour = GregorianCalendar.getInstance().get(Calendar.HOUR_OF_DAY);
+            currentMinute = GregorianCalendar.getInstance().get(Calendar.MINUTE);
 
-        currentWeek = GregorianCalendar.getInstance().get(Calendar.WEEK_OF_YEAR);
-        currentDay = GregorianCalendar.getInstance().get(Calendar.DAY_OF_WEEK);
-        currentHour = GregorianCalendar.getInstance().get(Calendar.HOUR_OF_DAY);
-        currentMinute = GregorianCalendar.getInstance().get(Calendar.MINUTE);
 
+            if (currentHour < 18) {
+                focusDay = currentDay;
+            } else {
+                focusDay = currentDay + 1;
+            }
+            if (focusDay == 0 || focusDay == 6 || focusDay == 7) {
+                focusDay = 1;
+                downloadWeek = currentWeek + 1;
+            } else {
+                downloadWeek = currentWeek;
+            }
+        }
     }
 
     private class schemaSelect extends Thread {
         public void run() {
 
-            downloadWeek = 34;
+            schemaTimeRefresh onSelectTimeSync = new schemaTimeRefresh();
+            onSelectTimeSync.start();
+            try {
+                onSelectTimeSync.join();
+            }catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+
             String nameOfFile = "id:" + id_number + "week:" + downloadWeek + "_" + schemaFileName;
             schemaFile = new File(getFilesDir() + "/" + nameOfFile);
             String downloadID = String.valueOf(id_number);
@@ -433,7 +452,17 @@ public class MainActivity extends AppCompatActivity
     }
 
     private class schemaRefresh extends Thread {
+        public void run() {
 
+            schemaTimeRefresh onSelectTimeSync = new schemaTimeRefresh();
+            onSelectTimeSync.start();
+            try {
+                onSelectTimeSync.join();
+            }catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+
+        }
     }
 
     public void drawSchema() {
@@ -952,7 +981,6 @@ public class MainActivity extends AppCompatActivity
                     try {
                         PdfReader reader = new PdfReader(tempFile.getPath());
                         päron = PdfTextExtractor.getTextFromPage(reader, 1);
-                        reader.close();
                     } catch (IOException e) {
                         e.printStackTrace();
                         downloadSuccess = false;
