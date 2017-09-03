@@ -25,6 +25,8 @@
 
     <!--  Schema colors
           -->
+    <color name="colorSchemaBackground">#ffffff</color>
+
     <color name="colorSchemaLektionBackground">#ffffff</color>
     <color name="colorSchemaLektionBorder">@color/colorSecondary</color>
     <color name="colorSchemaLektionFill">@color/colorThird</color>
@@ -58,6 +60,8 @@
 
     <!--  Matsedel colors
               -->
+    <color name="colorMatBackground">#ffffff</color>
+
     <color name="colorMatIdagBackground">#ffffff</color>
     <color name="colorMatIdagBox">@color/colorThird</color>
     <color name="colorMatIdagHeaderText">@color/colorSecondary</color>
@@ -79,6 +83,7 @@
     <!--  Login colors
               -->
     <color name="colorLoginBackground">#ffffff</color>
+
     <color name="colorLoginText">@color/colorSecondary</color>
     <color name="colorLoginTextHint">@color/colorThird</color>
     <color name="colorLoginTextDrawable">@color/colorSecondary</color>
