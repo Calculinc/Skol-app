@@ -69,7 +69,9 @@ import calculinc.google.httpssites.skol_app.days.Wednesday;
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
-    long id_number;
+    String id_number;
+    int genderInteger;
+
     int currentWeek = GregorianCalendar.getInstance().get(Calendar.WEEK_OF_YEAR);
     int currentDay = GregorianCalendar.getInstance().get(Calendar.DAY_OF_WEEK) - 1;
     int currentHour = GregorianCalendar.getInstance().get(Calendar.HOUR_OF_DAY);
@@ -179,32 +181,7 @@ public class MainActivity extends AppCompatActivity
         schemaTimeRefresh bootUpTimeSync = new schemaTimeRefresh();
         bootUpTimeSync.start();
 
-        loginFile = new File(getFilesDir() + "/" + loginFileName);
-
-        try {
-            if (loginFile.exists()) {
-                FileInputStream fis = openFileInput(loginFileName);
-                InputStreamReader isr = new InputStreamReader(fis);
-                BufferedReader bufferedReader = new BufferedReader(isr);
-                StringBuilder sb = new StringBuilder();
-                String line;
-                while ((line = bufferedReader.readLine()) != null) {
-                    sb.append(line);
-                }
-                String loginString = sb.toString();
-
-                id_number = Long.parseLong(loginString);
-                EditText personal_id = (EditText) findViewById(R.id.editText);
-                if (id_number == 0) {
-                    personal_id.setText("");
-                } else {
-                    personal_id.setText(String.valueOf(id_number));
-                }
-
-            }
-        }catch (IOException e) {
-            e.printStackTrace();
-        }
+        getSavedLoginContent();
     }
 
     public class FixedTabsPagerAdapter extends FragmentPagerAdapter {
@@ -286,24 +263,73 @@ public class MainActivity extends AppCompatActivity
         tabLayout.setupWithViewPager(pager);
     }
 
+    public void getSavedLoginContent() {
+        loginFile = new File(getFilesDir() + "/" + loginFileName);
+
+        try {
+            if (loginFile.exists()) {
+                FileInputStream fis = openFileInput(loginFileName);
+                InputStreamReader isr = new InputStreamReader(fis);
+                BufferedReader bufferedReader = new BufferedReader(isr);
+                StringBuilder sb = new StringBuilder();
+                String line;
+                while ((line = bufferedReader.readLine()) != null) {
+                    sb.append(line);
+                }
+                String[] loginParams = sb.toString().split("%");
+                id_number = loginParams[4];
+                genderInteger = Integer.parseInt(loginParams[5]);
+
+                EditText name = (EditText) findViewById(R.id.name1);
+                EditText surname = (EditText) findViewById(R.id.name2);
+                EditText phone = (EditText) findViewById(R.id.mobile_number);
+                EditText city = (EditText) findViewById(R.id.city);
+                EditText personal_id = (EditText) findViewById(R.id.personalid);
+
+                name.setText(loginParams[0]);
+                surname.setText(loginParams[1]);
+                phone.setText(loginParams[2]);
+                city.setText(loginParams[3]);
+                personal_id.setText(id_number);
+
+            }
+        }catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
+
     public void loginSubmit (View view) {
-        final EditText personal_id = (EditText) findViewById(R.id.editText);
         final Animation anim_button_click = AnimationUtils.loadAnimation(this, R.anim.anim_button_click);
-
-        matsedel();
-
         view.startAnimation(anim_button_click);
 
-        if (personal_id.getText().toString().equals("")) {
-            id_number = 0;
-        } else {
-            id_number = Long.parseLong(personal_id.getText().toString());
-        }
-        String login_content = String.valueOf(id_number);
+        final EditText name = (EditText) findViewById(R.id.name1);
+        final EditText surname = (EditText) findViewById(R.id.name2);
+        final EditText phone = (EditText) findViewById(R.id.mobile_number);
+        final EditText city = (EditText) findViewById(R.id.city);
+        final EditText personal_id = (EditText) findViewById(R.id.personalid);
+        final Spinner spinnerLoginGender = (Spinner) findViewById(R.id.fidget_spinner);
+
+        StringBuilder loginContent = new StringBuilder();
+        id_number = personal_id.getText().toString();
+        int id_spinneritemgender = spinnerLoginGender.getSelectedItemPosition();
+        if (id_spinneritemgender > 2) {id_spinneritemgender = 2;}
+
+        loginContent.append(name.getText().toString());
+        loginContent.append("%");
+        loginContent.append(surname.getText().toString());
+        loginContent.append("%");
+        loginContent.append(phone.getText().toString());
+        loginContent.append("%");
+        loginContent.append(city.getText().toString());
+        loginContent.append("%");
+        loginContent.append(id_number);
+        loginContent.append("%");
+        loginContent.append(String.valueOf(id_spinneritemgender));
+
         FileOutputStream outputStream;
         try {
             outputStream = openFileOutput(loginFileName,MODE_PRIVATE);
-            outputStream.write(login_content.getBytes());
+            outputStream.write(loginContent.toString().getBytes());
             outputStream.close();
         } catch (Exception e) {
             e.printStackTrace();
@@ -441,7 +467,7 @@ public class MainActivity extends AppCompatActivity
 
             String nameOfFile = "id:" + id_number + "week:" + downloadWeek + "_" + schemaFileName;
             schemaFile = new File(getFilesDir() + "/" + nameOfFile);
-            String downloadID = String.valueOf(id_number);
+            String downloadID = id_number;
 
             DownloadFile M = new DownloadFile(downloadID,downloadWeek,nameOfFile);
             M.start();
@@ -950,6 +976,8 @@ public class MainActivity extends AppCompatActivity
 // Apply the adapter to the spinner
         spinnerLoginGender.setAdapter(adapterGender);
         spinnerSchemaType.setAdapter(adapterTyp);
+
+        spinnerLoginGender.setSelection(genderInteger);
 
     }
 

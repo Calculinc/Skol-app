@@ -42,7 +42,8 @@
                     android:layout_marginTop="32dp"
                     android:paddingLeft="8dp"
                     android:hint="@string/Hint_förnamn"
-                    android:inputType="text"
+                    android:inputType="textCapSentences"
+                    android:digits="abcdefghijklmnopqrstuvwxyzåäöABCDEFGHIJKLMNOPQRSTUVWXYZÅÄÖ-"
                     android:textColor="@color/colorLoginText"
                     android:textColorHint="@color/colorLoginTextHint" />
 
@@ -54,17 +55,19 @@
                     android:paddingLeft="8dp"
                     android:hint="@string/Hint_telefon"
                     android:inputType="phone"
+                    android:maxLength="10"
                     android:textColor="@color/colorLoginText"
                     android:textColorHint="@color/colorLoginTextHint" />
 
                 <EditText
-                    android:id="@+id/editText"
+                    android:id="@+id/personalid"
                     android:layout_width="160dp"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="20dp"
                     android:hint="@string/Hint_personnummer"
                     android:paddingLeft="8dp"
                     android:inputType="number"
+                    android:maxLength="10"
                     android:textColor="@color/colorLoginText"
                     android:textColorHint="@color/colorLoginTextHint" />
 
@@ -85,7 +88,8 @@
                     android:layout_marginTop="32dp"
                     android:paddingLeft="8dp"
                     android:hint="@string/Hint_efternamn"
-                    android:inputType="text"
+                    android:inputType="textCapSentences"
+                    android:digits="abcdefghijklmnopqrstuvwxyzåäöABCDEFGHIJKLMNOPQRSTUVWXYZÅÄÖ-"
                     android:textColor="@color/colorLoginText"
                     android:textColorHint="@color/colorLoginTextHint" />
 
@@ -96,7 +100,8 @@
                     android:layout_marginTop="20dp"
                     android:paddingLeft="8dp"
                     android:hint="@string/Hint_stad"
-                    android:inputType="text"
+                    android:inputType="textCapSentences"
+                    android:digits="abcdefghijklmnopqrstuvwxyzåäöABCDEFGHIJKLMNOPQRSTUVWXYZÅÄÖ-"
                     android:textColor="@color/colorLoginText"
                     android:textColorHint="@color/colorLoginTextHint" />
 
