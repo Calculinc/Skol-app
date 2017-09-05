@@ -45,7 +45,7 @@
     <color name="colorSchemaViewVeckaDaysHeader">@color/colorPrimary</color>
     <color name="colorSchemaViewVeckaDayText">#ffffff</color>
     <color name="colorSchemaViewVeckaDays">@color/colorThird</color>
-    <color name="colorSchemaViewVeckaLektionBackground">#ffffff</color>
+    <color name="colorSchemaViewVeckaLektionBackground">@color/colorSecondary</color>
     <color name="colorSchemaViewVeckaDayLines">#ffffff</color>
     <color name="colorSchemaViewVeckaTimelines">@color/colorSecondary</color>
     <color name="colorSchemaViewVeckaTimelineText">@color/colorSecondary</color>
@@ -54,7 +54,7 @@
     <color name="colorSchemaViewDayHeader">@color/colorPrimary</color>
     <color name="colorSchemaViewDayHeaderText">#ffffff</color>
     <color name="colorSchemaViewDayDays">@color/colorThird</color>
-    <color name="colorSchemaViewDayLektionBackground">#ffffff</color>
+    <color name="colorSchemaViewDayLektionBackground">@color/colorSecondary</color>
     <color name="colorSchemaViewDayLektionText">#ffffff</color>
 
 

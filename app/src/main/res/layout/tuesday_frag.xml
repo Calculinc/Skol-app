@@ -40,50 +40,6 @@
                     android:background="@color/colorSchemaViewDayDays"
                     android:id="@+id/relative_layout_tuesday">
 
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="200dp"
-                        android:text="lol"
-                        android:textSize="30sp"
-                        android:textColor="@color/colorSchemaViewDayLektionText"
-                        android:background="@color/colorSchemaViewDayDays"/>
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="200dp"
-                        android:layout_marginTop="200dp"
-                        android:text="löööl"
-                        android:textSize="30sp"
-                        android:textColor="@color/colorSchemaViewDayLektionText"
-                        android:background="@color/colorSchemaViewDayLektionBackground"/>
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="200dp"
-                        android:layout_marginTop="400dp"
-                        android:text="lol"
-                        android:textSize="30sp"
-                        android:textColor="@color/colorSchemaViewDayLektionText"
-                        android:background="@color/colorSchemaViewDayDays"/>
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="200dp"
-                        android:layout_marginTop="600dp"
-                        android:text="löööl"
-                        android:textSize="30sp"
-                        android:textColor="@color/colorSchemaViewDayLektionText"
-                        android:background="@color/colorSchemaViewDayLektionBackground"/>
-
-                    <TextView
-                        android:layout_width="match_parent"
-                        android:layout_height="100dp"
-                        android:layout_marginTop="800dp"
-                        android:text="lolöpö"
-                        android:textSize="30sp"
-                        android:textColor="@color/colorSchemaViewDayLektionText"
-                        android:background="@color/colorSchemaViewDayDays"/>
-
                 </RelativeLayout>
 
                 <LinearLayout

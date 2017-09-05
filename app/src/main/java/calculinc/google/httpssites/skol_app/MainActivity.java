@@ -1,5 +1,6 @@
 package calculinc.google.httpssites.skol_app;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
@@ -10,6 +11,7 @@ import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout.LayoutParams;
 import android.view.Gravity;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -19,6 +21,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
+import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ArrayAdapter;
@@ -88,6 +91,7 @@ public class MainActivity extends AppCompatActivity
     String realDeal = "/maq1/För lång kö till matsalen. Kunde inte se matsedeln/maq1/För lång kö till matsalen. Kunde inte se matsedeln/maq1/För lång kö till matsalen. Kunde inte se matsedeln/maq1/För lång kö till matsalen. Kunde inte se matsedeln/maq1/För lång kö till matsalen. Kunde inte se matsedeln";
     String title;
     String simple;
+    String tempSchema = "10:55%maq1ekax%RELREL01 NSJ A13%maq1ekax%12:10%maq1ekax%12:40%maq1ekax%MATTID%maq1ekax%13:00%maq1ekax%13:10%maq1ekax%SVESVE03 PLA B13%maq1ekax%14:10%maq1ekax%14:20%maq1ekax%SVESVE03 PLA B13%maq1ekax%15:20%day%08:20%maq1ekax%ENGENG07 JHA C11%maq1ekax%09:35%maq1ekax%09:45%maq1ekax%GYAR NSJ,MOR B41,B42%maq1ekax%10:45%maq1ekax%10:50%maq1ekax%MATTID%maq1ekax%11:10%maq1ekax%11:35%maq1ekax%MATMAT05 BAM A23%maq1ekax%12:35%maq1ekax%12:45%maq1ekax%14:00%maq1ekax%studiebesök KBN%maq1ekax%TTF/GYARB%maq1ekax%17:00%day%09:50%maq1ekax%KEBI MOR A41%maq1ekax%11:05%maq1ekax%11:30%maq1ekax%MATTID%maq1ekax%11:50%maq1ekax%12:10%maq1ekax%MATMAT05 BAM B14%maq1ekax%13:40%maq1ekax%13:50%maq1ekax%PRRPRR01 LZH B32%maq1ekax%15:05%maq1ekax%15:15%maq1ekax%RELREL01 NSJ A01%maq1ekax%16:30%day%09:50%maq1ekax%ENGENG07 JHA A14%maq1ekax%11:05%maq1ekax%11:25%maq1ekax%MATTID%maq1ekax%11:45%maq1ekax%12:00%maq1ekax%Mentorstid BAM B12%maq1ekax%12:30%maq1ekax%12:30%maq1ekax%SVESVE03 PLA B12%maq1ekax%13:30%maq1ekax%13:40%maq1ekax%FYSFYS02 LAD A32%maq1ekax%14:50%maq1ekax%15:15%maq1ekax%EGEN STUDIETID NSJ,MOR%maq1ekax%16:15%day%08:20%maq1ekax%PRRPRR01 LZH A21%maq1ekax%09:35%maq1ekax%09:45%maq1ekax%KEBI (a MOR A42%maq1ekax%11:15%maq1ekax%11:35%maq1ekax%MATTID%maq1ekax%11:55";
     Document doc1 = Jsoup.parse("<html><head>\n" +
             "\t<meta charset=\"utf-8\">\n" +
             "\t<title>Skolmaten - Östra Real</title>\n" +
@@ -484,8 +488,9 @@ public class MainActivity extends AppCompatActivity
                     e.printStackTrace();
                 }
 
-                if (schemaFile.exists()) {
-                    String[] druvor = sb.toString().split("%day%");
+                if (!schemaFile.exists()) {
+                    //String[] druvor = sb.toString().split("%day%");
+                    String[] druvor = tempSchema.split("%day%");
 
                     final int[] relWeekIDS = {
                             R.id.relativt_schema1,
@@ -494,12 +499,19 @@ public class MainActivity extends AppCompatActivity
                             R.id.relativt_schema4,
                             R.id.relativt_schema5
                     };
+                    final int[] relDayLay = {
+                            R.layout.monday_frag,
+                            R.layout.tuesday_frag,
+                            R.layout.wednesday_frag,
+                            R.layout.thursday_frag,
+                            R.layout.friday_frag
+                    };
                     final int[] relDayIDS = {
                             R.id.relative_layout_monday,
-                            R.id.relativt_schema2,
-                            R.id.relativt_schema3,
-                            R.id.relativt_schema4,
-                            R.id.relativt_schema5
+                            R.id.relative_layout_tuesday,
+                            R.id.relative_layout_wednesday,
+                            R.id.relative_layout_thurday,
+                            R.id.relative_layout_friday,
                     };
 
                     for (int i = 0; i <= 4; i++) {
@@ -514,8 +526,11 @@ public class MainActivity extends AppCompatActivity
                             desert = druvor;
                         }
 
+                        LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
+                        View pagerItemInflater = inflater.inflate(relDayLay[i], null);
+
                         RelativeLayout schema_space = (RelativeLayout) findViewById(relWeekIDS[i]);
-                        RelativeLayout schema_dayce = (RelativeLayout) findViewById(relDayIDS[i]);
+                        RelativeLayout schema_dayce = (RelativeLayout) pagerItemInflater.findViewById(relDayIDS[i]);
 
                         int status = 0;
                         String StartTid = "";
@@ -586,40 +601,39 @@ public class MainActivity extends AppCompatActivity
                                     linearDay.setLayoutParams(LinDayParams);
                                     linearDay.setBackgroundColor(ContextCompat.getColor(getBaseContext(), R.color.colorSchemaViewDayLektionBackground));
 
-                                    TextView dayTop = new TextView(getBaseContext());
-                                    LinearLayout.LayoutParams TopDayParams = new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, (int)(15 * getResources().getDimension(R.dimen.dp_unit)));
-                                    dayTop.setLayoutParams(TopDayParams);
-                                    dayTop.setGravity(Gravity.START | Gravity.CENTER_VERTICAL);
-                                    dayTop.setTextSize(12);
-                                    dayTop.setTextColor(ContextCompat.getColor(getBaseContext(), R.color.colorSchemaViewDayLektionText));
-                                    dayTop.setText(StartTid);
-                                    linearDay.addView(dayTop);
+                                    //TextView dayTop = new TextView(getBaseContext());
+                                    //LinearLayout.LayoutParams TopDayParams = new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, (int)(15 * getResources().getDimension(R.dimen.dp_unit)));
+                                    //dayTop.setLayoutParams(TopDayParams);
+                                    //dayTop.setGravity(Gravity.START | Gravity.CENTER_VERTICAL);
+                                    //dayTop.setTextSize(12);
+                                    //dayTop.setTextColor(ContextCompat.getColor(getBaseContext(), R.color.colorSchemaViewDayLektionText));
+                                    //dayTop.setText(StartTid);
+                                    //linearDay.addView(dayTop);
 
                                     TextView dayMid = new TextView(getBaseContext());
-                                    LinearLayout.LayoutParams MidDayParams = new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, (int)(((sluttid - starttid) * 90 - 30) * getResources().getDimension(R.dimen.dp_unit)));
-                                    dayMid.setLayoutParams(TopDayParams);
+                                    LinearLayout.LayoutParams MidDayParams = new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.MATCH_PARENT); //(int)(((sluttid - starttid) * 90 - 30) * getResources().getDimension(R.dimen.dp_unit))
+                                    dayMid.setLayoutParams(MidDayParams);
                                     dayMid.setGravity(Gravity.CENTER);
                                     dayMid.setTextSize(20);
                                     dayMid.setTextColor(ContextCompat.getColor(getBaseContext(), R.color.colorSchemaViewDayLektionText));
                                     dayMid.setText(öpö);
                                     linearDay.addView(dayMid);
 
-                                    TextView dayBot = new TextView(getBaseContext());
-                                    LinearLayout.LayoutParams BotDayParams = new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, (int)(15 * getResources().getDimension(R.dimen.dp_unit)));
-                                    dayBot.setLayoutParams(TopDayParams);
-                                    dayBot.setGravity(Gravity.END | Gravity.CENTER_VERTICAL);
-                                    dayBot.setTextSize(12);
-                                    dayBot.setTextColor(ContextCompat.getColor(getBaseContext(), R.color.colorSchemaViewDayLektionText));
-                                    dayBot.setText(SlutTid);
-                                    linearDay.addView(dayBot);
+                                    //TextView dayBot = new TextView(getBaseContext());
+                                    //LinearLayout.LayoutParams BotDayParams = new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, (int)(15 * getResources().getDimension(R.dimen.dp_unit)));
+                                    //dayBot.setLayoutParams(BotDayParams);
+                                    //dayBot.setGravity(Gravity.END | Gravity.CENTER_VERTICAL);
+                                    //dayBot.setTextSize(12);
+                                    //dayBot.setTextColor(ContextCompat.getColor(getBaseContext(), R.color.colorSchemaViewDayLektionText));
+                                    //dayBot.setText(SlutTid);
+                                    //linearDay.addView(dayBot);
 
                                     schema_dayce.addView(linearDay);
 
                                 }
-                            } catch (NumberFormatException e) {
+                            } catch (NumberFormatException | NullPointerException e) {
                                 e.printStackTrace();
                             }
-
                         }
                     }
                 } else {
