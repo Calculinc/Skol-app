@@ -10,6 +10,7 @@ import android.support.v4.content.ContextCompat;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout.LayoutParams;
+import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -55,6 +56,7 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.net.URLEncoder;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 
@@ -71,6 +73,8 @@ public class MainActivity extends AppCompatActivity
 
     String id_number;
     int genderInteger;
+
+    final String myTag = "DocsUpload";
 
     int currentWeek = GregorianCalendar.getInstance().get(Calendar.WEEK_OF_YEAR);
     int currentDay = GregorianCalendar.getInstance().get(Calendar.DAY_OF_WEEK) - 1;
@@ -94,70 +98,6 @@ public class MainActivity extends AppCompatActivity
     String title;
     String simple;
     String tempSchema = "10:55%maq1ekax%RELREL01 NSJ A13%maq1ekax%12:10%maq1ekax%12:40%maq1ekax%MATTID%maq1ekax%13:00%maq1ekax%13:10%maq1ekax%SVESVE03 PLA B13%maq1ekax%14:10%maq1ekax%14:20%maq1ekax%SVESVE03 PLA B13%maq1ekax%15:20%day%08:20%maq1ekax%ENGENG07 JHA C11%maq1ekax%09:35%maq1ekax%09:45%maq1ekax%GYAR NSJ,MOR B41,B42%maq1ekax%10:45%maq1ekax%10:50%maq1ekax%MATTID%maq1ekax%11:10%maq1ekax%11:35%maq1ekax%MATMAT05 BAM A23%maq1ekax%12:35%maq1ekax%12:45%maq1ekax%14:00%maq1ekax%studiebesök KBN%maq1ekax%TTF/GYARB%maq1ekax%17:00%day%09:50%maq1ekax%KEBI MOR A41%maq1ekax%11:05%maq1ekax%11:30%maq1ekax%MATTID%maq1ekax%11:50%maq1ekax%12:10%maq1ekax%MATMAT05 BAM B14%maq1ekax%13:40%maq1ekax%13:50%maq1ekax%PRRPRR01 LZH B32%maq1ekax%15:05%maq1ekax%15:15%maq1ekax%RELREL01 NSJ A01%maq1ekax%16:30%day%09:50%maq1ekax%ENGENG07 JHA A14%maq1ekax%11:05%maq1ekax%11:25%maq1ekax%MATTID%maq1ekax%11:45%maq1ekax%12:00%maq1ekax%Mentorstid BAM B12%maq1ekax%12:30%maq1ekax%12:30%maq1ekax%SVESVE03 PLA B12%maq1ekax%13:30%maq1ekax%13:40%maq1ekax%FYSFYS02 LAD A32%maq1ekax%14:50%maq1ekax%15:15%maq1ekax%EGEN STUDIETID NSJ,MOR%maq1ekax%16:15%day%08:20%maq1ekax%PRRPRR01 LZH A21%maq1ekax%09:35%maq1ekax%09:45%maq1ekax%KEBI (a MOR A42%maq1ekax%11:15%maq1ekax%11:35%maq1ekax%MATTID%maq1ekax%11:55";
-    Document doc1 = Jsoup.parse("<html><head>\n" +
-            "\t<meta charset=\"utf-8\">\n" +
-            "\t<title>Skolmaten - Östra Real</title>\n" +
-            "\t<meta name=\"apple-itunes-app\" content=\"app-id=416550379, app-argument=schoolmeal://ostra-real/\">\n" +
-            "\t<link rel=\"apple-touch-icon\" href=\"/apple-touch-icon.png\">\n" +
-            "\t<link rel=\"icon\" href=\"/favicon.ico\">\n" +
-            "\t<link rel=\"mask-icon\" href=\"/img/me/pin-icon.svg\" color=\"#2194F9\"><meta name=\"viewport\" content=\"width=device-width,initial-scale=1.0\"><link rel=\"stylesheet\" type=\"text/css\" href=\"/css/me/base.css?4-0-3\">\n" +
-            "\t\t<link rel=\"stylesheet\" type=\"text/css\" href=\"/css/theme.css?4-0-3\"><link rel=\"stylesheet\" type=\"text/css\" href=\"/css/me/viewer.css?4-0-3\"><script async=\"\" src=\"https://www.google-analytics.com/analytics.js\"></script><script type=\"text/javascript\" src=\"/environment.js?4-0-3\"></script>\n" +
-            "\t\t<script type=\"text/javascript\" src=\"/js/me/base.js?4-0-3\"></script><script type=\"text/javascript\" src=\"/js/me/viewer.js?4-0-3\"></script><script>\n" +
-            "\t\t(function(i,s,o,g,r,a,m){i['GoogleAnalyticsObject']=r;i[r]=i[r]||function(){\n" +
-            "\t\t(i[r].q=i[r].q||[]).push(arguments)},i[r].l=1*new Date();a=s.createElement(o),\n" +
-            "\t\tm=s.getElementsByTagName(o)[0];a.async=1;a.src=g;m.parentNode.insertBefore(a,m)\n" +
-            "\t\t})(window,document,'script','https://www.google-analytics.com/analytics.js','ga');ga('create', 'UA-68155234-2', 'auto');\n" +
-            "\t\t\tga('send', 'pageview');</script>\n" +
-            "</head>\n" +
-            "<body><header>\n" +
-            "\t<ul>\n" +
-            "\t\t<li><a href=\"/admin/authorize/\">Logga in</a></li>\n" +
-            "\t</ul>\n" +
-            "</header><main class=\"tiny\"><a href=\"/d/stockholms-stad/\" class=\"back\">Stockholms stad</a>\n" +
-            "\t<h2><img src=\"https://lh3.googleusercontent.com/sNDdvgfu7HQL_I7XxzEXJgA3WHkmqBEvsTaWD25faQrXdTzpSjTbWA42ozKSRuiSg3vRDDdS5r1DVKpMW7k\" alt=\"Östra Real\">Östra Real\n" +
-            "\t</h2>\n" +
-            "\t\n" +
-            "\t<div id=\"menu\" data-id=\"5562614612492288\">\n" +
-            "\t\t<div id=\"weeks\">\n" +
-            "\t\t\t<div class=\"week  \" id=\"week-2017-32\" data-year=\"2017\" data-week-of-year=\"32\">\n" +
-            "\t\t\t\t<h3>Vecka  <span>32</span></h3><span class=\"week-reason missing\">Menyn saknas.<br>Kolla med ditt skolkök.</span></div>\n" +
-            "\t\t<div id=\"week-2017-33\" class=\"week  visible\" data-year=\"2017\" data-week-of-year=\"33\"><h3>Vecka <span>33</span></h3><div class=\"row\"><div class=\"date\"><span class=\"weekday\">Måndag</span><span class=\"weekday min\">Mån</span><span class=\"date\">2017-08-14</span></div><div class=\"items\"><p class=\"missing\">Menyn saknas.</p></div></div><div class=\"row\"><div class=\"date\"><span class=\"weekday\">Tisdag</span><span class=\"weekday min\">Tis</span><span class=\"date\">2017-08-15</span></div><div class=\"items\"><p class=\"missing\">Menyn saknas.</p></div></div><div class=\"row\"><div class=\"date\"><span class=\"weekday\">Onsdag</span><span class=\"weekday min\">Ons</span><span class=\"date\">2017-08-16</span></div><div class=\"items\"><p class=\"missing\">Menyn saknas.</p></div></div><div class=\"row\"><div class=\"date\"><span class=\"weekday\">Torsdag</span><span class=\"weekday min\">Tors</span><span class=\"date\">2017-08-17</span></div><div class=\"items\"><p><span>Spagetti med sojafärssås</span></p><p><span>Spagetti med köttfärssås</span></p></div></div><div class=\"row\"><div class=\"date\"><span class=\"weekday\">Fredag</span><span class=\"weekday min\">Fre</span><span class=\"date\">2017-08-18</span></div><div class=\"items\"><p class=\"missing\">Menyn saknas.</p></div></div></div></div>\n" +
-            "\t\t<div id=\"bulletins\"></div>\n" +
-            "\t</div>\n" +
-            "\t\n" +
-            "\t<div id=\"controls\">\n" +
-            "\t\t<a href=\"javascript:$viewer.fetchNextWeek();\" class=\"next\"><span>Nästa vecka</span></a>\n" +
-            "\t\t<a href=\"javascript:$viewer.fetchPreviousWeek();\" class=\"previous\"><span>Föregående vecka</span></a>\n" +
-            "\t</div>\n" +
-            "\t\n" +
-            "\t<ul class=\"links\">\n" +
-            "\t\t<li>\n" +
-            "\t\t\t<ul>\n" +
-            "\t\t\t\t<li><a href=\"print/\">Skriv ut</a></li>\n" +
-            "\t\t\t\t<li><a href=\"/about/calendar/ostra-real/\">Kalender</a></li>\n" +
-            "\t\t\t\t<li><a href=\"/about/rss/ostra-real/\">RSS flöde</a></li>\n" +
-            "\t\t\t</ul>\n" +
-            "\t\t</li>\n" +
-            "\t</ul></main><footer>\n" +
-            "\t<div><ul>\n" +
-            "\t\t<li><h2>Skolmaten</h2></li>\n" +
-            "\t\t<li><p>v.4-0-3</p></li>\n" +
-            "\t</ul></div>\n" +
-            "\t<div><ul>\n" +
-            "\t\t<li>Om Skolmaten</li>\n" +
-            "\t\t<li><a href=\"http://www.dinskolmat.se/\">Information</a></li>\n" +
-            "\t\t<li><a href=\"/about/cookies/\">Cookies</a></li>\n" +
-            "\t\t<li><a href=\"mailto:info@dinskolmat.se\">Kontakta oss</a></li></ul></div>\n" +
-            "\t<div><ul>\n" +
-            "\t\t<li>Appar</li>\n" +
-            "\t\t<li><a href=\"https://itunes.apple.com/se/app/skolmaten/id416550379\" target=\"_blank\">iOS</a></li>\n" +
-            "\t\t<li><a href=\"https://play.google.com/store/apps/details?id=se.yo.android.skolmat&amp;hl=sv\" target=\"_blank\">Android</a></li>\n" +
-            "\t</ul></div><div><ul>\n" +
-            "\t\t<li>Administration</li>\n" +
-            "\t\t<li><a href=\"/admin/authorize/\">Logga in</a></li>\n" +
-            "\t</ul></div></footer>\n" +
-            "\n" +
-            "</body></html>");
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -182,6 +122,8 @@ public class MainActivity extends AppCompatActivity
         bootUpTimeSync.start();
 
         getSavedLoginContent();
+
+        Log.i(myTag, "OnCreate()");
     }
 
     public class FixedTabsPagerAdapter extends FragmentPagerAdapter {
@@ -603,7 +545,7 @@ public class MainActivity extends AppCompatActivity
                                     LinearLayout.LayoutParams paramsLektion = new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
                                     paramsLektion.weight = (float)(sluttid - starttid);
                                     lektion.setLayoutParams(paramsLektion);
-                                    lektion.setBackgroundColor(ContextCompat.getColor(getBaseContext(), R.color.colorSchemaViewVeckaLektionBackground));
+                                    lektion.setBackgroundResource(R.drawable.rect_view_vecka_day_header);
                                     lektion.setTextSize(0);
                                     //lektion.setBackgroundResource(ya_blew_it);
                                     //lektion.setText(öpö);
@@ -618,8 +560,6 @@ public class MainActivity extends AppCompatActivity
 
                                     schema_space.addView(linear);
 
-
-
                                     LinearLayout linearDay = new LinearLayout(getBaseContext());
                                     linearDay.setOrientation(LinearLayout.VERTICAL);
                                     LinearLayout.LayoutParams LinDayParams = new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, (int)((sluttid - starttid) * 90 * getResources().getDimension(R.dimen.dp_unit)));
@@ -627,14 +567,14 @@ public class MainActivity extends AppCompatActivity
                                     linearDay.setLayoutParams(LinDayParams);
                                     linearDay.setBackgroundColor(ContextCompat.getColor(getBaseContext(), R.color.colorSchemaViewDayLektionBackground));
 
-                                    //TextView dayTop = new TextView(getBaseContext());
-                                    //LinearLayout.LayoutParams TopDayParams = new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, (int)(15 * getResources().getDimension(R.dimen.dp_unit)));
-                                    //dayTop.setLayoutParams(TopDayParams);
-                                    //dayTop.setGravity(Gravity.START | Gravity.CENTER_VERTICAL);
-                                    //dayTop.setTextSize(12);
-                                    //dayTop.setTextColor(ContextCompat.getColor(getBaseContext(), R.color.colorSchemaViewDayLektionText));
-                                    //dayTop.setText(StartTid);
-                                    //linearDay.addView(dayTop);
+                                    TextView dayTop = new TextView(getBaseContext());
+                                    LinearLayout.LayoutParams TopDayParams = new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, (int)(15 * getResources().getDimension(R.dimen.dp_unit)));
+                                    dayTop.setLayoutParams(TopDayParams);
+                                    dayTop.setGravity(Gravity.START | Gravity.CENTER_VERTICAL);
+                                    dayTop.setTextSize(12);
+                                    dayTop.setTextColor(ContextCompat.getColor(getBaseContext(), R.color.colorSchemaViewDayLektionText));
+                                    dayTop.setText(StartTid);
+                                    linearDay.addView(dayTop);
 
                                     TextView dayMid = new TextView(getBaseContext());
                                     LinearLayout.LayoutParams MidDayParams = new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.MATCH_PARENT); //(int)(((sluttid - starttid) * 90 - 30) * getResources().getDimension(R.dimen.dp_unit))
@@ -645,14 +585,16 @@ public class MainActivity extends AppCompatActivity
                                     dayMid.setText(öpö);
                                     linearDay.addView(dayMid);
 
-                                    //TextView dayBot = new TextView(getBaseContext());
-                                    //LinearLayout.LayoutParams BotDayParams = new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, (int)(15 * getResources().getDimension(R.dimen.dp_unit)));
-                                    //dayBot.setLayoutParams(BotDayParams);
-                                    //dayBot.setGravity(Gravity.END | Gravity.CENTER_VERTICAL);
-                                    //dayBot.setTextSize(12);
-                                    //dayBot.setTextColor(ContextCompat.getColor(getBaseContext(), R.color.colorSchemaViewDayLektionText));
-                                    //dayBot.setText(SlutTid);
-                                    //linearDay.addView(dayBot);
+                                    TextView dayBot = new TextView(getBaseContext());
+                                    LinearLayout.LayoutParams BotDayParams = new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, (int)(15 * getResources().getDimension(R.dimen.dp_unit)));
+                                    dayBot.setLayoutParams(BotDayParams);
+                                    dayBot.setGravity(Gravity.END | Gravity.CENTER_VERTICAL);
+                                    dayBot.setTextSize(12);
+                                    dayBot.setTextColor(ContextCompat.getColor(getBaseContext(), R.color.colorSchemaViewDayLektionText));
+                                    dayBot.setText(SlutTid);
+                                    linearDay.addView(dayBot);
+
+                                    linearDay.setBackgroundResource(R.drawable.rect_view_vecka_day_header);
 
                                     schema_dayce.addView(linearDay);
 
@@ -953,10 +895,39 @@ public class MainActivity extends AppCompatActivity
         final TextView ratingtext = (TextView) findViewById(R.id.rating_text);
         final Animation anim_button_click = AnimationUtils.loadAnimation(this, R.anim.anim_button_click);
 
+        Thread t = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                postData();
+
+            }
+        });
+        t.start();
+
         view.startAnimation(anim_button_click);
         ratingtext.setText(String.valueOf(ratingBar.getRating()));
 
     }
+
+    public void postData() {
+
+
+        try {
+            String fullUrl = "https://docs.google.com/forms/d/e/1FAIpQLSdJvGlJ4J6-4XeDOolYUIP8TFZJu5NDO_ctum3akVJPOeBxig/formResponse";
+            HttpRequest mReq = new HttpRequest();
+
+            String data = "entry.1486513396=true&entry.1517309447=false";
+
+            String response = mReq.sendPost(fullUrl, data);
+            Log.i(myTag, response);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+        }
+
+    }
+
 
     public void fidget_spinner(){
 
