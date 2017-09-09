@@ -72,7 +72,7 @@ public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     String id_number;
-    int genderInteger;
+    int genderInteger = 0;
 
     final String myTag = "DocsUpload";
 
@@ -90,6 +90,12 @@ public class MainActivity extends AppCompatActivity
     boolean downloadSuccess;
     boolean DayPref;
     File DayPrefFile;
+
+    final String[] genderStrings = {
+            "Kvinna",
+            "Man",
+            "Annat", "Annat", "Annat"
+    };
 
     Document docpsdgh = Jsoup.parse("ll");
 
@@ -251,22 +257,34 @@ public class MainActivity extends AppCompatActivity
         final EditText personal_id = (EditText) findViewById(R.id.personalid);
         final Spinner spinnerLoginGender = (Spinner) findViewById(R.id.fidget_spinner);
 
-        StringBuilder loginContent = new StringBuilder();
+        final String Namn = name.getText().toString();
+        final String Efternamn = surname.getText().toString();
+        final String Mobil = phone.getText().toString();
+        final String Stad = city.getText().toString();
         id_number = personal_id.getText().toString();
-        int id_spinneritemgender = spinnerLoginGender.getSelectedItemPosition();
-        if (id_spinneritemgender > 2) {id_spinneritemgender = 2;}
+        final String datum;{
+            char[] siffra = id_number.toCharArray();
+            if (siffra[0] == '9') {
+                datum = "19" + siffra[0] + siffra[1] + "-" + siffra[2] + siffra[3] +"-" + siffra[4] + siffra[5];
+            } else {
+                datum = "20" + siffra[0] + siffra[1] + "-" + siffra[2] + siffra[3] +"-" + siffra[4] + siffra[5];
+            }
+        }
+        final int id_spinneritemgender = spinnerLoginGender.getSelectedItemPosition();
 
-        loginContent.append(name.getText().toString());
-        loginContent.append("%");
-        loginContent.append(surname.getText().toString());
-        loginContent.append("%");
-        loginContent.append(phone.getText().toString());
-        loginContent.append("%");
-        loginContent.append(city.getText().toString());
-        loginContent.append("%");
-        loginContent.append(id_number);
-        loginContent.append("%");
-        loginContent.append(String.valueOf(id_spinneritemgender));
+        StringBuilder loginContent = new StringBuilder();{
+            loginContent.append(Namn);
+            loginContent.append("%");
+            loginContent.append(Efternamn);
+            loginContent.append("%");
+            loginContent.append(Mobil);
+            loginContent.append("%");
+            loginContent.append(Stad);
+            loginContent.append("%");
+            loginContent.append(id_number);
+            loginContent.append("%");
+            loginContent.append(String.valueOf(id_spinneritemgender));
+        }
 
         FileOutputStream outputStream;
         try {
@@ -276,6 +294,15 @@ public class MainActivity extends AppCompatActivity
         } catch (Exception e) {
             e.printStackTrace();
         }
+
+        Thread t = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                postFormRegisterData(Namn, Efternamn, Mobil, Stad, datum, id_spinneritemgender);
+
+            }
+        });
+        t.start();
     }
 
     @Override
@@ -331,7 +358,7 @@ public class MainActivity extends AppCompatActivity
             toolbar.setTitle(R.string.Tab_2);
             vf.setDisplayedChild(1);
             drawer.closeDrawer(GravityCompat.START);
-            //start loading animation here (spinning circle and "laddar..." text
+            //start loading animation here (spinning circle and "laddar..." text)
 
             schemaSelect öpö = new schemaSelect();
             öpö.start();
@@ -478,7 +505,7 @@ public class MainActivity extends AppCompatActivity
                             R.id.relative_layout_monday,
                             R.id.relative_layout_tuesday,
                             R.id.relative_layout_wednesday,
-                            R.id.relative_layout_thurday,
+                            R.id.relative_layout_thursday,
                             R.id.relative_layout_friday,
                     };
 
@@ -895,39 +922,33 @@ public class MainActivity extends AppCompatActivity
         final TextView ratingtext = (TextView) findViewById(R.id.rating_text);
         final Animation anim_button_click = AnimationUtils.loadAnimation(this, R.anim.anim_button_click);
 
-        Thread t = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                postData();
-
-            }
-        });
-        t.start();
-
         view.startAnimation(anim_button_click);
         ratingtext.setText(String.valueOf(ratingBar.getRating()));
 
+
     }
 
-    public void postData() {
+    public void postFormRegisterData(String Namn, String Efternamn, String Mobil, String Stad, String Födsel, int gender) {
 
-
+        String logingender = genderStrings[gender];
         try {
-            String fullUrl = "https://docs.google.com/forms/d/e/1FAIpQLSdJvGlJ4J6-4XeDOolYUIP8TFZJu5NDO_ctum3akVJPOeBxig/formResponse";
+            String fullUrl = "https://docs.google.com/forms/d/e/1FAIpQLSfbgeZ2UMpuHDqSagZc2u39tjNhzmEF0toBYRsfFIyz6psiew/formResponse";
             HttpRequest mReq = new HttpRequest();
 
-            String data = "entry.1486513396=true&entry.1517309447=false";
+            String data = "entry.669832305=" + Namn + "&"
+                    + "entry.1465471991=" + Efternamn + "&"
+                    + "entry.1588314371=" + Mobil + "&"
+                    + "entry.1054214164=" + Stad + "&"
+                    + "entry.1765914386=" + Födsel + "&" //1999-11-06
+                    + "entry.1179920717=" + logingender;
 
             String response = mReq.sendPost(fullUrl, data);
             Log.i(myTag, response);
 
         } catch (Exception e) {
             e.printStackTrace();
-        } finally {
         }
-
     }
-
 
     public void fidget_spinner(){
 
@@ -965,7 +986,7 @@ public class MainActivity extends AppCompatActivity
 
         public void run() {
 
-            final int  MEGABYTE = 1024 * 1024;
+            final int MEGABYTE = 1024 * 1024;
 
             StringBuilder förädlat = new StringBuilder();
             String päron = "";

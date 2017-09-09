@@ -38,7 +38,7 @@
                     android:layout_marginTop="33dp"
                     android:clipChildren="false"
                     android:background="@color/colorSchemaViewDayDays"
-                    android:id="@+id/relative_layout_thurday">
+                    android:id="@+id/relative_layout_thursday">
 
                 </RelativeLayout>
 
