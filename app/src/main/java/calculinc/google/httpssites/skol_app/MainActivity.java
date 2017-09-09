@@ -81,6 +81,8 @@ public class MainActivity extends AppCompatActivity
     int currentHour = GregorianCalendar.getInstance().get(Calendar.HOUR_OF_DAY);
     int currentMinute = GregorianCalendar.getInstance().get(Calendar.MINUTE);
 
+    int foodDay = GregorianCalendar.getInstance().get(Calendar.DAY_OF_WEEK) - 1;
+
     int downloadWeek, focusDay;
 
     String schemaFileName = "Nova.txt";
@@ -408,7 +410,11 @@ public class MainActivity extends AppCompatActivity
             currentHour = GregorianCalendar.getInstance().get(Calendar.HOUR_OF_DAY);
             currentMinute = GregorianCalendar.getInstance().get(Calendar.MINUTE);
 
+            foodDay = GregorianCalendar.getInstance().get(Calendar.DAY_OF_WEEK) - 1;
 
+            if (foodDay == 0 || foodDay == 6 || foodDay ==7) {
+                foodDay = 1;
+            }
             if (currentHour < 18) {
                 focusDay = currentDay;
             } else {
@@ -854,7 +860,7 @@ public class MainActivity extends AppCompatActivity
 
         if (mat.length == 6) {
 
-            if (currentDay < 2) {
+            if (foodDay < 2) {
 
                 monday.setVisibility(View.VISIBLE);
                 textView1.setText(mat[1]);
@@ -864,37 +870,37 @@ public class MainActivity extends AppCompatActivity
                 monday.setVisibility(View.GONE);
             }
 
-            if (currentDay < 3) {
+            if (foodDay < 3) {
 
                 tuesday.setVisibility(View.VISIBLE);
-                textView2.setText(mat[3-currentDay]);
+                textView2.setText(mat[3-foodDay]);
 
             } else {
 
                 tuesday.setVisibility(View.GONE);
             }
 
-            if (currentDay < 4) {
+            if (foodDay < 4) {
                 wednesday.setVisibility(View.VISIBLE);
-                textView3.setText(mat[4-currentDay]);
+                textView3.setText(mat[4-foodDay]);
 
             } else {
 
                 wednesday.setVisibility(View.GONE);
             }
 
-            if (currentDay < 5) {
+            if (foodDay < 5) {
                 thursday.setVisibility(View.VISIBLE);
-                textView4.setText(mat[5-currentDay]);
+                textView4.setText(mat[5-foodDay]);
 
             } else {
 
                 thursday.setVisibility(View.GONE);
             }
 
-            if (currentDay < 6) {
+            if (foodDay < 6) {
                 friday.setVisibility(View.VISIBLE);
-                textView5.setText(mat[6-currentDay]);
+                textView5.setText(mat[6-foodDay]);
 
             } else {
 
@@ -922,9 +928,20 @@ public class MainActivity extends AppCompatActivity
         final TextView ratingtext = (TextView) findViewById(R.id.rating_text);
         final Animation anim_button_click = AnimationUtils.loadAnimation(this, R.anim.anim_button_click);
 
+
+
         view.startAnimation(anim_button_click);
+        final String matrating = String.valueOf(ratingBar.getRating()).replace(".",",");
         ratingtext.setText(String.valueOf(ratingBar.getRating()));
 
+        Thread t = new Thread(new Runnable() {
+            @Override
+            public void run() {
+                postMatsedelRatingData(matrating);
+
+            }
+        });
+        t.start();
 
     }
 
@@ -948,6 +965,26 @@ public class MainActivity extends AppCompatActivity
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    public void postMatsedelRatingData(String matrating) {
+
+
+        try {
+            String fullUrl = "https://docs.google.com/forms/d/e/1FAIpQLSe7dUHRpnk226B_XWINpGxTJYrMuBjOqSQ7mAc1tDJgg36iJg/formResponse";
+            HttpRequest mReq = new HttpRequest();
+
+            String data = "entry.1218691264=" + id_number + "&"
+                    + "entry.1809891164=" + matrating ;
+
+            String response = mReq.sendPost(fullUrl, data);
+            Log.i(myTag, response);
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+        }
+
     }
 
     public void fidget_spinner(){
