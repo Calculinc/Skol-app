@@ -1,5 +1,6 @@
 package calculinc.google.httpssites.skol_app;
 
+
 import android.os.AsyncTask;
 
 import org.json.JSONException;
@@ -13,6 +14,11 @@ import java.net.HttpURLConnection;
 import java.net.URL;
 
 public class DownloadWebpageTask extends AsyncTask<String, Void, String> {
+    AsyncResult callback;
+
+    public DownloadWebpageTask(AsyncResult callback) {
+        this.callback = callback;
+    }
 
     @Override
     protected String doInBackground(String... urls) {
@@ -32,13 +38,12 @@ public class DownloadWebpageTask extends AsyncTask<String, Void, String> {
         int start = result.indexOf("{", result.indexOf("{") + 1);
         int end = result.lastIndexOf("}");
         String jsonResponse = result.substring(start, end);
-        JSONObject table;
         try {
-            table = new JSONObject(jsonResponse);
+            JSONObject table = new JSONObject(jsonResponse);
+            callback.onResult(table);
         } catch (JSONException e) {
             e.printStackTrace();
         }
-        //return table;
     }
 
     private String downloadUrl(String urlString) throws IOException {
@@ -56,7 +61,8 @@ public class DownloadWebpageTask extends AsyncTask<String, Void, String> {
             int responseCode = conn.getResponseCode();
             is = conn.getInputStream();
 
-            return convertStreamToString(is);
+            String contentAsString = convertStreamToString(is);
+            return contentAsString;
         } finally {
             if (is != null) {
                 is.close();
@@ -85,4 +91,3 @@ public class DownloadWebpageTask extends AsyncTask<String, Void, String> {
         return sb.toString();
     }
 }
-

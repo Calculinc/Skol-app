@@ -42,6 +42,8 @@ import com.itextpdf.text.pdf.PdfObject;
 import com.itextpdf.text.pdf.PdfReader;
 import com.itextpdf.text.pdf.parser.PdfTextExtractor;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -59,6 +61,10 @@ import java.net.URL;
 import java.net.URLEncoder;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import calculinc.google.httpssites.skol_app.Matsedel.FirstFragment;
 import calculinc.google.httpssites.skol_app.Matsedel.SecondFragment;
@@ -810,7 +816,7 @@ public class MainActivity extends AppCompatActivity
 
                 try {
 
-                    matsedel();
+                    matsedel(matsedelrating);
 
                 } catch (NumberFormatException e) {
                     e.printStackTrace();
@@ -836,13 +842,15 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
-    public void matsedel() {
+    public void matsedel(float matsedelrating) {
 
         TextView textView1 = (TextView) findViewById(R.id.test_text1);
         TextView textView2 = (TextView) findViewById(R.id.test_text2);
         TextView textView3 = (TextView) findViewById(R.id.test_text3);
         TextView textView4 = (TextView) findViewById(R.id.test_text4);
         TextView textView5 = (TextView) findViewById(R.id.test_text5);
+
+        final TextView ratingtext = (TextView) findViewById(R.id.rating_text);
 
         LinearLayout monday = (LinearLayout) findViewById(R.id.matsedel_monday);
         LinearLayout tuesday = (LinearLayout) findViewById(R.id.matsedel_tuesday);
@@ -907,6 +915,17 @@ public class MainActivity extends AppCompatActivity
                 friday.setVisibility(View.GONE);
             }
 
+            new DownloadWebpageTask(new AsyncResult() {
+                @Override
+                public void onResult(JSONObject object) {
+
+                    jsonParseMatrating(object);
+
+                    ratingtext.setText(String.valueOf(matsedelrating));
+
+                }
+            } ).execute("https://spreadsheets.google.com/tq?key=1KWnx2XtVrc229M2ixsgu5xXkpaxkHwZMf0nZdElxWRM");
+
 
             dagens.setText(mat[1]);
 
@@ -925,14 +944,10 @@ public class MainActivity extends AppCompatActivity
     public void röstning(View view) {
 
         final RatingBar ratingBar = (RatingBar) findViewById(R.id.rating_bar);
-        final TextView ratingtext = (TextView) findViewById(R.id.rating_text);
         final Animation anim_button_click = AnimationUtils.loadAnimation(this, R.anim.anim_button_click);
-
-
 
         view.startAnimation(anim_button_click);
         final String matrating = String.valueOf(ratingBar.getRating()).replace(".",",");
-        ratingtext.setText(String.valueOf(ratingBar.getRating()));
 
         Thread t = new Thread(new Runnable() {
             @Override
@@ -944,6 +959,25 @@ public class MainActivity extends AppCompatActivity
         t.start();
 
     }
+
+    private void jsonParseMatrating(JSONObject object) {
+
+        final TextView ratingtext = (TextView) findViewById(R.id.rating_text);
+
+        try {
+            JSONArray rows = object.getJSONArray("rows");
+            JSONObject row = rows.getJSONObject(0);
+            JSONArray columns = row.getJSONArray("c");
+           final float matsedelrating = columns.getJSONObject(6).getInt("v");
+
+            ratingtext.setText(String.valueOf(matsedelrating));
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
+
 
     public void postFormRegisterData(String Namn, String Efternamn, String Mobil, String Stad, String Födsel, int gender) {
 
@@ -961,6 +995,8 @@ public class MainActivity extends AppCompatActivity
 
             String response = mReq.sendPost(fullUrl, data);
             Log.i(myTag, response);
+
+
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -1015,6 +1051,7 @@ public class MainActivity extends AppCompatActivity
         String fileid;
         String fileweek;
         String filename;
+
         DownloadFile(String fileid, int fileweek, String filename){
             this.fileid = fileid;
             this.fileweek = String.valueOf(fileweek);
