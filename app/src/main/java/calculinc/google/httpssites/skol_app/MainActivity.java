@@ -82,6 +82,8 @@ public class MainActivity extends AppCompatActivity
 
     final String myTag = "DocsUpload";
 
+    double matsedelrating;
+
     int currentWeek = GregorianCalendar.getInstance().get(Calendar.WEEK_OF_YEAR);
     int currentDay = GregorianCalendar.getInstance().get(Calendar.DAY_OF_WEEK) - 1;
     int currentHour = GregorianCalendar.getInstance().get(Calendar.HOUR_OF_DAY);
@@ -816,7 +818,7 @@ public class MainActivity extends AppCompatActivity
 
                 try {
 
-                    matsedel(matsedelrating);
+                    matsedel();
 
                 } catch (NumberFormatException e) {
                     e.printStackTrace();
@@ -842,7 +844,7 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
-    public void matsedel(float matsedelrating) {
+    public void matsedel() {
 
         TextView textView1 = (TextView) findViewById(R.id.test_text1);
         TextView textView2 = (TextView) findViewById(R.id.test_text2);
@@ -968,7 +970,8 @@ public class MainActivity extends AppCompatActivity
             JSONArray rows = object.getJSONArray("rows");
             JSONObject row = rows.getJSONObject(0);
             JSONArray columns = row.getJSONArray("c");
-           final float matsedelrating = columns.getJSONObject(6).getInt("v");
+            matsedelrating = columns.getJSONObject(6).getDouble("v");
+
 
             ratingtext.setText(String.valueOf(matsedelrating));
 
