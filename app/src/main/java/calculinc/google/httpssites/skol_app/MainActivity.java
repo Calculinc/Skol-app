@@ -99,7 +99,7 @@ public class MainActivity extends AppCompatActivity
     String loginFileName = "login.txt";
     File loginFile;
     boolean downloadSuccess;
-    boolean loggenIn;
+    boolean loggenIn = false;
     boolean DayPref;
     File DayPrefFile;
 
@@ -229,6 +229,11 @@ public class MainActivity extends AppCompatActivity
         loggenIn = loginFile.exists();
         try {
             if (loggenIn) {
+                final Button LoginButt = (Button) findViewById(R.id.login_button);
+                final Button LogoutButt = (Button) findViewById(R.id.logout_button);
+                LoginButt.setVisibility(View.GONE);
+                LogoutButt.setVisibility(View.VISIBLE);
+
                 FileInputStream fis = openFileInput(loginFileName);
                 InputStreamReader isr = new InputStreamReader(fis);
                 BufferedReader bufferedReader = new BufferedReader(isr);
@@ -309,11 +314,6 @@ public class MainActivity extends AppCompatActivity
                 }
             }
         } ).execute("https://spreadsheets.google.com/tq?key=" + LoginDataBaseKey);
-
-    }
-
-    public void jsonParseLoginInfo(JSONObject object) {
-
 
     }
 
