@@ -119,17 +119,36 @@
 
         </LinearLayout>
 
-        <Button
-            android:id="@+id/login_button"
+        <RelativeLayout
             android:layout_width="303dp"
             android:layout_height="33dp"
             android:layout_marginTop="20dp"
-            android:text="@string/Buttontext_registrera"
-            android:textStyle="normal"
-            android:textColor="@color/colorLoginButtonText"
             android:layout_gravity="center_horizontal"
-            android:background="@drawable/rect_login_button"
-            android:onClick="loginSubmit" />
+            android:clipChildren="false">
+
+            <Button
+                android:id="@+id/login_button"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:visibility="visible"
+                android:text="@string/Buttontext_logga_in"
+                android:textStyle="normal"
+                android:textColor="@color/colorLoginButtonText"
+                android:background="@drawable/rect_login_button"
+                android:onClick="loginSubmit" />
+
+            <Button
+                android:id="@+id/logout_button"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:visibility="gone"
+                android:text="@string/Buttontext_logga_ut"
+                android:textStyle="normal"
+                android:textColor="@color/colorLoginButtonText"
+                android:background="@drawable/rect_login_button"
+                android:onClick="logoutSubmit" />
+
+        </RelativeLayout>
     </LinearLayout>
 
 </android.support.constraint.ConstraintLayout>

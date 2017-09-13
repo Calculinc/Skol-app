@@ -26,6 +26,7 @@ import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.LinearLayout;
@@ -98,6 +99,7 @@ public class MainActivity extends AppCompatActivity
     String loginFileName = "login.txt";
     File loginFile;
     boolean downloadSuccess;
+    boolean loggenIn;
     boolean DayPref;
     File DayPrefFile;
 
@@ -107,8 +109,8 @@ public class MainActivity extends AppCompatActivity
             "Annat", "Annat", "Annat"
     };
 
-    Document docpsdgh = Jsoup.parse("ll");
-
+    String LoginDataBaseKey = "11SYOpe7-x_N2xQtjjgs7nUD9t7nRRBvp59O694rrmHc";
+    String MatvoteDataBaseKey = "1KWnx2XtVrc229M2ixsgu5xXkpaxkHwZMf0nZdElxWRM";
     String[] mat;
     String realDeal = "/maq1/För lång kö till matsalen. Kunde inte se matsedeln/maq1/För lång kö till matsalen. Kunde inte se matsedeln/maq1/För lång kö till matsalen. Kunde inte se matsedeln/maq1/För lång kö till matsalen. Kunde inte se matsedeln/maq1/För lång kö till matsalen. Kunde inte se matsedeln";
     String title;
@@ -224,8 +226,9 @@ public class MainActivity extends AppCompatActivity
     public void getSavedLoginContent() {
         loginFile = new File(getFilesDir() + "/" + loginFileName);
 
+        loggenIn = loginFile.exists();
         try {
-            if (loginFile.exists()) {
+            if (loggenIn) {
                 FileInputStream fis = openFileInput(loginFileName);
                 InputStreamReader isr = new InputStreamReader(fis);
                 BufferedReader bufferedReader = new BufferedReader(isr);
@@ -249,7 +252,6 @@ public class MainActivity extends AppCompatActivity
                 phone.setText(loginParams[2]);
                 city.setText(loginParams[3]);
                 personal_id.setText(id_number);
-
             }
         }catch (IOException e) {
             e.printStackTrace();
@@ -272,14 +274,67 @@ public class MainActivity extends AppCompatActivity
         final String Mobil = phone.getText().toString();
         final String Stad = city.getText().toString();
         id_number = personal_id.getText().toString();
-        final String datum;{
+        final String Datum;{
             char[] siffra = id_number.toCharArray();
             if (siffra[0] == '9') {
-                datum = "19" + siffra[0] + siffra[1] + "-" + siffra[2] + siffra[3] +"-" + siffra[4] + siffra[5];
+                Datum = "19" + siffra[0] + siffra[1] + "-" + siffra[2] + siffra[3] + "-" + siffra[4] + siffra[5];
             } else {
-                datum = "20" + siffra[0] + siffra[1] + "-" + siffra[2] + siffra[3] +"-" + siffra[4] + siffra[5];
+                Datum = "20" + siffra[0] + siffra[1] + "-" + siffra[2] + siffra[3] + "-" + siffra[4] + siffra[5];
             }
         }
+        final String Gender = genderStrings[spinnerLoginGender.getSelectedItemPosition()];
+
+        new DownloadWebpageTask(new AsyncResult() {
+            @Override
+            public void onResult(JSONObject object) {
+                try {
+                    JSONArray rows = object.getJSONArray("rows");
+                    for (int i = 0; i < rows.length(); i++) {
+                        JSONObject row = rows.getJSONObject(i);
+                        JSONArray person = row.getJSONArray("c");
+                        String JsonNamn = person.getJSONObject(1).getString("v");
+                        String JsonEfternamn = person.getJSONObject(2).getString("v");
+                        String JsonStad = person.getJSONObject(4).getString("v");
+                        String JsonDatum = person.getJSONObject(5).getString("f");
+                        String JsonGender = person.getJSONObject(6).getString("v");
+                        if (JsonNamn.equals(Namn) && JsonEfternamn.equals(Efternamn) && JsonStad.equals(Stad) && JsonDatum.equals(Datum) && JsonGender.equals(Gender)) {
+                            loginSucces();
+                        } else {
+                            loginFail();
+                        }
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                    loginFail();
+                }
+            }
+        } ).execute("https://spreadsheets.google.com/tq?key=" + LoginDataBaseKey);
+
+    }
+
+    public void jsonParseLoginInfo(JSONObject object) {
+
+
+    }
+
+    public void loginSucces() {
+        final Button LoginButt = (Button) findViewById(R.id.login_button);
+        final Button LogoutButt = (Button) findViewById(R.id.logout_button);
+        LoginButt.setVisibility(View.GONE);
+        LogoutButt.setVisibility(View.VISIBLE);
+
+        final EditText name = (EditText) findViewById(R.id.name1);
+        final EditText surname = (EditText) findViewById(R.id.name2);
+        final EditText phone = (EditText) findViewById(R.id.mobile_number);
+        final EditText city = (EditText) findViewById(R.id.city);
+        final EditText personal_id = (EditText) findViewById(R.id.personalid);
+        final Spinner spinnerLoginGender = (Spinner) findViewById(R.id.fidget_spinner);
+
+        final String Namn = name.getText().toString();
+        final String Efternamn = surname.getText().toString();
+        final String Mobil = phone.getText().toString();
+        final String Stad = city.getText().toString();
+        id_number = personal_id.getText().toString();
         final int id_spinneritemgender = spinnerLoginGender.getSelectedItemPosition();
 
         StringBuilder loginContent = new StringBuilder();{
@@ -304,12 +359,51 @@ public class MainActivity extends AppCompatActivity
         } catch (Exception e) {
             e.printStackTrace();
         }
+    }
+
+    public void loginFail() {
+
+    }
+
+    public void logoutSubmit (View view) {
+        final Button LoginButt = (Button) findViewById(R.id.login_button);
+        final Button LogoutButt = (Button) findViewById(R.id.logout_button);
+        LoginButt.setVisibility(View.VISIBLE);
+        LogoutButt.setVisibility(View.GONE);
+
+        loginFile.delete();
+    }
+
+    public void registerSubmit (View view) {
+        final Animation anim_button_click = AnimationUtils.loadAnimation(this, R.anim.anim_button_click);
+        view.startAnimation(anim_button_click);
+
+        final EditText name = (EditText) findViewById(R.id.name1);
+        final EditText surname = (EditText) findViewById(R.id.name2);
+        final EditText phone = (EditText) findViewById(R.id.mobile_number);
+        final EditText city = (EditText) findViewById(R.id.city);
+        final EditText personal_id = (EditText) findViewById(R.id.personalid);
+        final Spinner spinnerLoginGender = (Spinner) findViewById(R.id.fidget_spinner);
+
+        final String Namn = name.getText().toString();
+        final String Efternamn = surname.getText().toString();
+        final String Mobil = phone.getText().toString();
+        final String Stad = city.getText().toString();
+        id_number = personal_id.getText().toString();
+        final String datum;{
+            char[] siffra = id_number.toCharArray();
+            if (siffra[0] == '9') {
+                datum = "19" + siffra[0] + siffra[1] + "-" + siffra[2] + siffra[3] + "-" + siffra[4] + siffra[5];
+            } else {
+                datum = "20" + siffra[0] + siffra[1] + "-" + siffra[2] + siffra[3] + "-" + siffra[4] + siffra[5];
+            }
+        }
+        final int id_spinneritemgender = spinnerLoginGender.getSelectedItemPosition();
 
         Thread t = new Thread(new Runnable() {
             @Override
             public void run() {
                 postFormRegisterData(Namn, Efternamn, Mobil, Stad, datum, id_spinneritemgender);
-
             }
         });
         t.start();
@@ -392,7 +486,6 @@ public class MainActivity extends AppCompatActivity
             drawer.closeDrawer(GravityCompat.START);
             schemaArrayFixer lloldawd = new schemaArrayFixer();
             lloldawd.start();
-
 
         } else if (id == R.id.nav_login) {
 
@@ -926,7 +1019,7 @@ public class MainActivity extends AppCompatActivity
                     ratingtext.setText(String.valueOf(matsedelrating));
 
                 }
-            } ).execute("https://spreadsheets.google.com/tq?key=1KWnx2XtVrc229M2ixsgu5xXkpaxkHwZMf0nZdElxWRM");
+            } ).execute("https://spreadsheets.google.com/tq?key=" + MatvoteDataBaseKey);
 
 
             dagens.setText(mat[1]);
@@ -972,15 +1065,12 @@ public class MainActivity extends AppCompatActivity
             JSONArray columns = row.getJSONArray("c");
             matsedelrating = columns.getJSONObject(6).getDouble("v");
 
-
             ratingtext.setText(String.valueOf(matsedelrating));
 
         } catch (JSONException e) {
             e.printStackTrace();
         }
     }
-
-
 
     public void postFormRegisterData(String Namn, String Efternamn, String Mobil, String Stad, String Födsel, int gender) {
 
@@ -999,15 +1089,12 @@ public class MainActivity extends AppCompatActivity
             String response = mReq.sendPost(fullUrl, data);
             Log.i(myTag, response);
 
-
-
         } catch (Exception e) {
             e.printStackTrace();
         }
     }
 
     public void postMatsedelRatingData(String matrating) {
-
 
         try {
             String fullUrl = "https://docs.google.com/forms/d/e/1FAIpQLSe7dUHRpnk226B_XWINpGxTJYrMuBjOqSQ7mAc1tDJgg36iJg/formResponse";
@@ -1021,7 +1108,6 @@ public class MainActivity extends AppCompatActivity
 
         } catch (Exception e) {
             e.printStackTrace();
-        } finally {
         }
 
     }

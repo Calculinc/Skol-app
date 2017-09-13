@@ -17,6 +17,8 @@
     <string name="Hint_personnummer"><i>ååmmddxxxx</i></string>
 
     <string name="Buttontext_registrera">Registrera</string>
+    <string name="Buttontext_logga_in">Logga in</string>
+    <string name="Buttontext_logga_ut">Logga ut</string>
 
     <string name="Buttontext_rösta">Rösta</string>
 
