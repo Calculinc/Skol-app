@@ -56,7 +56,7 @@
             <RatingBar
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:id="@+id/rating_bar"/>
+                android:id="@+id/rating_bar" />
 
             <Button
                 android:gravity="center"
