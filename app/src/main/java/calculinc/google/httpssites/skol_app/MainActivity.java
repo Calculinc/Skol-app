@@ -113,8 +113,6 @@ public class MainActivity extends AppCompatActivity
     String MatvoteDataBaseKey = "1KWnx2XtVrc229M2ixsgu5xXkpaxkHwZMf0nZdElxWRM";
     String[] mat;
     String realDeal = "/maq1/För lång kö till matsalen. Kunde inte se matsedeln/maq1/För lång kö till matsalen. Kunde inte se matsedeln/maq1/För lång kö till matsalen. Kunde inte se matsedeln/maq1/För lång kö till matsalen. Kunde inte se matsedeln/maq1/För lång kö till matsalen. Kunde inte se matsedeln";
-    String title;
-    String simple;
     String tempSchema = "10:55%maq1ekax%RELREL01 NSJ A13%maq1ekax%12:10%maq1ekax%12:40%maq1ekax%MATTID%maq1ekax%13:00%maq1ekax%13:10%maq1ekax%SVESVE03 PLA B13%maq1ekax%14:10%maq1ekax%14:20%maq1ekax%SVESVE03 PLA B13%maq1ekax%15:20%day%08:20%maq1ekax%ENGENG07 JHA C11%maq1ekax%09:35%maq1ekax%09:45%maq1ekax%GYAR NSJ,MOR B41,B42%maq1ekax%10:45%maq1ekax%10:50%maq1ekax%MATTID%maq1ekax%11:10%maq1ekax%11:35%maq1ekax%MATMAT05 BAM A23%maq1ekax%12:35%maq1ekax%12:45%maq1ekax%14:00%maq1ekax%studiebesök KBN%maq1ekax%TTF/GYARB%maq1ekax%17:00%day%09:50%maq1ekax%KEBI MOR A41%maq1ekax%11:05%maq1ekax%11:30%maq1ekax%MATTID%maq1ekax%11:50%maq1ekax%12:10%maq1ekax%MATMAT05 BAM B14%maq1ekax%13:40%maq1ekax%13:50%maq1ekax%PRRPRR01 LZH B32%maq1ekax%15:05%maq1ekax%15:15%maq1ekax%RELREL01 NSJ A01%maq1ekax%16:30%day%09:50%maq1ekax%ENGENG07 JHA A14%maq1ekax%11:05%maq1ekax%11:25%maq1ekax%MATTID%maq1ekax%11:45%maq1ekax%12:00%maq1ekax%Mentorstid BAM B12%maq1ekax%12:30%maq1ekax%12:30%maq1ekax%SVESVE03 PLA B12%maq1ekax%13:30%maq1ekax%13:40%maq1ekax%FYSFYS02 LAD A32%maq1ekax%14:50%maq1ekax%15:15%maq1ekax%EGEN STUDIETID NSJ,MOR%maq1ekax%16:15%day%08:20%maq1ekax%PRRPRR01 LZH A21%maq1ekax%09:35%maq1ekax%09:45%maq1ekax%KEBI (a MOR A42%maq1ekax%11:15%maq1ekax%11:35%maq1ekax%MATTID%maq1ekax%11:55";
 
     @Override
@@ -815,19 +813,12 @@ public class MainActivity extends AppCompatActivity
     private class htmldownloader extends Thread {
         public void run() {
             Document doc;
-            String stringtemp;
-            String[] veckodagar = {"Måndag Mån", "Tisdag Tis", "Onsdag Ons", "Torsdag Tors", "Fredag Fre"};
-            String[] stringarraytemp;
             int size;
 
             try {
                 doc = Jsoup.connect("http://skolmaten.se/norra-real/rss/").get();
-                title = doc.select("description").text();
                 size = doc.select("description").size();
-                stringtemp = title;
-                int status = 0;
                 realDeal = "";
-                String lol = "topkeketh";
 
                 for (int i = 0; i < 6 ; i++) {
                     
@@ -864,36 +855,6 @@ public class MainActivity extends AppCompatActivity
 
                     realDeal = "/maq1/Meny saknas/maq1/Meny saknas/maq1/Meny saknas/maq1/Meny saknas/maq1/Meny saknas/maq1/1";
 
-                } else if (size == 32) {
-
-                    for (int i = 0; i < 5 ; i++) {
-
-                        stringarraytemp = stringtemp.split(veckodagar[i]);
-
-
-                        if (stringarraytemp.length == 2 ) {
-
-                            status ++;
-
-                            if ( status == size ) {
-
-                                realDeal = realDeal + "/maq1/" + stringarraytemp[0] + "/maq1/" + stringarraytemp[1];
-                            } else {
-
-                                if ( status == 1 ) {
-
-                                    stringtemp = stringarraytemp[1];
-                                } else {
-
-                                    realDeal = realDeal + "/maq1/" + stringarraytemp[0];
-                                    stringtemp = stringarraytemp[1];
-                                }
-
-                            }
-
-                        }
-
-                    }
                 }
 
             } catch (IOException e) {
@@ -946,6 +907,7 @@ public class MainActivity extends AppCompatActivity
         TextView textView5 = (TextView) findViewById(R.id.test_text5);
 
         final TextView ratingtext = (TextView) findViewById(R.id.rating_text);
+        final RatingBar ratingBar = (RatingBar) findViewById(R.id.rating_output_view);
 
         LinearLayout monday = (LinearLayout) findViewById(R.id.matsedel_monday);
         LinearLayout tuesday = (LinearLayout) findViewById(R.id.matsedel_tuesday);
@@ -1017,6 +979,7 @@ public class MainActivity extends AppCompatActivity
                     jsonParseMatrating(object);
 
                     ratingtext.setText(String.valueOf(matsedelrating));
+                    ratingBar.setRating((float)matsedelrating);
 
                 }
             } ).execute("https://spreadsheets.google.com/tq?key=" + MatvoteDataBaseKey);
