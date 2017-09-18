@@ -1,6 +1,9 @@
 package calculinc.google.httpssites.skol_app;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
@@ -29,6 +32,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RatingBar;
 import android.widget.RelativeLayout;
@@ -37,6 +41,7 @@ import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.ViewFlipper;
 
+import com.itextpdf.text.Image;
 import com.itextpdf.text.pdf.PdfContentParser;
 import com.itextpdf.text.pdf.PdfDocument;
 import com.itextpdf.text.pdf.PdfObject;
@@ -112,7 +117,7 @@ public class MainActivity extends AppCompatActivity
     String LoginDataBaseKey = "11SYOpe7-x_N2xQtjjgs7nUD9t7nRRBvp59O694rrmHc";
     String MatvoteDataBaseKey = "1KWnx2XtVrc229M2ixsgu5xXkpaxkHwZMf0nZdElxWRM";
     String[] mat;
-    String realDeal = "/maq1/För lång kö till matsalen. Kunde inte se matsedeln/maq1/För lång kö till matsalen. Kunde inte se matsedeln/maq1/För lång kö till matsalen. Kunde inte se matsedeln/maq1/För lång kö till matsalen. Kunde inte se matsedeln/maq1/För lång kö till matsalen. Kunde inte se matsedeln";
+    String foodMenu = "/maq1/För lång kö till matsalen. Kunde inte se matsedeln/maq1/För lång kö till matsalen. Kunde inte se matsedeln/maq1/För lång kö till matsalen. Kunde inte se matsedeln/maq1/För lång kö till matsalen. Kunde inte se matsedeln/maq1/För lång kö till matsalen. Kunde inte se matsedeln";
     String tempSchema = "10:55%maq1ekax%RELREL01 NSJ A13%maq1ekax%12:10%maq1ekax%12:40%maq1ekax%MATTID%maq1ekax%13:00%maq1ekax%13:10%maq1ekax%SVESVE03 PLA B13%maq1ekax%14:10%maq1ekax%14:20%maq1ekax%SVESVE03 PLA B13%maq1ekax%15:20%day%08:20%maq1ekax%ENGENG07 JHA C11%maq1ekax%09:35%maq1ekax%09:45%maq1ekax%GYAR NSJ,MOR B41,B42%maq1ekax%10:45%maq1ekax%10:50%maq1ekax%MATTID%maq1ekax%11:10%maq1ekax%11:35%maq1ekax%MATMAT05 BAM A23%maq1ekax%12:35%maq1ekax%12:45%maq1ekax%14:00%maq1ekax%studiebesök KBN%maq1ekax%TTF/GYARB%maq1ekax%17:00%day%09:50%maq1ekax%KEBI MOR A41%maq1ekax%11:05%maq1ekax%11:30%maq1ekax%MATTID%maq1ekax%11:50%maq1ekax%12:10%maq1ekax%MATMAT05 BAM B14%maq1ekax%13:40%maq1ekax%13:50%maq1ekax%PRRPRR01 LZH B32%maq1ekax%15:05%maq1ekax%15:15%maq1ekax%RELREL01 NSJ A01%maq1ekax%16:30%day%09:50%maq1ekax%ENGENG07 JHA A14%maq1ekax%11:05%maq1ekax%11:25%maq1ekax%MATTID%maq1ekax%11:45%maq1ekax%12:00%maq1ekax%Mentorstid BAM B12%maq1ekax%12:30%maq1ekax%12:30%maq1ekax%SVESVE03 PLA B12%maq1ekax%13:30%maq1ekax%13:40%maq1ekax%FYSFYS02 LAD A32%maq1ekax%14:50%maq1ekax%15:15%maq1ekax%EGEN STUDIETID NSJ,MOR%maq1ekax%16:15%day%08:20%maq1ekax%PRRPRR01 LZH A21%maq1ekax%09:35%maq1ekax%09:45%maq1ekax%KEBI (a MOR A42%maq1ekax%11:15%maq1ekax%11:35%maq1ekax%MATTID%maq1ekax%11:55";
 
     @Override
@@ -461,6 +466,8 @@ public class MainActivity extends AppCompatActivity
             vf.setDisplayedChild(0);
             drawer.closeDrawer(GravityCompat.START);
 
+            newsFeed();
+
         } else if (id == R.id.nav_schema) {
 
             toolbar.setTitle(R.string.Tab_2);
@@ -479,8 +486,9 @@ public class MainActivity extends AppCompatActivity
             toolbar.setTitle(R.string.Tab_3);
             vf.setDisplayedChild(2);
             drawer.closeDrawer(GravityCompat.START);
-            getMat test = new getMat();
-            test.start();
+
+            matsedel t = new matsedel();
+            t.start();
             viewFuckingPager();
 
         } else if (id == R.id.nav_laxor) {
@@ -816,7 +824,7 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
-    private class htmldownloader extends Thread {
+    private class foodSchemeDownload extends Thread {
         public void run() {
             Document doc;
             int size;
@@ -824,42 +832,41 @@ public class MainActivity extends AppCompatActivity
             try {
                 doc = Jsoup.connect("http://skolmaten.se/norra-real/rss/").get();
                 size = doc.select("description").size();
-                realDeal = "";
+                foodMenu = "";
 
                 for (int i = 0; i < 6 ; i++) {
-                    
+
                     if (i != 5) {
 
                         Elements description = doc.select("description:eq(2)");
 
                         Element singlePiece = description.get(i);
 
-                        realDeal = realDeal + "/maq1/" + singlePiece.text();
+                        foodMenu = foodMenu + "/maq1/" + singlePiece.text();
                     } else {
 
-                        String[] temporary = realDeal.split("<br/>");
-                        realDeal = "";
+                        String[] temporary = foodMenu.split("<br/>");
+                        foodMenu = "";
 
                         for (int j = 0; j < temporary.length ; j++) {
 
                             if (j != temporary.length - 1) {
 
-                                realDeal = realDeal + temporary[j] + "\n\n";
+                                foodMenu = foodMenu + temporary[j] + "\n\n";
                             } else {
 
-                                realDeal = realDeal + temporary[j];
+                                foodMenu = foodMenu + temporary[j];
                             }
 
-                            
                         }
-                        
+
                     }
-                    
+
                 }
 
                 if (size == 0 ){
 
-                    realDeal = "/maq1/Meny saknas/maq1/Meny saknas/maq1/Meny saknas/maq1/Meny saknas/maq1/Meny saknas/maq1/1";
+                    foodMenu = "/maq1/Meny saknas/maq1/Meny saknas/maq1/Meny saknas/maq1/Meny saknas/maq1/Meny saknas/maq1/1";
 
                 }
 
@@ -871,14 +878,115 @@ public class MainActivity extends AppCompatActivity
 
     }
 
-    public void skolMaten() {
+    public void applyMenu() {
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
 
                 try {
 
-                    matsedel();
+                    TextView textView1 = (TextView) findViewById(R.id.test_text1);
+                    TextView textView2 = (TextView) findViewById(R.id.test_text2);
+                    TextView textView3 = (TextView) findViewById(R.id.test_text3);
+                    TextView textView4 = (TextView) findViewById(R.id.test_text4);
+                    TextView textView5 = (TextView) findViewById(R.id.test_text5);
+
+                    final TextView ratingtext = (TextView) findViewById(R.id.rating_text);
+                    final RatingBar ratingBar = (RatingBar) findViewById(R.id.rating_output_view);
+
+                    LinearLayout monday = (LinearLayout) findViewById(R.id.matsedel_monday);
+                    LinearLayout tuesday = (LinearLayout) findViewById(R.id.matsedel_tuesday);
+                    LinearLayout wednesday = (LinearLayout) findViewById(R.id.matsedel_wednesday);
+                    LinearLayout thursday = (LinearLayout) findViewById(R.id.matsedel_thursday);
+                    LinearLayout friday = (LinearLayout) findViewById(R.id.matsedel_friday);
+
+                    TextView dagens = (TextView) findViewById(R.id.dagens_mat);
+
+                    LinearLayout progressLayout = (LinearLayout) findViewById(R.id.progress_layout);
+
+                    progressLayout.setVisibility(View.GONE);
+
+                    mat = foodMenu.split("/maq1/");
+
+                    if (mat.length == 6) {
+
+                        if (foodDay < 2) {
+
+                            monday.setVisibility(View.VISIBLE);
+                            textView1.setText(mat[1]);
+
+                        } else {
+
+                            monday.setVisibility(View.GONE);
+                        }
+
+                        if (foodDay < 3) {
+
+                            tuesday.setVisibility(View.VISIBLE);
+                            textView2.setText(mat[3-foodDay]);
+
+                        } else {
+
+                            tuesday.setVisibility(View.GONE);
+                        }
+
+                        if (foodDay < 4) {
+                            wednesday.setVisibility(View.VISIBLE);
+                            textView3.setText(mat[4-foodDay]);
+
+                        } else {
+
+                            wednesday.setVisibility(View.GONE);
+                        }
+
+                        if (foodDay < 5) {
+                            thursday.setVisibility(View.VISIBLE);
+                            textView4.setText(mat[5-foodDay]);
+
+                        } else {
+
+                            thursday.setVisibility(View.GONE);
+                        }
+
+                        if (foodDay < 6) {
+                            friday.setVisibility(View.VISIBLE);
+                            textView5.setText(mat[6-foodDay]);
+
+                        } else {
+
+                            friday.setVisibility(View.GONE);
+                        }
+
+                        Thread t = new Thread(new Runnable() {
+                            @Override
+                            public void run() {
+                                new DownloadWebpageTask(new AsyncResult() {
+                                    @Override
+                                    public void onResult(JSONObject object) {
+
+                                        jsonParseMatrating(object);
+
+                                        ratingtext.setText(String.valueOf(matsedelrating));
+                                        ratingBar.setRating((float)matsedelrating);
+
+                                    }
+                                } ).execute("https://spreadsheets.google.com/tq?key=" + MatvoteDataBaseKey);
+                            }
+                        });
+                        t.start();
+
+                        dagens.setText(mat[1]);
+
+                    } else {
+
+                        textView1.setText(mat[1]);
+                        textView2.setText(mat[2]);
+                        textView3.setText(mat[3]);
+                        textView4.setText(mat[4]);
+                        textView5.setText(mat[5]);
+
+                        dagens.setText(mat[1]);
+                    }
 
                 } catch (NumberFormatException e) {
                     e.printStackTrace();
@@ -888,11 +996,11 @@ public class MainActivity extends AppCompatActivity
         });
     }
 
-    private class getMat extends Thread {
+    private class matsedel extends Thread {
         public void run() {
 
 
-            htmldownloader H = new htmldownloader();
+            foodSchemeDownload H = new foodSchemeDownload();
             H.start();
             try {
                 H.join();
@@ -900,108 +1008,7 @@ public class MainActivity extends AppCompatActivity
                 e.printStackTrace();
             }
 
-            skolMaten();
-        }
-    }
-
-    public void matsedel() {
-
-        TextView textView1 = (TextView) findViewById(R.id.test_text1);
-        TextView textView2 = (TextView) findViewById(R.id.test_text2);
-        TextView textView3 = (TextView) findViewById(R.id.test_text3);
-        TextView textView4 = (TextView) findViewById(R.id.test_text4);
-        TextView textView5 = (TextView) findViewById(R.id.test_text5);
-
-        final TextView ratingtext = (TextView) findViewById(R.id.rating_text);
-        final RatingBar ratingBar = (RatingBar) findViewById(R.id.rating_output_view);
-
-        LinearLayout monday = (LinearLayout) findViewById(R.id.matsedel_monday);
-        LinearLayout tuesday = (LinearLayout) findViewById(R.id.matsedel_tuesday);
-        LinearLayout wednesday = (LinearLayout) findViewById(R.id.matsedel_wednesday);
-        LinearLayout thursday = (LinearLayout) findViewById(R.id.matsedel_thursday);
-        LinearLayout friday = (LinearLayout) findViewById(R.id.matsedel_friday);
-
-        TextView dagens = (TextView) findViewById(R.id.dagens_mat);
-
-        LinearLayout progressLayout = (LinearLayout) findViewById(R.id.progress_layout);
-
-        progressLayout.setVisibility(View.GONE);
-
-        mat = realDeal.split("/maq1/");
-
-        if (mat.length == 6) {
-
-            if (foodDay < 2) {
-
-                monday.setVisibility(View.VISIBLE);
-                textView1.setText(mat[1]);
-
-            } else {
-
-                monday.setVisibility(View.GONE);
-            }
-
-            if (foodDay < 3) {
-
-                tuesday.setVisibility(View.VISIBLE);
-                textView2.setText(mat[3-foodDay]);
-
-            } else {
-
-                tuesday.setVisibility(View.GONE);
-            }
-
-            if (foodDay < 4) {
-                wednesday.setVisibility(View.VISIBLE);
-                textView3.setText(mat[4-foodDay]);
-
-            } else {
-
-                wednesday.setVisibility(View.GONE);
-            }
-
-            if (foodDay < 5) {
-                thursday.setVisibility(View.VISIBLE);
-                textView4.setText(mat[5-foodDay]);
-
-            } else {
-
-                thursday.setVisibility(View.GONE);
-            }
-
-            if (foodDay < 6) {
-                friday.setVisibility(View.VISIBLE);
-                textView5.setText(mat[6-foodDay]);
-
-            } else {
-
-                friday.setVisibility(View.GONE);
-            }
-
-            new DownloadWebpageTask(new AsyncResult() {
-                @Override
-                public void onResult(JSONObject object) {
-
-                    jsonParseMatrating(object);
-
-                    ratingtext.setText(String.valueOf(matsedelrating));
-                    ratingBar.setRating((float)matsedelrating);
-
-                }
-            } ).execute("https://spreadsheets.google.com/tq?key=" + MatvoteDataBaseKey);
-
-
-            dagens.setText(mat[1]);
-
-        } else {
-
-            textView1.setText(mat[1]);
-            textView2.setText(mat[2]);
-            textView3.setText(mat[3]);
-            textView4.setText(mat[4]);
-            textView5.setText(mat[5]);
-
-            dagens.setText(mat[1]);
+            applyMenu();
         }
     }
 
@@ -1079,6 +1086,44 @@ public class MainActivity extends AppCompatActivity
             e.printStackTrace();
         }
 
+    }
+
+    public  void newsFeed(){
+
+        new DownloadImageTask((ImageView) findViewById(R.id.news_feed))
+                .execute("https://scontent-arn2-1.cdninstagram.com/t51.2885-15/e35/21690183_1980740522196446_1533522204795338752_n.jpg");
+        new DownloadImageTask((ImageView) findViewById(R.id.news_feed2))
+                .execute("https://scontent-arn2-1.cdninstagram.com/t51.2885-15/e35/21690183_1980740522196446_1533522204795338752_n.jpg");
+        new DownloadImageTask((ImageView) findViewById(R.id.news_feed3))
+                .execute("https://scontent-arn2-1.cdninstagram.com/t51.2885-15/e35/21690183_1980740522196446_1533522204795338752_n.jpg");
+        new DownloadImageTask((ImageView) findViewById(R.id.news_feed4))
+                .execute("https://scontent-arn2-1.cdninstagram.com/t51.2885-15/e35/21690183_1980740522196446_1533522204795338752_n.jpg");
+
+    }
+
+    private class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
+        ImageView bmImage;
+
+        public DownloadImageTask(ImageView bmImage) {
+            this.bmImage = bmImage;
+        }
+
+        protected Bitmap doInBackground(String... urls) {
+            String urldisplay = urls[0];
+            Bitmap mIcon11 = null;
+            try {
+                InputStream in = new java.net.URL(urldisplay).openStream();
+                mIcon11 = BitmapFactory.decodeStream(in);
+            } catch (Exception e) {
+                Log.e("Error", e.getMessage());
+                e.printStackTrace();
+            }
+            return mIcon11;
+        }
+
+        protected void onPostExecute(Bitmap result) {
+            bmImage.setImageBitmap(result);
+        }
     }
 
     public void fidget_spinner(){
