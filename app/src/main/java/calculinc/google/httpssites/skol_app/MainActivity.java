@@ -290,6 +290,7 @@ public class MainActivity extends AppCompatActivity
         new DownloadWebpageTask(new AsyncResult() {
             @Override
             public void onResult(JSONObject object) {
+                boolean logSucc = false;
                 try {
                     JSONArray rows = object.getJSONArray("rows");
                     for (int i = 0; i < rows.length(); i++) {
@@ -301,10 +302,14 @@ public class MainActivity extends AppCompatActivity
                         String JsonDatum = person.getJSONObject(5).getString("f");
                         String JsonGender = person.getJSONObject(6).getString("v");
                         if (JsonNamn.equals(Namn) && JsonEfternamn.equals(Efternamn) && JsonStad.equals(Stad) && JsonDatum.equals(Datum) && JsonGender.equals(Gender)) {
-                            loginSucces();
-                        } else {
-                            loginFail();
+                            logSucc = true;
+                            i = rows.length();
                         }
+                    }
+                    if (logSucc){
+                        loginSucces();
+                    } else {
+                        loginFail();
                     }
                 } catch (JSONException e) {
                     e.printStackTrace();
@@ -370,6 +375,7 @@ public class MainActivity extends AppCompatActivity
         LogoutButt.setVisibility(View.GONE);
 
         loginFile.delete();
+        loggenIn = false;
     }
 
     public void registerSubmit (View view) {
