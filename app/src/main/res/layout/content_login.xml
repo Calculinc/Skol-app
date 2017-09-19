@@ -15,8 +15,8 @@
         android:background="@color/colorLoginBackground">
 
         <ImageView
-            android:layout_width="160dp"
-            android:layout_height="160dp"
+            android:layout_width="130dp"
+            android:layout_height="130dp"
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="80dp"
             android:src="@drawable/applogga" />
@@ -37,19 +37,20 @@
 
                 <EditText
                     android:layout_width="160dp"
-                    android:layout_height="wrap_content"
+                    android:layout_height="@dimen/login_textbox"
                     android:id="@+id/name1"
-                    android:layout_marginTop="32dp"
+                    android:layout_marginTop="20dp"
                     android:paddingLeft="8dp"
                     android:hint="@string/Hint_förnamn"
                     android:inputType="textCapSentences"
                     android:digits="abcdefghijklmnopqrstuvwxyzåäöABCDEFGHIJKLMNOPQRSTUVWXYZÅÄÖ-"
                     android:textColor="@color/colorLoginText"
-                    android:textColorHint="@color/colorLoginTextHint" />
+                    android:textColorHint="@color/colorLoginTextHint"
+                    android:background="@drawable/rect_login_textbox"/>
 
                 <EditText
                     android:layout_width="160dp"
-                    android:layout_height="wrap_content"
+                    android:layout_height="@dimen/login_textbox"
                     android:id="@+id/mobile_number"
                     android:layout_marginTop="20dp"
                     android:paddingLeft="8dp"
@@ -57,19 +58,34 @@
                     android:inputType="phone"
                     android:maxLength="10"
                     android:textColor="@color/colorLoginText"
-                    android:textColorHint="@color/colorLoginTextHint" />
+                    android:textColorHint="@color/colorLoginTextHint"
+                    android:background="@drawable/rect_login_textbox"/>
 
                 <EditText
                     android:id="@+id/personalid"
                     android:layout_width="160dp"
-                    android:layout_height="wrap_content"
+                    android:layout_height="@dimen/login_textbox"
                     android:layout_marginTop="20dp"
                     android:hint="@string/Hint_personnummer"
                     android:paddingLeft="8dp"
                     android:inputType="number"
-                    android:maxLength="10"
+                    android:maxLength="6"
                     android:textColor="@color/colorLoginText"
-                    android:textColorHint="@color/colorLoginTextHint" />
+                    android:textColorHint="@color/colorLoginTextHint"
+                    android:background="@drawable/rect_login_textbox"/>
+
+                <EditText
+                    android:layout_width="160dp"
+                    android:layout_height="@dimen/login_textbox"
+                    android:id="@+id/passcode"
+                    android:layout_marginTop="20dp"
+                    android:paddingLeft="8dp"
+                    android:hint="@string/Hint_passcod"
+                    android:inputType="numberPassword"
+                    android:maxLength="4"
+                    android:textColor="@color/colorLoginText"
+                    android:textColorHint="@color/colorLoginTextHint"
+                    android:background="@drawable/rect_login_textbox"/>
 
             </LinearLayout>
 
@@ -83,19 +99,20 @@
 
                 <EditText
                     android:layout_width="160dp"
-                    android:layout_height="wrap_content"
+                    android:layout_height="@dimen/login_textbox"
                     android:id="@+id/name2"
-                    android:layout_marginTop="32dp"
+                    android:layout_marginTop="20dp"
                     android:paddingLeft="8dp"
                     android:hint="@string/Hint_efternamn"
                     android:inputType="textCapSentences"
                     android:digits="abcdefghijklmnopqrstuvwxyzåäöABCDEFGHIJKLMNOPQRSTUVWXYZÅÄÖ-"
                     android:textColor="@color/colorLoginText"
-                    android:textColorHint="@color/colorLoginTextHint" />
+                    android:textColorHint="@color/colorLoginTextHint"
+                    android:background="@drawable/rect_login_textbox"/>
 
                 <EditText
                     android:layout_width="160dp"
-                    android:layout_height="wrap_content"
+                    android:layout_height="@dimen/login_textbox"
                     android:id="@+id/city"
                     android:layout_marginTop="20dp"
                     android:paddingLeft="8dp"
@@ -103,17 +120,32 @@
                     android:inputType="textCapSentences"
                     android:digits="abcdefghijklmnopqrstuvwxyzåäöABCDEFGHIJKLMNOPQRSTUVWXYZÅÄÖ-"
                     android:textColor="@color/colorLoginText"
-                    android:textColorHint="@color/colorLoginTextHint" />
+                    android:textColorHint="@color/colorLoginTextHint"
+                    android:background="@drawable/rect_login_textbox"/>
+
+                <EditText
+                    android:layout_width="160dp"
+                    android:layout_height="@dimen/login_textbox"
+                    android:id="@+id/nova_code"
+                    android:layout_marginTop="20dp"
+                    android:paddingLeft="8dp"
+                    android:hint="@string/Hint_novacode"
+                    android:inputType="numberPassword"
+                    android:maxLength="4"
+                    android:textColor="@color/colorLoginText"
+                    android:textColorHint="@color/colorLoginTextHint"
+                    android:background="@drawable/rect_login_textbox"/>
 
                 <Spinner
                     android:layout_width="160dp"
-                    android:layout_height="wrap_content"
+                    android:layout_height="@dimen/login_textbox"
                     android:layout_marginTop="20dp"
                     android:dropDownSelector="@color/colorLoginDropdownSelected"
                     android:id="@+id/fidget_spinner"
                     android:textColor="@color/colorLoginText"
                     android:textColorHint="@color/colorLoginTextHint"
-                    android:popupBackground="@color/colorLoginDropdownBackground" />
+                    android:popupBackground="@color/colorLoginDropdownBackground"
+                    android:background="@drawable/rect_login_textbox"/>
 
             </LinearLayout>
 

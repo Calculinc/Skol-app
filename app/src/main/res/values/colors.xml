@@ -82,7 +82,7 @@
 
     <!--  Login colors
               -->
-    <color name="colorLoginBackground">#ffffff</color>
+    <color name="colorLoginBackground">#ca5f45</color>
 
     <color name="colorLoginText">@color/colorSecondary</color>
     <color name="colorLoginTextHint">@color/colorThird</color>
@@ -93,6 +93,7 @@
     <color name="colorLoginDropdownSelected">#ffffff</color>
     <color name="colorLoginButton">@color/colorSecondary</color>
     <color name="colorLoginButtonText">#ffffff</color>
+    <color name="colorLoginRectTextbox">#25000000</color>
 
 
     <!--  Style colors

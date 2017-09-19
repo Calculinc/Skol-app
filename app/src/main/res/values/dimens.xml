@@ -8,4 +8,5 @@
     <dimen name="dp_unit">1dp</dimen>
     <dimen name="dp_unit2">0dp</dimen>
     <dimen name="image_width">280dp</dimen>
+    <dimen name="login_textbox">40dp</dimen>
 </resources>

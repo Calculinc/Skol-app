@@ -14,7 +14,9 @@
     <string name="Hint_efternamn"><i>Efternamn</i></string>
     <string name="Hint_telefon"><i>Telefon</i></string>
     <string name="Hint_stad"><i>Stad</i></string>
-    <string name="Hint_personnummer"><i>ååmmddxxxx</i></string>
+    <string name="Hint_personnummer"><i>ååmmdd</i></string>
+    <string name="Hint_passcod"><i>Lösenkod</i></string>
+    <string name="Hint_novacode"><i>xxxx</i></string>
 
     <string name="Buttontext_registrera">Registrera</string>
     <string name="Buttontext_logga_in">Logga in</string>

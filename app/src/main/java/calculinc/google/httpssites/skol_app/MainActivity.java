@@ -41,10 +41,6 @@ import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.ViewFlipper;
 
-import com.itextpdf.text.Image;
-import com.itextpdf.text.pdf.PdfContentParser;
-import com.itextpdf.text.pdf.PdfDocument;
-import com.itextpdf.text.pdf.PdfObject;
 import com.itextpdf.text.pdf.PdfReader;
 import com.itextpdf.text.pdf.parser.PdfTextExtractor;
 
@@ -84,6 +80,7 @@ public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     String id_number;
+    String fyra_sista;
     int genderInteger = 0;
 
     final String myTag = "DocsUpload";
@@ -228,7 +225,6 @@ public class MainActivity extends AppCompatActivity
 
     public void getSavedLoginContent() {
         loginFile = new File(getFilesDir() + "/" + loginFileName);
-
         loggenIn = loginFile.exists();
         try {
             if (loggenIn) {
@@ -247,19 +243,24 @@ public class MainActivity extends AppCompatActivity
                 }
                 String[] loginParams = sb.toString().split("%");
                 id_number = loginParams[4];
-                genderInteger = Integer.parseInt(loginParams[5]);
+                fyra_sista = loginParams[5];
+                genderInteger = Integer.parseInt(loginParams[7]);
 
                 EditText name = (EditText) findViewById(R.id.name1);
                 EditText surname = (EditText) findViewById(R.id.name2);
                 EditText phone = (EditText) findViewById(R.id.mobile_number);
                 EditText city = (EditText) findViewById(R.id.city);
-                EditText personal_id = (EditText) findViewById(R.id.personalid);
+                EditText birth = (EditText) findViewById(R.id.personalid);
+                EditText novacode = (EditText) findViewById(R.id.nova_code);
+                EditText passcode = (EditText) findViewById(R.id.passcode);
 
                 name.setText(loginParams[0]);
                 surname.setText(loginParams[1]);
                 phone.setText(loginParams[2]);
                 city.setText(loginParams[3]);
-                personal_id.setText(id_number);
+                birth.setText(id_number);
+                novacode.setText(fyra_sista);
+                passcode.setText(loginParams[6]);
             }
         }catch (IOException e) {
             e.printStackTrace();
@@ -275,6 +276,7 @@ public class MainActivity extends AppCompatActivity
         final EditText phone = (EditText) findViewById(R.id.mobile_number);
         final EditText city = (EditText) findViewById(R.id.city);
         final EditText personal_id = (EditText) findViewById(R.id.personalid);
+        final EditText passcode = (EditText) findViewById(R.id.passcode);
         final Spinner spinnerLoginGender = (Spinner) findViewById(R.id.fidget_spinner);
 
         final String Namn = name.getText().toString();
@@ -282,6 +284,7 @@ public class MainActivity extends AppCompatActivity
         final String Mobil = phone.getText().toString();
         final String Stad = city.getText().toString();
         id_number = personal_id.getText().toString();
+        final String Code = passcode.getText().toString() + ".0";
         final String Datum;{
             char[] siffra = id_number.toCharArray();
             if (siffra[0] == '9') {
@@ -306,7 +309,8 @@ public class MainActivity extends AppCompatActivity
                         String JsonStad = person.getJSONObject(4).getString("v");
                         String JsonDatum = person.getJSONObject(5).getString("f");
                         String JsonGender = person.getJSONObject(6).getString("v");
-                        if (JsonNamn.equals(Namn) && JsonEfternamn.equals(Efternamn) && JsonStad.equals(Stad) && JsonDatum.equals(Datum) && JsonGender.equals(Gender)) {
+                        String JsonCode = person.getJSONObject(7).getString("v");
+                        if (JsonNamn.equals(Namn) && JsonEfternamn.equals(Efternamn) && JsonStad.equals(Stad) && JsonDatum.equals(Datum) && JsonGender.equals(Gender) && JsonCode.equals(Code)) {
                             logSucc = true;
                             i = rows.length();
                         }
@@ -336,6 +340,8 @@ public class MainActivity extends AppCompatActivity
         final EditText phone = (EditText) findViewById(R.id.mobile_number);
         final EditText city = (EditText) findViewById(R.id.city);
         final EditText personal_id = (EditText) findViewById(R.id.personalid);
+        final EditText fyrasista = (EditText) findViewById(R.id.nova_code);
+        final EditText passcode = (EditText) findViewById(R.id.passcode);
         final Spinner spinnerLoginGender = (Spinner) findViewById(R.id.fidget_spinner);
 
         final String Namn = name.getText().toString();
@@ -343,6 +349,8 @@ public class MainActivity extends AppCompatActivity
         final String Mobil = phone.getText().toString();
         final String Stad = city.getText().toString();
         id_number = personal_id.getText().toString();
+        fyra_sista = fyrasista.getText().toString();
+        final String passCode = passcode.getText().toString();
         final int id_spinneritemgender = spinnerLoginGender.getSelectedItemPosition();
 
         StringBuilder loginContent = new StringBuilder();{
@@ -355,6 +363,10 @@ public class MainActivity extends AppCompatActivity
             loginContent.append(Stad);
             loginContent.append("%");
             loginContent.append(id_number);
+            loginContent.append("%");
+            loginContent.append(fyra_sista);
+            loginContent.append("%");
+            loginContent.append(passCode);
             loginContent.append("%");
             loginContent.append(String.valueOf(id_spinneritemgender));
         }
@@ -706,7 +718,9 @@ public class MainActivity extends AppCompatActivity
 
                                     schema_space.addView(linear);
 
-                                    LinearLayout linearDay = new LinearLayout(getBaseContext());
+
+
+                                    /**LinearLayout linearDay = new LinearLayout(getBaseContext());
                                     linearDay.setOrientation(LinearLayout.VERTICAL);
                                     LinearLayout.LayoutParams LinDayParams = new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, (int)((sluttid - starttid) * 90 * getResources().getDimension(R.dimen.dp_unit)));
                                     LinDayParams.setMargins(0,(int)(starttid * 90 * getResources().getDimension(R.dimen.dp_unit)),0,0);
@@ -742,7 +756,7 @@ public class MainActivity extends AppCompatActivity
 
                                     linearDay.setBackgroundResource(R.drawable.rect_view_vecka_day_header);
 
-                                    schema_dayce.addView(linearDay);
+                                    schema_dayce.addView(linearDay); **/
 
                                 }
                             } catch (NumberFormatException | NullPointerException e) {
