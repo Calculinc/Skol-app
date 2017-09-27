@@ -32,8 +32,8 @@
                 android:layout_marginRight="10dp"
                 android:layout_marginLeft="10dp"
                 android:textSize="15sp"
-                android:paddingTop="32dp"
-                android:gravity="center_horizontal|top"
+                android:paddingTop="37dp"
+                android:gravity="top"
                 android:paddingRight="8dp"
                 android:paddingLeft="8dp"
                 android:elevation="3dp"
@@ -41,14 +41,25 @@
 
         </LinearLayout>
 
-        <TextView
+        <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textColor="@color/colorMatIdagHeaderText"
-            android:textSize="20sp"
-            android:text="Dagens mat"
-            android:paddingTop="10dp"
-            android:gravity="center_horizontal" />
+            android:layout_height="match_parent"
+            android:orientation="vertical"
+            android:gravity="center_horizontal"
+            android:animateLayoutChanges="true">
+
+            <TextView
+                android:layout_width="160dp"
+                android:layout_height="35dp"
+                android:layout_gravity="center"
+                android:layout_marginTop="15dp"
+                android:text="Dagens mat"
+                android:textSize="20sp"
+                android:textColor="@color/colorThird"
+                android:gravity="center" />
+
+
+        </LinearLayout>
 
     </RelativeLayout>
 

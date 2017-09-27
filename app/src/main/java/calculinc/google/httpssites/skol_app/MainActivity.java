@@ -86,6 +86,7 @@ public class MainActivity extends AppCompatActivity
     final String myTag = "DocsUpload";
 
     double matsedelrating;
+    String votingID;
 
     int currentWeek = GregorianCalendar.getInstance().get(Calendar.WEEK_OF_YEAR);
     int currentDay = GregorianCalendar.getInstance().get(Calendar.DAY_OF_WEEK) - 1;
@@ -245,6 +246,7 @@ public class MainActivity extends AppCompatActivity
                 id_number = loginParams[4];
                 fyra_sista = loginParams[5];
                 genderInteger = Integer.parseInt(loginParams[7]);
+                votingID = id_number + loginParams[0].charAt(0) + loginParams[1].charAt(0);
 
                 EditText name = (EditText) findViewById(R.id.name1);
                 EditText surname = (EditText) findViewById(R.id.name2);
@@ -284,6 +286,7 @@ public class MainActivity extends AppCompatActivity
         final String Mobil = phone.getText().toString();
         final String Stad = city.getText().toString();
         id_number = personal_id.getText().toString();
+        votingID = id_number + Namn.charAt(0) + Efternamn.charAt(0);
         final String Code = passcode.getText().toString() + ".0";
         final String Datum;{
             char[] siffra = id_number.toCharArray();
@@ -517,11 +520,6 @@ public class MainActivity extends AppCompatActivity
             vf.setDisplayedChild(4);
             drawer.closeDrawer(GravityCompat.START);
             fidget_spinner();
-
-        } else if (id == R.id.nav_send) {
-
-            toolbar.setTitle(R.string.Tab_6);
-            drawer.closeDrawer(GravityCompat.START);
 
         }
 
@@ -1090,7 +1088,7 @@ public class MainActivity extends AppCompatActivity
             String fullUrl = "https://docs.google.com/forms/d/e/1FAIpQLSe7dUHRpnk226B_XWINpGxTJYrMuBjOqSQ7mAc1tDJgg36iJg/formResponse";
             HttpRequest mReq = new HttpRequest();
 
-            String data = "entry.1218691264=" + id_number + "&"
+            String data = "entry.1218691264=" + votingID + "&"
                     + "entry.1809891164=" + matrating ;
 
             String response = mReq.sendPost(fullUrl, data);
