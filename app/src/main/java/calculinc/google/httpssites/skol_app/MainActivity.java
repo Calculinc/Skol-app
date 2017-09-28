@@ -13,6 +13,8 @@ import android.support.v4.content.ContextCompat;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout.LayoutParams;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -83,6 +85,14 @@ public class MainActivity extends AppCompatActivity
     String fyra_sista;
     int genderInteger = 0;
 
+    boolean loginNameAccepted = false;
+    boolean loginSurnameAccepted = false;
+    boolean loginPhoneAccepted = false;
+    boolean loginCityAccepted = false;
+    boolean loginPersonalIdAccepted = false;
+    boolean loginNovaCodeAccepted = false;
+    boolean loginPassCodeAccepted = false;
+
     final String myTag = "DocsUpload";
 
     double matsedelrating;
@@ -94,7 +104,7 @@ public class MainActivity extends AppCompatActivity
     int currentMinute = GregorianCalendar.getInstance().get(Calendar.MINUTE);
 
     int foodDay = GregorianCalendar.getInstance().get(Calendar.DAY_OF_WEEK) - 1;
-
+    int testnum = 0;
     int downloadWeek, focusDay;
 
     String schemaFileName = "Nova.txt";
@@ -143,6 +153,168 @@ public class MainActivity extends AppCompatActivity
         getSavedLoginContent();
 
         Log.i(myTag, "OnCreate()");
+
+        final EditText name = (EditText) findViewById(R.id.name1);
+        final EditText surname = (EditText) findViewById(R.id.name2);
+        final EditText phone = (EditText) findViewById(R.id.mobile_number);
+        final EditText city = (EditText) findViewById(R.id.city);
+        final EditText personal_id = (EditText) findViewById(R.id.personalid);
+        final EditText novaCode = (EditText) findViewById(R.id.nova_code);
+        final EditText passCode = (EditText) findViewById(R.id.passcode);
+        name.addTextChangedListener(nameTextWatcher);
+        surname.addTextChangedListener(surnameTextWatcher);
+        phone.addTextChangedListener(phoneTextWatcher);
+        city.addTextChangedListener(cityTextWatcher);
+        personal_id.addTextChangedListener(personalIdTextWatcher);
+        novaCode.addTextChangedListener(novaCodeTextWatcher);
+        passCode.addTextChangedListener(passCodeTextWatcher);
+    }
+
+    private TextWatcher nameTextWatcher = new TextWatcher() {
+        @Override
+        public void onTextChanged(CharSequence s, int start, int before, int count) {
+            nameCheck(s.toString());
+        }
+
+        @Override
+        public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+        @Override
+        public void afterTextChanged(Editable s) {}
+    };
+
+    private TextWatcher surnameTextWatcher = new TextWatcher() {
+        @Override
+        public void onTextChanged(CharSequence s, int start, int before, int count) {
+            surnameCheck(s.toString());
+        }
+
+        @Override
+        public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+        @Override
+        public void afterTextChanged(Editable s) {}
+    };
+
+    private TextWatcher phoneTextWatcher = new TextWatcher() {
+        @Override
+        public void onTextChanged(CharSequence s, int start, int before, int count) {
+            phoneCheck(s.toString());
+        }
+
+        @Override
+        public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+        @Override
+        public void afterTextChanged(Editable s) {}
+    };
+
+    private TextWatcher cityTextWatcher = new TextWatcher() {
+        @Override
+        public void onTextChanged(CharSequence s, int start, int before, int count) {
+            cityCheck(s.toString());
+        }
+
+        @Override
+        public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+        @Override
+        public void afterTextChanged(Editable s) {}
+    };
+
+    private TextWatcher personalIdTextWatcher = new TextWatcher() {
+        @Override
+        public void onTextChanged(CharSequence s, int start, int before, int count) {
+            personalIdCheck(s.toString());
+        }
+
+        @Override
+        public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+        @Override
+        public void afterTextChanged(Editable s) {}
+    };
+
+    private TextWatcher novaCodeTextWatcher = new TextWatcher() {
+        @Override
+        public void onTextChanged(CharSequence s, int start, int before, int count) {
+            novaCodeCheck(s.toString());
+        }
+
+        @Override
+        public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+        @Override
+        public void afterTextChanged(Editable s) {}
+    };
+
+    private TextWatcher passCodeTextWatcher = new TextWatcher() {
+        @Override
+        public void onTextChanged(CharSequence s, int start, int before, int count) {
+            passCodeCheck(s.toString());
+        }
+
+        @Override
+        public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+        @Override
+        public void afterTextChanged(Editable s) {}
+    };
+
+    public void nameCheck(String content){
+        loginNameAccepted = content.length() >= 1;
+        if (loginNameAccepted) {
+            //Update indicator here
+        } else {
+            //Update indicator here
+        }
+    }
+
+    public void surnameCheck(String content){
+        loginSurnameAccepted = content.length() >= 1;
+        if (loginSurnameAccepted) {
+            //Update indicator here
+        } else {
+            //Update indicator here
+        }
+    }
+
+    public void phoneCheck(String content){
+        loginPhoneAccepted = content.length() == 10;
+        if (loginPhoneAccepted) {
+            //Update indicator here
+        } else {
+            //Update indicator here
+        }
+    }
+
+    public void cityCheck(String content){
+        loginCityAccepted = content.length() >= 1;
+        if (loginCityAccepted) {
+            //Update indicator here
+        } else {
+            //Update indicator here
+        }
+    }
+
+    public void personalIdCheck(String content){
+        loginPersonalIdAccepted = content.length() == 6;
+        if (loginPersonalIdAccepted) {
+            //Update indicator here
+        } else {
+            //Update indicator here
+        }
+    }
+
+    public void novaCodeCheck(String content){
+        loginNovaCodeAccepted = content.length() == 0 || content.length() == 4;
+        if (loginNovaCodeAccepted) {
+            //Update indicator here
+        } else {
+            //Update indicator here
+        }
+    }
+
+    public void passCodeCheck(String content){
+        loginPassCodeAccepted = content.length() == 4;
+        if (loginPassCodeAccepted) {
+            //Update indicator here
+        } else {
+            //Update indicator here
+        }
     }
 
     public class FixedTabsPagerAdapter extends FragmentPagerAdapter {
@@ -252,7 +424,7 @@ public class MainActivity extends AppCompatActivity
                 EditText surname = (EditText) findViewById(R.id.name2);
                 EditText phone = (EditText) findViewById(R.id.mobile_number);
                 EditText city = (EditText) findViewById(R.id.city);
-                EditText birth = (EditText) findViewById(R.id.personalid);
+                EditText personalId = (EditText) findViewById(R.id.personalid);
                 EditText novacode = (EditText) findViewById(R.id.nova_code);
                 EditText passcode = (EditText) findViewById(R.id.passcode);
 
@@ -260,9 +432,17 @@ public class MainActivity extends AppCompatActivity
                 surname.setText(loginParams[1]);
                 phone.setText(loginParams[2]);
                 city.setText(loginParams[3]);
-                birth.setText(id_number);
+                personalId.setText(id_number);
                 novacode.setText(fyra_sista);
                 passcode.setText(loginParams[6]);
+
+                nameCheck(loginParams[0]);
+                surnameCheck(loginParams[1]);
+                phoneCheck(loginParams[2]);
+                cityCheck(loginParams[3]);
+                personalIdCheck(id_number);
+                novaCodeCheck(fyra_sista);
+                passCodeCheck(loginParams[6]);
             }
         }catch (IOException e) {
             e.printStackTrace();
@@ -298,38 +478,40 @@ public class MainActivity extends AppCompatActivity
         }
         final String Gender = genderStrings[spinnerLoginGender.getSelectedItemPosition()];
 
-        new DownloadWebpageTask(new AsyncResult() {
-            @Override
-            public void onResult(JSONObject object) {
-                boolean logSucc = false;
-                try {
-                    JSONArray rows = object.getJSONArray("rows");
-                    for (int i = 0; i < rows.length(); i++) {
-                        JSONObject row = rows.getJSONObject(i);
-                        JSONArray person = row.getJSONArray("c");
-                        String JsonNamn = person.getJSONObject(1).getString("v");
-                        String JsonEfternamn = person.getJSONObject(2).getString("v");
-                        String JsonStad = person.getJSONObject(4).getString("v");
-                        String JsonDatum = person.getJSONObject(5).getString("f");
-                        String JsonGender = person.getJSONObject(6).getString("v");
-                        String JsonCode = person.getJSONObject(7).getString("v");
-                        if (JsonNamn.equals(Namn) && JsonEfternamn.equals(Efternamn) && JsonStad.equals(Stad) && JsonDatum.equals(Datum) && JsonGender.equals(Gender) && JsonCode.equals(Code)) {
-                            logSucc = true;
-                            i = rows.length();
+        if (loginNameAccepted && loginSurnameAccepted && loginPhoneAccepted && loginCityAccepted && loginPersonalIdAccepted && loginNovaCodeAccepted && loginPassCodeAccepted) {
+            new DownloadWebpageTask(new AsyncResult() {
+                @Override
+                public void onResult(JSONObject object) {
+                    boolean logSucc = false;
+                    try {
+                        JSONArray rows = object.getJSONArray("rows");
+                        for (int i = 0; i < rows.length(); i++) {
+                            JSONObject row = rows.getJSONObject(i);
+                            JSONArray person = row.getJSONArray("c");
+                            String JsonNamn = person.getJSONObject(1).getString("v");
+                            String JsonEfternamn = person.getJSONObject(2).getString("v");
+                            String JsonStad = person.getJSONObject(4).getString("v");
+                            String JsonDatum = person.getJSONObject(5).getString("f");
+                            String JsonGender = person.getJSONObject(6).getString("v");
+                            String JsonCode = person.getJSONObject(7).getString("v");
+                            if (JsonNamn.equals(Namn) && JsonEfternamn.equals(Efternamn) && JsonStad.equals(Stad) && JsonDatum.equals(Datum) && JsonGender.equals(Gender) && JsonCode.equals(Code)) {
+                                logSucc = true;
+                                i = rows.length();
+                            }
                         }
-                    }
-                    if (logSucc){
-                        loginSucces();
-                    } else {
+                        if (logSucc){
+                            loginSucces();
+                        } else {
+                            loginFail();
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
                         loginFail();
                     }
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                    loginFail();
                 }
-            }
-        } ).execute("https://spreadsheets.google.com/tq?key=" + LoginDataBaseKey);
+            } ).execute("https://spreadsheets.google.com/tq?key=" + LoginDataBaseKey);
 
+        }
     }
 
     public void loginSucces() {
@@ -379,6 +561,7 @@ public class MainActivity extends AppCompatActivity
             outputStream = openFileOutput(loginFileName,MODE_PRIVATE);
             outputStream.write(loginContent.toString().getBytes());
             outputStream.close();
+            loggenIn = true;
         } catch (Exception e) {
             e.printStackTrace();
         }
@@ -478,82 +661,78 @@ public class MainActivity extends AppCompatActivity
         if (id == R.id.nav_nyheter) {
 
             toolbar.setTitle(R.string.Tab_1);
-            vf.setDisplayedChild(0);
             drawer.closeDrawer(GravityCompat.START);
-
-            newsFeed();
+            if (loggenIn) {
+                vf.setDisplayedChild(0);
+                nyheterSelect click = new nyheterSelect();
+                click.start();
+            } else {vf.setDisplayedChild(5);}
 
         } else if (id == R.id.nav_schema) {
 
             toolbar.setTitle(R.string.Tab_2);
-            vf.setDisplayedChild(1);
             drawer.closeDrawer(GravityCompat.START);
-            //start loading animation here (spinning circle and "laddar..." text)
-
-            schemaSelect öpö = new schemaSelect();
-            öpö.start();
-            theSwtich();
-            fidget_spinner();
-            viewPager();
+            if (loggenIn) {
+                vf.setDisplayedChild(1);
+                schemaSelect click = new schemaSelect();
+                click.start();
+            } else {vf.setDisplayedChild(5);}
 
         } else if (id == R.id.nav_matsedel) {
 
             toolbar.setTitle(R.string.Tab_3);
-            vf.setDisplayedChild(2);
             drawer.closeDrawer(GravityCompat.START);
-
-            matsedel t = new matsedel();
-            t.start();
-            viewFuckingPager();
+            if (loggenIn) {
+                vf.setDisplayedChild(2);
+                matsedelSelect click = new matsedelSelect();
+                click.start();
+            } else {vf.setDisplayedChild(5);}
 
         } else if (id == R.id.nav_laxor) {
 
             toolbar.setTitle(R.string.Tab_4);
-            vf.setDisplayedChild(3);
             drawer.closeDrawer(GravityCompat.START);
-            schemaArrayFixer lloldawd = new schemaArrayFixer();
-            lloldawd.start();
+            if (loggenIn) {
+                vf.setDisplayedChild(3);
+                läxorSelect click = new läxorSelect();
+                click.start();
+            } else {vf.setDisplayedChild(5);}
 
         } else if (id == R.id.nav_login) {
 
             toolbar.setTitle(R.string.Tab_5);
-            vf.setDisplayedChild(4);
             drawer.closeDrawer(GravityCompat.START);
-            fidget_spinner();
-
+            vf.setDisplayedChild(4);
+            loginSelect click = new loginSelect();
+            click.start();
         }
 
         return true;
     }
 
-    private class schemaTimeRefresh extends Thread {
+    private class nyheterSelect extends Thread {
         public void run() {
-            currentWeek = GregorianCalendar.getInstance().get(Calendar.WEEK_OF_YEAR);
-            currentDay = GregorianCalendar.getInstance().get(Calendar.DAY_OF_WEEK) - 1;
-            currentHour = GregorianCalendar.getInstance().get(Calendar.HOUR_OF_DAY);
-            currentMinute = GregorianCalendar.getInstance().get(Calendar.MINUTE);
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    newsFeed();
+                }
+            });
 
-            foodDay = GregorianCalendar.getInstance().get(Calendar.DAY_OF_WEEK) - 1;
 
-            if (foodDay == 0 || foodDay == 6 || foodDay ==7) {
-                foodDay = 1;
-            }
-            if (currentHour < 18) {
-                focusDay = currentDay;
-            } else {
-                focusDay = currentDay + 1;
-            }
-            if (focusDay == 0 || focusDay == 6 || focusDay == 7) {
-                focusDay = 1;
-                downloadWeek = currentWeek + 1;
-            } else {
-                downloadWeek = currentWeek;
-            }
         }
     }
 
     private class schemaSelect extends Thread {
         public void run() {
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    theSwtich();
+                    fidget_spinner();
+                    viewPager();
+                }
+            });
 
             schemaTimeRefresh onSelectTimeSync = new schemaTimeRefresh();
             onSelectTimeSync.start();
@@ -579,6 +758,47 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
+    private class matsedelSelect extends Thread {
+        public void run() {
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    viewFuckingPager();
+                }
+            });
+
+            matsedel t = new matsedel();
+            t.start();
+        }
+    }
+
+    private class läxorSelect extends Thread {
+        public void run() {
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+
+                }
+            });
+
+            schemaArrayFixer lloldawd = new schemaArrayFixer();
+            lloldawd.start();
+        }
+    }
+
+    private class loginSelect extends Thread {
+        public void run() {
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    fidget_spinner();
+                }
+            });
+
+
+        }
+    }
+
     private class schemaRefresh extends Thread {
         public void run() {
 
@@ -590,6 +810,32 @@ public class MainActivity extends AppCompatActivity
                 e.printStackTrace();
             }
 
+        }
+    }
+
+    private class schemaTimeRefresh extends Thread {
+        public void run() {
+            currentWeek = GregorianCalendar.getInstance().get(Calendar.WEEK_OF_YEAR);
+            currentDay = GregorianCalendar.getInstance().get(Calendar.DAY_OF_WEEK) - 1;
+            currentHour = GregorianCalendar.getInstance().get(Calendar.HOUR_OF_DAY);
+            currentMinute = GregorianCalendar.getInstance().get(Calendar.MINUTE);
+
+            foodDay = GregorianCalendar.getInstance().get(Calendar.DAY_OF_WEEK) - 1;
+
+            if (foodDay == 0 || foodDay == 6 || foodDay ==7) {
+                foodDay = 1;
+            }
+            if (currentHour < 18) {
+                focusDay = currentDay;
+            } else {
+                focusDay = currentDay + 1;
+            }
+            if (focusDay == 0 || focusDay == 6 || focusDay == 7) {
+                focusDay = 1;
+                downloadWeek = currentWeek + 1;
+            } else {
+                downloadWeek = currentWeek;
+            }
         }
     }
 
@@ -656,7 +902,6 @@ public class MainActivity extends AppCompatActivity
                         RelativeLayout schema_space = (RelativeLayout) findViewById(relWeekIDS[i]);
                         RelativeLayout schema_dayce = (RelativeLayout) pagerItemInflater.findViewById(relDayIDS[i]);
 
-                        int status = 0;
                         String StartTid = "";
                         double starttid = 0;
                         String SlutTid;
@@ -664,22 +909,21 @@ public class MainActivity extends AppCompatActivity
                         String öpö = "";
 
                         for (int j = 0; j < desert.length; j++) {
-                            status++;
+                            int status = j % 3;
                             try {
-                                if (status == 1) {
+                                if (status == 0) {
                                     //lite matte här
                                     StartTid = desert[j];
                                     String[] time = StartTid.split(":");
                                     starttid = Double.parseDouble(time[0]) - 8 + (Double.parseDouble(time[1])) / 60;
 
                                 }
-                                if (status == 2) {
+                                if (status == 1) {
                                     //hämta lektionstext
                                     öpö = desert[j];
                                 }
-                                if (status == 3) {
+                                if (status == 2) {
                                     //lite mer matte
-                                    status = 0;
                                     SlutTid = desert[j];
                                     String[] time = SlutTid.split(":");
                                     sluttid = Double.parseDouble(time[0]) - 8 + Double.parseDouble(time[1]) / 60;
