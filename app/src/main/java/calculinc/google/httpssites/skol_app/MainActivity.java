@@ -96,6 +96,8 @@ public class MainActivity extends AppCompatActivity
     final String myTag = "DocsUpload";
 
     double matsedelrating;
+    double matsedelratingAmountOfVotes;
+    double matsedelratingTotal;
     String votingID;
 
     int currentWeek = GregorianCalendar.getInstance().get(Calendar.WEEK_OF_YEAR);
@@ -418,7 +420,7 @@ public class MainActivity extends AppCompatActivity
                 id_number = loginParams[4];
                 fyra_sista = loginParams[5];
                 genderInteger = Integer.parseInt(loginParams[7]);
-                votingID = id_number + loginParams[0].charAt(0) + loginParams[1].charAt(0);
+                votingID = id_number + loginParams[0] + loginParams[1];
 
                 EditText name = (EditText) findViewById(R.id.name1);
                 EditText surname = (EditText) findViewById(R.id.name2);
@@ -466,7 +468,7 @@ public class MainActivity extends AppCompatActivity
         final String Mobil = phone.getText().toString();
         final String Stad = city.getText().toString();
         id_number = personal_id.getText().toString();
-        votingID = id_number + Namn.charAt(0) + Efternamn.charAt(0);
+        votingID = id_number + Namn + Efternamn;
         final String Code = passcode.getText().toString() + ".0";
         final String Datum;{
             char[] siffra = id_number.toCharArray();
@@ -1148,7 +1150,7 @@ public class MainActivity extends AppCompatActivity
                     TextView textView5 = (TextView) findViewById(R.id.test_text5);
 
                     final TextView ratingtext = (TextView) findViewById(R.id.rating_text);
-                    final RatingBar ratingBar = (RatingBar) findViewById(R.id.rating_output_view);
+                    final RatingBar ratingBarOutput = (RatingBar) findViewById(R.id.rating_output_view);
 
                     LinearLayout monday = (LinearLayout) findViewById(R.id.matsedel_monday);
                     LinearLayout tuesday = (LinearLayout) findViewById(R.id.matsedel_tuesday);
@@ -1223,10 +1225,10 @@ public class MainActivity extends AppCompatActivity
                                         jsonParseMatrating(object);
 
                                         ratingtext.setText(String.valueOf(matsedelrating));
-                                        ratingBar.setRating((float)matsedelrating);
+                                        ratingBarOutput.setRating((float)matsedelrating);
 
                                     }
-                                } ).execute("https://spreadsheets.google.com/tq?key=" + MatvoteDataBaseKey);
+                                } ).execute("https://spreadsheets.google.com/tq?key=" + MatvoteDataBaseKey );
                             }
                         });
                         t.start();
@@ -1276,6 +1278,15 @@ public class MainActivity extends AppCompatActivity
         view.startAnimation(anim_button_click);
         final String matrating = String.valueOf(ratingBar.getRating()).replace(".",",");
 
+        String[] charSwap = { "Å", "Ä", "Ö", "å", "ä", "ö"};
+        String[] charSwap2 = { "%c3%85", "%c3%84", "%c3%96", "%c3%a5", "%c3%a4", "%c3%b6"};
+
+        for (int i = 0; i < 6 ; i++) {
+
+            votingID = votingID.replace( charSwap[i] , charSwap2[i] );
+
+        }
+
         Thread t = new Thread(new Runnable() {
             @Override
             public void run() {
@@ -1289,15 +1300,13 @@ public class MainActivity extends AppCompatActivity
 
     private void jsonParseMatrating(JSONObject object) {
 
-        final TextView ratingtext = (TextView) findViewById(R.id.rating_text);
-
         try {
             JSONArray rows = object.getJSONArray("rows");
             JSONObject row = rows.getJSONObject(0);
             JSONArray columns = row.getJSONArray("c");
-            matsedelrating = columns.getJSONObject(6).getDouble("v");
-
-            ratingtext.setText(String.valueOf(matsedelrating));
+            matsedelrating = columns.getJSONObject(0).getDouble("v");
+            matsedelratingAmountOfVotes = columns.getJSONObject(2).getDouble("v");
+            matsedelratingTotal = columns.getJSONObject(1).getDouble("v");
 
         } catch (JSONException e) {
             e.printStackTrace();
@@ -1337,6 +1346,15 @@ public class MainActivity extends AppCompatActivity
 
             String response = mReq.sendPost(fullUrl, data);
             Log.i(myTag, response);
+
+            final RatingBar ratingBarOutput = (RatingBar) findViewById(R.id.rating_output_view);
+            final TextView ratingText = (TextView) findViewById(R.id.rating_text);
+            final RatingBar ratingBar = (RatingBar) findViewById(R.id.rating_bar);
+
+            float tempChange = (float)((matsedelratingTotal + ratingBar.getRating()) / (matsedelratingAmountOfVotes + 1.0D));
+
+            ratingBarOutput.setRating(tempChange);
+            ratingText.setText(String.valueOf(tempChange));
 
         } catch (Exception e) {
             e.printStackTrace();
