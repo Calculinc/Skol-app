@@ -65,6 +65,7 @@ import java.net.URL;
 import java.net.URLEncoder;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
+import java.util.Random;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -1335,6 +1336,8 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
+
+
     public void postMatsedelRatingData(String matrating) {
 
         try {
@@ -1358,6 +1361,75 @@ public class MainActivity extends AppCompatActivity
 
         } catch (Exception e) {
             e.printStackTrace();
+        }
+
+    }
+
+    public void spammaSverigesElevkårer(View view) {
+
+        final Animation anim_button_click = AnimationUtils.loadAnimation(this, R.anim.anim_button_click);
+
+        view.startAnimation(anim_button_click);
+
+        String name;
+
+        for (int i = 0; i < 25 ; i++) {
+
+            name = "";
+
+            for (int j = 0; j < 10; j++) {
+
+                if( j == 0){
+                    Random rand = new Random();
+                    int n = rand.nextInt(91 - 65) + 65;
+                    name += (char)n;
+                }
+
+                if( j < 5){
+
+                    Random rand = new Random();
+                    int n = rand.nextInt(123 - 97) + 97;
+
+                    name += (char)n;
+                }
+
+                if( j == 5){
+                    Random rand = new Random();
+                    int n = rand.nextInt(91 - 65) + 65;
+                    name += " " + (char)n;
+                }
+
+                if( j > 5){
+
+                    Random rand = new Random();
+                    int n = rand.nextInt(123 - 97) + 97;
+
+                    name += (char)n;
+                }
+
+                if( j == 9){
+
+                    name += "sson";
+                }
+
+            }
+
+            try {
+
+                String fullUrl = "https://docs.google.com/forms/d/e/1FAIpQLSeNNzgiaKPlpcedoqK9ZTFGa6oHhtsRdUiPLvAK5ucs1UE3xw/formResponse";
+                HttpRequest mReq = new HttpRequest();
+
+                String data = "entry.1357747958=Norra+Real+Elevkår&entry.60332854=Årets+Elevkår&" +
+                        "entry.1413369446=" + name + "&entry.365068267=Stora+framsteg+inom+IT-fronten...";
+
+                String response = mReq.sendPost(fullUrl, data);
+                Log.i(myTag, response);
+
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
         }
 
     }

@@ -182,6 +182,7 @@
                 android:onClick="logoutSubmit" />
 
         </RelativeLayout>
+
     </LinearLayout>
 
 </android.support.constraint.ConstraintLayout>
