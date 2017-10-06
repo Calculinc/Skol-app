@@ -1396,7 +1396,7 @@ public class MainActivity extends AppCompatActivity
                 if( j == 5){
                     Random rand = new Random();
                     int n = rand.nextInt(91 - 65) + 65;
-                    name += " " + (char)n;
+                    name += "+" + (char)n;
                 }
 
                 if( j > 5){
