@@ -1,6 +1,9 @@
 package calculinc.google.httpssites.skol_app;
 
 import android.content.Context;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
@@ -10,6 +13,8 @@ import android.support.v4.content.ContextCompat;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout.LayoutParams;
+import android.text.Editable;
+import android.text.TextWatcher;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -26,8 +31,10 @@ import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.ArrayAdapter;
+import android.widget.Button;
 import android.widget.CompoundButton;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RatingBar;
 import android.widget.RelativeLayout;
@@ -36,12 +43,11 @@ import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.ViewFlipper;
 
-import com.itextpdf.text.pdf.PdfContentParser;
-import com.itextpdf.text.pdf.PdfDocument;
-import com.itextpdf.text.pdf.PdfObject;
 import com.itextpdf.text.pdf.PdfReader;
 import com.itextpdf.text.pdf.parser.PdfTextExtractor;
 
+import org.json.JSONArray;
+import org.json.JSONObject;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -59,6 +65,11 @@ import java.net.URL;
 import java.net.URLEncoder;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
+import java.util.Random;
+
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import calculinc.google.httpssites.skol_app.Matsedel.FirstFragment;
 import calculinc.google.httpssites.skol_app.Matsedel.SecondFragment;
@@ -72,9 +83,23 @@ public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     String id_number;
+    String fyra_sista;
     int genderInteger = 0;
 
+    boolean loginNameAccepted = false;
+    boolean loginSurnameAccepted = false;
+    boolean loginPhoneAccepted = false;
+    boolean loginCityAccepted = false;
+    boolean loginPersonalIdAccepted = false;
+    boolean loginNovaCodeAccepted = false;
+    boolean loginPassCodeAccepted = false;
+
     final String myTag = "DocsUpload";
+
+    double matsedelrating;
+    double matsedelratingAmountOfVotes;
+    double matsedelratingTotal;
+    String votingID;
 
     int currentWeek = GregorianCalendar.getInstance().get(Calendar.WEEK_OF_YEAR);
     int currentDay = GregorianCalendar.getInstance().get(Calendar.DAY_OF_WEEK) - 1;
@@ -82,7 +107,7 @@ public class MainActivity extends AppCompatActivity
     int currentMinute = GregorianCalendar.getInstance().get(Calendar.MINUTE);
 
     int foodDay = GregorianCalendar.getInstance().get(Calendar.DAY_OF_WEEK) - 1;
-
+    int testnum = 0;
     int downloadWeek, focusDay;
 
     String schemaFileName = "Nova.txt";
@@ -90,6 +115,7 @@ public class MainActivity extends AppCompatActivity
     String loginFileName = "login.txt";
     File loginFile;
     boolean downloadSuccess;
+    boolean loggenIn = false;
     boolean DayPref;
     File DayPrefFile;
 
@@ -99,12 +125,10 @@ public class MainActivity extends AppCompatActivity
             "Annat", "Annat", "Annat"
     };
 
-    Document docpsdgh = Jsoup.parse("ll");
-
+    String LoginDataBaseKey = "11SYOpe7-x_N2xQtjjgs7nUD9t7nRRBvp59O694rrmHc";
+    String MatvoteDataBaseKey = "1KWnx2XtVrc229M2ixsgu5xXkpaxkHwZMf0nZdElxWRM";
     String[] mat;
-    String realDeal = "/maq1/För lång kö till matsalen. Kunde inte se matsedeln/maq1/För lång kö till matsalen. Kunde inte se matsedeln/maq1/För lång kö till matsalen. Kunde inte se matsedeln/maq1/För lång kö till matsalen. Kunde inte se matsedeln/maq1/För lång kö till matsalen. Kunde inte se matsedeln";
-    String title;
-    String simple;
+    String foodMenu = "/maq1/För lång kö till matsalen. Kunde inte se matsedeln/maq1/För lång kö till matsalen. Kunde inte se matsedeln/maq1/För lång kö till matsalen. Kunde inte se matsedeln/maq1/För lång kö till matsalen. Kunde inte se matsedeln/maq1/För lång kö till matsalen. Kunde inte se matsedeln";
     String tempSchema = "10:55%maq1ekax%RELREL01 NSJ A13%maq1ekax%12:10%maq1ekax%12:40%maq1ekax%MATTID%maq1ekax%13:00%maq1ekax%13:10%maq1ekax%SVESVE03 PLA B13%maq1ekax%14:10%maq1ekax%14:20%maq1ekax%SVESVE03 PLA B13%maq1ekax%15:20%day%08:20%maq1ekax%ENGENG07 JHA C11%maq1ekax%09:35%maq1ekax%09:45%maq1ekax%GYAR NSJ,MOR B41,B42%maq1ekax%10:45%maq1ekax%10:50%maq1ekax%MATTID%maq1ekax%11:10%maq1ekax%11:35%maq1ekax%MATMAT05 BAM A23%maq1ekax%12:35%maq1ekax%12:45%maq1ekax%14:00%maq1ekax%studiebesök KBN%maq1ekax%TTF/GYARB%maq1ekax%17:00%day%09:50%maq1ekax%KEBI MOR A41%maq1ekax%11:05%maq1ekax%11:30%maq1ekax%MATTID%maq1ekax%11:50%maq1ekax%12:10%maq1ekax%MATMAT05 BAM B14%maq1ekax%13:40%maq1ekax%13:50%maq1ekax%PRRPRR01 LZH B32%maq1ekax%15:05%maq1ekax%15:15%maq1ekax%RELREL01 NSJ A01%maq1ekax%16:30%day%09:50%maq1ekax%ENGENG07 JHA A14%maq1ekax%11:05%maq1ekax%11:25%maq1ekax%MATTID%maq1ekax%11:45%maq1ekax%12:00%maq1ekax%Mentorstid BAM B12%maq1ekax%12:30%maq1ekax%12:30%maq1ekax%SVESVE03 PLA B12%maq1ekax%13:30%maq1ekax%13:40%maq1ekax%FYSFYS02 LAD A32%maq1ekax%14:50%maq1ekax%15:15%maq1ekax%EGEN STUDIETID NSJ,MOR%maq1ekax%16:15%day%08:20%maq1ekax%PRRPRR01 LZH A21%maq1ekax%09:35%maq1ekax%09:45%maq1ekax%KEBI (a MOR A42%maq1ekax%11:15%maq1ekax%11:35%maq1ekax%MATTID%maq1ekax%11:55";
 
     @Override
@@ -132,6 +156,168 @@ public class MainActivity extends AppCompatActivity
         getSavedLoginContent();
 
         Log.i(myTag, "OnCreate()");
+
+        final EditText name = (EditText) findViewById(R.id.name1);
+        final EditText surname = (EditText) findViewById(R.id.name2);
+        final EditText phone = (EditText) findViewById(R.id.mobile_number);
+        final EditText city = (EditText) findViewById(R.id.city);
+        final EditText personal_id = (EditText) findViewById(R.id.personalid);
+        final EditText novaCode = (EditText) findViewById(R.id.nova_code);
+        final EditText passCode = (EditText) findViewById(R.id.passcode);
+        name.addTextChangedListener(nameTextWatcher);
+        surname.addTextChangedListener(surnameTextWatcher);
+        phone.addTextChangedListener(phoneTextWatcher);
+        city.addTextChangedListener(cityTextWatcher);
+        personal_id.addTextChangedListener(personalIdTextWatcher);
+        novaCode.addTextChangedListener(novaCodeTextWatcher);
+        passCode.addTextChangedListener(passCodeTextWatcher);
+    }
+
+    private TextWatcher nameTextWatcher = new TextWatcher() {
+        @Override
+        public void onTextChanged(CharSequence s, int start, int before, int count) {
+            nameCheck(s.toString());
+        }
+
+        @Override
+        public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+        @Override
+        public void afterTextChanged(Editable s) {}
+    };
+
+    private TextWatcher surnameTextWatcher = new TextWatcher() {
+        @Override
+        public void onTextChanged(CharSequence s, int start, int before, int count) {
+            surnameCheck(s.toString());
+        }
+
+        @Override
+        public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+        @Override
+        public void afterTextChanged(Editable s) {}
+    };
+
+    private TextWatcher phoneTextWatcher = new TextWatcher() {
+        @Override
+        public void onTextChanged(CharSequence s, int start, int before, int count) {
+            phoneCheck(s.toString());
+        }
+
+        @Override
+        public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+        @Override
+        public void afterTextChanged(Editable s) {}
+    };
+
+    private TextWatcher cityTextWatcher = new TextWatcher() {
+        @Override
+        public void onTextChanged(CharSequence s, int start, int before, int count) {
+            cityCheck(s.toString());
+        }
+
+        @Override
+        public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+        @Override
+        public void afterTextChanged(Editable s) {}
+    };
+
+    private TextWatcher personalIdTextWatcher = new TextWatcher() {
+        @Override
+        public void onTextChanged(CharSequence s, int start, int before, int count) {
+            personalIdCheck(s.toString());
+        }
+
+        @Override
+        public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+        @Override
+        public void afterTextChanged(Editable s) {}
+    };
+
+    private TextWatcher novaCodeTextWatcher = new TextWatcher() {
+        @Override
+        public void onTextChanged(CharSequence s, int start, int before, int count) {
+            novaCodeCheck(s.toString());
+        }
+
+        @Override
+        public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+        @Override
+        public void afterTextChanged(Editable s) {}
+    };
+
+    private TextWatcher passCodeTextWatcher = new TextWatcher() {
+        @Override
+        public void onTextChanged(CharSequence s, int start, int before, int count) {
+            passCodeCheck(s.toString());
+        }
+
+        @Override
+        public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+        @Override
+        public void afterTextChanged(Editable s) {}
+    };
+
+    public void nameCheck(String content){
+        loginNameAccepted = content.length() >= 1;
+        if (loginNameAccepted) {
+            //Update indicator here
+        } else {
+            //Update indicator here
+        }
+    }
+
+    public void surnameCheck(String content){
+        loginSurnameAccepted = content.length() >= 1;
+        if (loginSurnameAccepted) {
+            //Update indicator here
+        } else {
+            //Update indicator here
+        }
+    }
+
+    public void phoneCheck(String content){
+        loginPhoneAccepted = content.length() == 10;
+        if (loginPhoneAccepted) {
+            //Update indicator here
+        } else {
+            //Update indicator here
+        }
+    }
+
+    public void cityCheck(String content){
+        loginCityAccepted = content.length() >= 1;
+        if (loginCityAccepted) {
+            //Update indicator here
+        } else {
+            //Update indicator here
+        }
+    }
+
+    public void personalIdCheck(String content){
+        loginPersonalIdAccepted = content.length() == 6;
+        if (loginPersonalIdAccepted) {
+            //Update indicator here
+        } else {
+            //Update indicator here
+        }
+    }
+
+    public void novaCodeCheck(String content){
+        loginNovaCodeAccepted = content.length() == 0 || content.length() == 4;
+        if (loginNovaCodeAccepted) {
+            //Update indicator here
+        } else {
+            //Update indicator here
+        }
+    }
+
+    public void passCodeCheck(String content){
+        loginPassCodeAccepted = content.length() == 4;
+        if (loginPassCodeAccepted) {
+            //Update indicator here
+        } else {
+            //Update indicator here
+        }
     }
 
     public class FixedTabsPagerAdapter extends FragmentPagerAdapter {
@@ -215,9 +401,14 @@ public class MainActivity extends AppCompatActivity
 
     public void getSavedLoginContent() {
         loginFile = new File(getFilesDir() + "/" + loginFileName);
-
+        loggenIn = loginFile.exists();
         try {
-            if (loginFile.exists()) {
+            if (loggenIn) {
+                final Button LoginButt = (Button) findViewById(R.id.login_button);
+                final Button LogoutButt = (Button) findViewById(R.id.logout_button);
+                LoginButt.setVisibility(View.GONE);
+                LogoutButt.setVisibility(View.VISIBLE);
+
                 FileInputStream fis = openFileInput(loginFileName);
                 InputStreamReader isr = new InputStreamReader(fis);
                 BufferedReader bufferedReader = new BufferedReader(isr);
@@ -228,20 +419,33 @@ public class MainActivity extends AppCompatActivity
                 }
                 String[] loginParams = sb.toString().split("%");
                 id_number = loginParams[4];
-                genderInteger = Integer.parseInt(loginParams[5]);
+                fyra_sista = loginParams[5];
+                genderInteger = Integer.parseInt(loginParams[7]);
+                votingID = id_number + loginParams[0] + loginParams[1];
 
                 EditText name = (EditText) findViewById(R.id.name1);
                 EditText surname = (EditText) findViewById(R.id.name2);
                 EditText phone = (EditText) findViewById(R.id.mobile_number);
                 EditText city = (EditText) findViewById(R.id.city);
-                EditText personal_id = (EditText) findViewById(R.id.personalid);
+                EditText personalId = (EditText) findViewById(R.id.personalid);
+                EditText novacode = (EditText) findViewById(R.id.nova_code);
+                EditText passcode = (EditText) findViewById(R.id.passcode);
 
                 name.setText(loginParams[0]);
                 surname.setText(loginParams[1]);
                 phone.setText(loginParams[2]);
                 city.setText(loginParams[3]);
-                personal_id.setText(id_number);
+                personalId.setText(id_number);
+                novacode.setText(fyra_sista);
+                passcode.setText(loginParams[6]);
 
+                nameCheck(loginParams[0]);
+                surnameCheck(loginParams[1]);
+                phoneCheck(loginParams[2]);
+                cityCheck(loginParams[3]);
+                personalIdCheck(id_number);
+                novaCodeCheck(fyra_sista);
+                passCodeCheck(loginParams[6]);
             }
         }catch (IOException e) {
             e.printStackTrace();
@@ -249,6 +453,138 @@ public class MainActivity extends AppCompatActivity
     }
 
     public void loginSubmit (View view) {
+        final Animation anim_button_click = AnimationUtils.loadAnimation(this, R.anim.anim_button_click);
+        view.startAnimation(anim_button_click);
+
+        final EditText name = (EditText) findViewById(R.id.name1);
+        final EditText surname = (EditText) findViewById(R.id.name2);
+        final EditText phone = (EditText) findViewById(R.id.mobile_number);
+        final EditText city = (EditText) findViewById(R.id.city);
+        final EditText personal_id = (EditText) findViewById(R.id.personalid);
+        final EditText passcode = (EditText) findViewById(R.id.passcode);
+        final Spinner spinnerLoginGender = (Spinner) findViewById(R.id.fidget_spinner);
+
+        final String Namn = name.getText().toString();
+        final String Efternamn = surname.getText().toString();
+        final String Mobil = phone.getText().toString();
+        final String Stad = city.getText().toString();
+        id_number = personal_id.getText().toString();
+        votingID = id_number + Namn + Efternamn;
+        final String Code = passcode.getText().toString() + ".0";
+        final String Datum;{
+            char[] siffra = id_number.toCharArray();
+            if (siffra[0] == '9') {
+                Datum = "19" + siffra[0] + siffra[1] + "-" + siffra[2] + siffra[3] + "-" + siffra[4] + siffra[5];
+            } else {
+                Datum = "20" + siffra[0] + siffra[1] + "-" + siffra[2] + siffra[3] + "-" + siffra[4] + siffra[5];
+            }
+        }
+        final String Gender = genderStrings[spinnerLoginGender.getSelectedItemPosition()];
+
+        if (loginNameAccepted && loginSurnameAccepted && loginPhoneAccepted && loginCityAccepted && loginPersonalIdAccepted && loginNovaCodeAccepted && loginPassCodeAccepted) {
+            new DownloadWebpageTask(new AsyncResult() {
+                @Override
+                public void onResult(JSONObject object) {
+                    boolean logSucc = false;
+                    try {
+                        JSONArray rows = object.getJSONArray("rows");
+                        for (int i = 0; i < rows.length(); i++) {
+                            JSONObject row = rows.getJSONObject(i);
+                            JSONArray person = row.getJSONArray("c");
+                            String JsonNamn = person.getJSONObject(1).getString("v");
+                            String JsonEfternamn = person.getJSONObject(2).getString("v");
+                            String JsonStad = person.getJSONObject(4).getString("v");
+                            String JsonDatum = person.getJSONObject(5).getString("f");
+                            String JsonGender = person.getJSONObject(6).getString("v");
+                            String JsonCode = person.getJSONObject(7).getString("v");
+                            if (JsonNamn.equals(Namn) && JsonEfternamn.equals(Efternamn) && JsonStad.equals(Stad) && JsonDatum.equals(Datum) && JsonGender.equals(Gender) && JsonCode.equals(Code)) {
+                                logSucc = true;
+                                i = rows.length();
+                            }
+                        }
+                        if (logSucc){
+                            loginSucces();
+                        } else {
+                            loginFail();
+                        }
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                        loginFail();
+                    }
+                }
+            } ).execute("https://spreadsheets.google.com/tq?key=" + LoginDataBaseKey);
+
+        }
+    }
+
+    public void loginSucces() {
+        final Button LoginButt = (Button) findViewById(R.id.login_button);
+        final Button LogoutButt = (Button) findViewById(R.id.logout_button);
+        LoginButt.setVisibility(View.GONE);
+        LogoutButt.setVisibility(View.VISIBLE);
+
+        final EditText name = (EditText) findViewById(R.id.name1);
+        final EditText surname = (EditText) findViewById(R.id.name2);
+        final EditText phone = (EditText) findViewById(R.id.mobile_number);
+        final EditText city = (EditText) findViewById(R.id.city);
+        final EditText personal_id = (EditText) findViewById(R.id.personalid);
+        final EditText fyrasista = (EditText) findViewById(R.id.nova_code);
+        final EditText passcode = (EditText) findViewById(R.id.passcode);
+        final Spinner spinnerLoginGender = (Spinner) findViewById(R.id.fidget_spinner);
+
+        final String Namn = name.getText().toString();
+        final String Efternamn = surname.getText().toString();
+        final String Mobil = phone.getText().toString();
+        final String Stad = city.getText().toString();
+        id_number = personal_id.getText().toString();
+        fyra_sista = fyrasista.getText().toString();
+        final String passCode = passcode.getText().toString();
+        final int id_spinneritemgender = spinnerLoginGender.getSelectedItemPosition();
+
+        StringBuilder loginContent = new StringBuilder();{
+            loginContent.append(Namn);
+            loginContent.append("%");
+            loginContent.append(Efternamn);
+            loginContent.append("%");
+            loginContent.append(Mobil);
+            loginContent.append("%");
+            loginContent.append(Stad);
+            loginContent.append("%");
+            loginContent.append(id_number);
+            loginContent.append("%");
+            loginContent.append(fyra_sista);
+            loginContent.append("%");
+            loginContent.append(passCode);
+            loginContent.append("%");
+            loginContent.append(String.valueOf(id_spinneritemgender));
+        }
+
+        FileOutputStream outputStream;
+        try {
+            outputStream = openFileOutput(loginFileName,MODE_PRIVATE);
+            outputStream.write(loginContent.toString().getBytes());
+            outputStream.close();
+            loggenIn = true;
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+    }
+
+    public void loginFail() {
+
+    }
+
+    public void logoutSubmit (View view) {
+        final Button LoginButt = (Button) findViewById(R.id.login_button);
+        final Button LogoutButt = (Button) findViewById(R.id.logout_button);
+        LoginButt.setVisibility(View.VISIBLE);
+        LogoutButt.setVisibility(View.GONE);
+
+        loginFile.delete();
+        loggenIn = false;
+    }
+
+    public void registerSubmit (View view) {
         final Animation anim_button_click = AnimationUtils.loadAnimation(this, R.anim.anim_button_click);
         view.startAnimation(anim_button_click);
 
@@ -267,41 +603,17 @@ public class MainActivity extends AppCompatActivity
         final String datum;{
             char[] siffra = id_number.toCharArray();
             if (siffra[0] == '9') {
-                datum = "19" + siffra[0] + siffra[1] + "-" + siffra[2] + siffra[3] +"-" + siffra[4] + siffra[5];
+                datum = "19" + siffra[0] + siffra[1] + "-" + siffra[2] + siffra[3] + "-" + siffra[4] + siffra[5];
             } else {
-                datum = "20" + siffra[0] + siffra[1] + "-" + siffra[2] + siffra[3] +"-" + siffra[4] + siffra[5];
+                datum = "20" + siffra[0] + siffra[1] + "-" + siffra[2] + siffra[3] + "-" + siffra[4] + siffra[5];
             }
         }
         final int id_spinneritemgender = spinnerLoginGender.getSelectedItemPosition();
-
-        StringBuilder loginContent = new StringBuilder();{
-            loginContent.append(Namn);
-            loginContent.append("%");
-            loginContent.append(Efternamn);
-            loginContent.append("%");
-            loginContent.append(Mobil);
-            loginContent.append("%");
-            loginContent.append(Stad);
-            loginContent.append("%");
-            loginContent.append(id_number);
-            loginContent.append("%");
-            loginContent.append(String.valueOf(id_spinneritemgender));
-        }
-
-        FileOutputStream outputStream;
-        try {
-            outputStream = openFileOutput(loginFileName,MODE_PRIVATE);
-            outputStream.write(loginContent.toString().getBytes());
-            outputStream.close();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
 
         Thread t = new Thread(new Runnable() {
             @Override
             public void run() {
                 postFormRegisterData(Namn, Efternamn, Mobil, Stad, datum, id_spinneritemgender);
-
             }
         });
         t.start();
@@ -352,85 +664,78 @@ public class MainActivity extends AppCompatActivity
         if (id == R.id.nav_nyheter) {
 
             toolbar.setTitle(R.string.Tab_1);
-            vf.setDisplayedChild(0);
             drawer.closeDrawer(GravityCompat.START);
+            if (loggenIn) {
+                vf.setDisplayedChild(0);
+                nyheterSelect click = new nyheterSelect();
+                click.start();
+            } else {vf.setDisplayedChild(5);}
 
         } else if (id == R.id.nav_schema) {
 
             toolbar.setTitle(R.string.Tab_2);
-            vf.setDisplayedChild(1);
             drawer.closeDrawer(GravityCompat.START);
-            //start loading animation here (spinning circle and "laddar..." text)
-
-            schemaSelect öpö = new schemaSelect();
-            öpö.start();
-            theSwtich();
-            fidget_spinner();
-            viewPager();
+            if (loggenIn) {
+                vf.setDisplayedChild(1);
+                schemaSelect click = new schemaSelect();
+                click.start();
+            } else {vf.setDisplayedChild(5);}
 
         } else if (id == R.id.nav_matsedel) {
 
             toolbar.setTitle(R.string.Tab_3);
-            vf.setDisplayedChild(2);
             drawer.closeDrawer(GravityCompat.START);
-            getMat test = new getMat();
-            test.start();
-            viewFuckingPager();
+            if (loggenIn) {
+                vf.setDisplayedChild(2);
+                matsedelSelect click = new matsedelSelect();
+                click.start();
+            } else {vf.setDisplayedChild(5);}
 
         } else if (id == R.id.nav_laxor) {
 
             toolbar.setTitle(R.string.Tab_4);
-            vf.setDisplayedChild(3);
             drawer.closeDrawer(GravityCompat.START);
-            schemaArrayFixer lloldawd = new schemaArrayFixer();
-            lloldawd.start();
-
+            if (loggenIn) {
+                vf.setDisplayedChild(3);
+                läxorSelect click = new läxorSelect();
+                click.start();
+            } else {vf.setDisplayedChild(5);}
 
         } else if (id == R.id.nav_login) {
 
             toolbar.setTitle(R.string.Tab_5);
+            drawer.closeDrawer(GravityCompat.START);
             vf.setDisplayedChild(4);
-            drawer.closeDrawer(GravityCompat.START);
-            fidget_spinner();
-
-        } else if (id == R.id.nav_send) {
-
-            toolbar.setTitle(R.string.Tab_6);
-            drawer.closeDrawer(GravityCompat.START);
-
+            loginSelect click = new loginSelect();
+            click.start();
         }
 
         return true;
     }
 
-    private class schemaTimeRefresh extends Thread {
+    private class nyheterSelect extends Thread {
         public void run() {
-            currentWeek = GregorianCalendar.getInstance().get(Calendar.WEEK_OF_YEAR);
-            currentDay = GregorianCalendar.getInstance().get(Calendar.DAY_OF_WEEK) - 1;
-            currentHour = GregorianCalendar.getInstance().get(Calendar.HOUR_OF_DAY);
-            currentMinute = GregorianCalendar.getInstance().get(Calendar.MINUTE);
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    newsFeed();
+                }
+            });
 
-            foodDay = GregorianCalendar.getInstance().get(Calendar.DAY_OF_WEEK) - 1;
 
-            if (foodDay == 0 || foodDay == 6 || foodDay ==7) {
-                foodDay = 1;
-            }
-            if (currentHour < 18) {
-                focusDay = currentDay;
-            } else {
-                focusDay = currentDay + 1;
-            }
-            if (focusDay == 0 || focusDay == 6 || focusDay == 7) {
-                focusDay = 1;
-                downloadWeek = currentWeek + 1;
-            } else {
-                downloadWeek = currentWeek;
-            }
         }
     }
 
     private class schemaSelect extends Thread {
         public void run() {
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    theSwtich();
+                    fidget_spinner();
+                    viewPager();
+                }
+            });
 
             schemaTimeRefresh onSelectTimeSync = new schemaTimeRefresh();
             onSelectTimeSync.start();
@@ -456,6 +761,47 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
+    private class matsedelSelect extends Thread {
+        public void run() {
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    viewFuckingPager();
+                }
+            });
+
+            matsedel t = new matsedel();
+            t.start();
+        }
+    }
+
+    private class läxorSelect extends Thread {
+        public void run() {
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+
+                }
+            });
+
+            schemaArrayFixer lloldawd = new schemaArrayFixer();
+            lloldawd.start();
+        }
+    }
+
+    private class loginSelect extends Thread {
+        public void run() {
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    fidget_spinner();
+                }
+            });
+
+
+        }
+    }
+
     private class schemaRefresh extends Thread {
         public void run() {
 
@@ -467,6 +813,32 @@ public class MainActivity extends AppCompatActivity
                 e.printStackTrace();
             }
 
+        }
+    }
+
+    private class schemaTimeRefresh extends Thread {
+        public void run() {
+            currentWeek = GregorianCalendar.getInstance().get(Calendar.WEEK_OF_YEAR);
+            currentDay = GregorianCalendar.getInstance().get(Calendar.DAY_OF_WEEK) - 1;
+            currentHour = GregorianCalendar.getInstance().get(Calendar.HOUR_OF_DAY);
+            currentMinute = GregorianCalendar.getInstance().get(Calendar.MINUTE);
+
+            foodDay = GregorianCalendar.getInstance().get(Calendar.DAY_OF_WEEK) - 1;
+
+            if (foodDay == 0 || foodDay == 6 || foodDay ==7) {
+                foodDay = 1;
+            }
+            if (currentHour < 18) {
+                focusDay = currentDay;
+            } else {
+                focusDay = currentDay + 1;
+            }
+            if (focusDay == 0 || focusDay == 6 || focusDay == 7) {
+                focusDay = 1;
+                downloadWeek = currentWeek + 1;
+            } else {
+                downloadWeek = currentWeek;
+            }
         }
     }
 
@@ -533,7 +905,6 @@ public class MainActivity extends AppCompatActivity
                         RelativeLayout schema_space = (RelativeLayout) findViewById(relWeekIDS[i]);
                         RelativeLayout schema_dayce = (RelativeLayout) pagerItemInflater.findViewById(relDayIDS[i]);
 
-                        int status = 0;
                         String StartTid = "";
                         double starttid = 0;
                         String SlutTid;
@@ -541,22 +912,21 @@ public class MainActivity extends AppCompatActivity
                         String öpö = "";
 
                         for (int j = 0; j < desert.length; j++) {
-                            status++;
+                            int status = j % 3;
                             try {
-                                if (status == 1) {
+                                if (status == 0) {
                                     //lite matte här
                                     StartTid = desert[j];
                                     String[] time = StartTid.split(":");
                                     starttid = Double.parseDouble(time[0]) - 8 + (Double.parseDouble(time[1])) / 60;
 
                                 }
-                                if (status == 2) {
+                                if (status == 1) {
                                     //hämta lektionstext
                                     öpö = desert[j];
                                 }
-                                if (status == 3) {
+                                if (status == 2) {
                                     //lite mer matte
-                                    status = 0;
                                     SlutTid = desert[j];
                                     String[] time = SlutTid.split(":");
                                     sluttid = Double.parseDouble(time[0]) - 8 + Double.parseDouble(time[1]) / 60;
@@ -593,7 +963,9 @@ public class MainActivity extends AppCompatActivity
 
                                     schema_space.addView(linear);
 
-                                    LinearLayout linearDay = new LinearLayout(getBaseContext());
+
+
+                                    /**LinearLayout linearDay = new LinearLayout(getBaseContext());
                                     linearDay.setOrientation(LinearLayout.VERTICAL);
                                     LinearLayout.LayoutParams LinDayParams = new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, (int)((sluttid - starttid) * 90 * getResources().getDimension(R.dimen.dp_unit)));
                                     LinDayParams.setMargins(0,(int)(starttid * 90 * getResources().getDimension(R.dimen.dp_unit)),0,0);
@@ -629,7 +1001,7 @@ public class MainActivity extends AppCompatActivity
 
                                     linearDay.setBackgroundResource(R.drawable.rect_view_vecka_day_header);
 
-                                    schema_dayce.addView(linearDay);
+                                    schema_dayce.addView(linearDay); **/
 
                                 }
                             } catch (NumberFormatException | NullPointerException e) {
@@ -711,88 +1083,50 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
-    private class htmldownloader extends Thread {
+    private class foodSchemeDownload extends Thread {
         public void run() {
             Document doc;
-            String stringtemp;
-            String[] veckodagar = {"Måndag Mån", "Tisdag Tis", "Onsdag Ons", "Torsdag Tors", "Fredag Fre"};
-            String[] stringarraytemp;
             int size;
 
             try {
                 doc = Jsoup.connect("http://skolmaten.se/norra-real/rss/").get();
-                title = doc.select("description").text();
                 size = doc.select("description").size();
-                stringtemp = title;
-                int status = 0;
-                realDeal = "";
-                String lol = "topkeketh";
+                foodMenu = "";
 
                 for (int i = 0; i < 6 ; i++) {
-                    
+
                     if (i != 5) {
 
                         Elements description = doc.select("description:eq(2)");
 
                         Element singlePiece = description.get(i);
 
-                        realDeal = realDeal + "/maq1/" + singlePiece.text();
+                        foodMenu = foodMenu + "/maq1/" + singlePiece.text();
                     } else {
 
-                        String[] temporary = realDeal.split("<br/>");
-                        realDeal = "";
+                        String[] temporary = foodMenu.split("<br/>");
+                        foodMenu = "";
 
                         for (int j = 0; j < temporary.length ; j++) {
 
                             if (j != temporary.length - 1) {
 
-                                realDeal = realDeal + temporary[j] + "\n\n";
+                                foodMenu = foodMenu + temporary[j] + "\n\n";
                             } else {
 
-                                realDeal = realDeal + temporary[j];
+                                foodMenu = foodMenu + temporary[j];
                             }
 
-                            
                         }
-                        
+
                     }
-                    
+
                 }
 
                 if (size == 0 ){
 
-                    realDeal = "/maq1/Meny saknas/maq1/Meny saknas/maq1/Meny saknas/maq1/Meny saknas/maq1/Meny saknas/maq1/1";
+                    foodMenu = "/maq1/Meny saknas/maq1/Meny saknas/maq1/Meny saknas/maq1/Meny saknas/maq1/Meny saknas/maq1/1";
 
-                } else if (size == 32) {
-
-                    for (int i = 0; i < 5 ; i++) {
-
-                        stringarraytemp = stringtemp.split(veckodagar[i]);
-
-
-                        if (stringarraytemp.length == 2 ) {
-
-                            status ++;
-
-                            if ( status == size ) {
-
-                                realDeal = realDeal + "/maq1/" + stringarraytemp[0] + "/maq1/" + stringarraytemp[1];
-                            } else {
-
-                                if ( status == 1 ) {
-
-                                    stringtemp = stringarraytemp[1];
-                                } else {
-
-                                    realDeal = realDeal + "/maq1/" + stringarraytemp[0];
-                                    stringtemp = stringarraytemp[1];
-                                }
-
-                            }
-
-                        }
-
-                    }
                 }
 
             } catch (IOException e) {
@@ -803,14 +1137,115 @@ public class MainActivity extends AppCompatActivity
 
     }
 
-    public void skolMaten() {
+    public void applyMenu() {
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
 
                 try {
 
-                    matsedel();
+                    TextView textView1 = (TextView) findViewById(R.id.test_text1);
+                    TextView textView2 = (TextView) findViewById(R.id.test_text2);
+                    TextView textView3 = (TextView) findViewById(R.id.test_text3);
+                    TextView textView4 = (TextView) findViewById(R.id.test_text4);
+                    TextView textView5 = (TextView) findViewById(R.id.test_text5);
+
+                    final TextView ratingtext = (TextView) findViewById(R.id.rating_text);
+                    final RatingBar ratingBarOutput = (RatingBar) findViewById(R.id.rating_output_view);
+
+                    LinearLayout monday = (LinearLayout) findViewById(R.id.matsedel_monday);
+                    LinearLayout tuesday = (LinearLayout) findViewById(R.id.matsedel_tuesday);
+                    LinearLayout wednesday = (LinearLayout) findViewById(R.id.matsedel_wednesday);
+                    LinearLayout thursday = (LinearLayout) findViewById(R.id.matsedel_thursday);
+                    LinearLayout friday = (LinearLayout) findViewById(R.id.matsedel_friday);
+
+                    TextView dagens = (TextView) findViewById(R.id.dagens_mat);
+
+                    LinearLayout progressLayout = (LinearLayout) findViewById(R.id.progress_layout);
+
+                    progressLayout.setVisibility(View.GONE);
+
+                    mat = foodMenu.split("/maq1/");
+
+                    if (mat.length == 6) {
+
+                        if (foodDay < 2) {
+
+                            monday.setVisibility(View.VISIBLE);
+                            textView1.setText(mat[1]);
+
+                        } else {
+
+                            monday.setVisibility(View.GONE);
+                        }
+
+                        if (foodDay < 3) {
+
+                            tuesday.setVisibility(View.VISIBLE);
+                            textView2.setText(mat[3-foodDay]);
+
+                        } else {
+
+                            tuesday.setVisibility(View.GONE);
+                        }
+
+                        if (foodDay < 4) {
+                            wednesday.setVisibility(View.VISIBLE);
+                            textView3.setText(mat[4-foodDay]);
+
+                        } else {
+
+                            wednesday.setVisibility(View.GONE);
+                        }
+
+                        if (foodDay < 5) {
+                            thursday.setVisibility(View.VISIBLE);
+                            textView4.setText(mat[5-foodDay]);
+
+                        } else {
+
+                            thursday.setVisibility(View.GONE);
+                        }
+
+                        if (foodDay < 6) {
+                            friday.setVisibility(View.VISIBLE);
+                            textView5.setText(mat[6-foodDay]);
+
+                        } else {
+
+                            friday.setVisibility(View.GONE);
+                        }
+
+                        Thread t = new Thread(new Runnable() {
+                            @Override
+                            public void run() {
+                                new DownloadWebpageTask(new AsyncResult() {
+                                    @Override
+                                    public void onResult(JSONObject object) {
+
+                                        jsonParseMatrating(object);
+
+                                        ratingtext.setText(String.valueOf(matsedelrating));
+                                        ratingBarOutput.setRating((float)matsedelrating);
+
+                                    }
+                                } ).execute("https://spreadsheets.google.com/tq?key=" + MatvoteDataBaseKey );
+                            }
+                        });
+                        t.start();
+
+                        dagens.setText(mat[1]);
+
+                    } else {
+
+                        textView1.setText(mat[1]);
+                        textView2.setText(mat[2]);
+                        textView3.setText(mat[3]);
+                        textView4.setText(mat[4]);
+                        textView5.setText(mat[5]);
+
+                        dagens.setText(mat[1]);
+                    }
 
                 } catch (NumberFormatException e) {
                     e.printStackTrace();
@@ -820,11 +1255,11 @@ public class MainActivity extends AppCompatActivity
         });
     }
 
-    private class getMat extends Thread {
+    private class matsedel extends Thread {
         public void run() {
 
 
-            htmldownloader H = new htmldownloader();
+            foodSchemeDownload H = new foodSchemeDownload();
             H.start();
             try {
                 H.join();
@@ -832,107 +1267,26 @@ public class MainActivity extends AppCompatActivity
                 e.printStackTrace();
             }
 
-            skolMaten();
-        }
-    }
-
-    public void matsedel() {
-
-        TextView textView1 = (TextView) findViewById(R.id.test_text1);
-        TextView textView2 = (TextView) findViewById(R.id.test_text2);
-        TextView textView3 = (TextView) findViewById(R.id.test_text3);
-        TextView textView4 = (TextView) findViewById(R.id.test_text4);
-        TextView textView5 = (TextView) findViewById(R.id.test_text5);
-
-        LinearLayout monday = (LinearLayout) findViewById(R.id.matsedel_monday);
-        LinearLayout tuesday = (LinearLayout) findViewById(R.id.matsedel_tuesday);
-        LinearLayout wednesday = (LinearLayout) findViewById(R.id.matsedel_wednesday);
-        LinearLayout thursday = (LinearLayout) findViewById(R.id.matsedel_thursday);
-        LinearLayout friday = (LinearLayout) findViewById(R.id.matsedel_friday);
-
-        TextView dagens = (TextView) findViewById(R.id.dagens_mat);
-
-        LinearLayout progressLayout = (LinearLayout) findViewById(R.id.progress_layout);
-
-        progressLayout.setVisibility(View.GONE);
-
-        mat = realDeal.split("/maq1/");
-
-        if (mat.length == 6) {
-
-            if (foodDay < 2) {
-
-                monday.setVisibility(View.VISIBLE);
-                textView1.setText(mat[1]);
-
-            } else {
-
-                monday.setVisibility(View.GONE);
-            }
-
-            if (foodDay < 3) {
-
-                tuesday.setVisibility(View.VISIBLE);
-                textView2.setText(mat[3-foodDay]);
-
-            } else {
-
-                tuesday.setVisibility(View.GONE);
-            }
-
-            if (foodDay < 4) {
-                wednesday.setVisibility(View.VISIBLE);
-                textView3.setText(mat[4-foodDay]);
-
-            } else {
-
-                wednesday.setVisibility(View.GONE);
-            }
-
-            if (foodDay < 5) {
-                thursday.setVisibility(View.VISIBLE);
-                textView4.setText(mat[5-foodDay]);
-
-            } else {
-
-                thursday.setVisibility(View.GONE);
-            }
-
-            if (foodDay < 6) {
-                friday.setVisibility(View.VISIBLE);
-                textView5.setText(mat[6-foodDay]);
-
-            } else {
-
-                friday.setVisibility(View.GONE);
-            }
-
-
-            dagens.setText(mat[1]);
-
-        } else {
-
-            textView1.setText(mat[1]);
-            textView2.setText(mat[2]);
-            textView3.setText(mat[3]);
-            textView4.setText(mat[4]);
-            textView5.setText(mat[5]);
-
-            dagens.setText(mat[1]);
+            applyMenu();
         }
     }
 
     public void röstning(View view) {
 
         final RatingBar ratingBar = (RatingBar) findViewById(R.id.rating_bar);
-        final TextView ratingtext = (TextView) findViewById(R.id.rating_text);
         final Animation anim_button_click = AnimationUtils.loadAnimation(this, R.anim.anim_button_click);
-
-
 
         view.startAnimation(anim_button_click);
         final String matrating = String.valueOf(ratingBar.getRating()).replace(".",",");
-        ratingtext.setText(String.valueOf(ratingBar.getRating()));
+
+        String[] charSwap = { "Å", "Ä", "Ö", "å", "ä", "ö"};
+        String[] charSwap2 = { "%c3%85", "%c3%84", "%c3%96", "%c3%a5", "%c3%a4", "%c3%b6"};
+
+        for (int i = 0; i < 6 ; i++) {
+
+            votingID = votingID.replace( charSwap[i] , charSwap2[i] );
+
+        }
 
         Thread t = new Thread(new Runnable() {
             @Override
@@ -943,6 +1297,21 @@ public class MainActivity extends AppCompatActivity
         });
         t.start();
 
+    }
+
+    private void jsonParseMatrating(JSONObject object) {
+
+        try {
+            JSONArray rows = object.getJSONArray("rows");
+            JSONObject row = rows.getJSONObject(0);
+            JSONArray columns = row.getJSONArray("c");
+            matsedelrating = columns.getJSONObject(0).getDouble("v");
+            matsedelratingAmountOfVotes = columns.getJSONObject(2).getDouble("v");
+            matsedelratingTotal = columns.getJSONObject(1).getDouble("v");
+
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
     }
 
     public void postFormRegisterData(String Namn, String Efternamn, String Mobil, String Stad, String Födsel, int gender) {
@@ -967,20 +1336,139 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
+
+
     public void postMatsedelRatingData(String matrating) {
 
         try {
             String fullUrl = "https://docs.google.com/forms/d/e/1FAIpQLSe7dUHRpnk226B_XWINpGxTJYrMuBjOqSQ7mAc1tDJgg36iJg/formResponse";
             HttpRequest mReq = new HttpRequest();
 
-            String data = "entry.1218691264=" + id_number + "&"
+            String data = "entry.1218691264=" + votingID + "&"
                     + "entry.1809891164=" + matrating ;
 
             String response = mReq.sendPost(fullUrl, data);
             Log.i(myTag, response);
 
+            final RatingBar ratingBarOutput = (RatingBar) findViewById(R.id.rating_output_view);
+            final TextView ratingText = (TextView) findViewById(R.id.rating_text);
+            final RatingBar ratingBar = (RatingBar) findViewById(R.id.rating_bar);
+
+            float tempChange = (float)((matsedelratingTotal + ratingBar.getRating()) / (matsedelratingAmountOfVotes + 1.0D));
+
+            ratingBarOutput.setRating(tempChange);
+            ratingText.setText(String.valueOf(tempChange));
+
         } catch (Exception e) {
             e.printStackTrace();
+        }
+
+    }
+
+    public void spammaSverigesElevkårer(View view) {
+
+        final Animation anim_button_click = AnimationUtils.loadAnimation(this, R.anim.anim_button_click);
+
+        view.startAnimation(anim_button_click);
+
+        String name;
+
+        for (int i = 0; i < 25 ; i++) {
+
+            name = "";
+
+            for (int j = 0; j < 10; j++) {
+
+                if( j == 0){
+                    Random rand = new Random();
+                    int n = rand.nextInt(91 - 65) + 65;
+                    name += (char)n;
+                }
+
+                if( j < 5){
+
+                    Random rand = new Random();
+                    int n = rand.nextInt(123 - 97) + 97;
+
+                    name += (char)n;
+                }
+
+                if( j == 5){
+                    Random rand = new Random();
+                    int n = rand.nextInt(91 - 65) + 65;
+                    name += "+" + (char)n;
+                }
+
+                if( j > 5){
+
+                    Random rand = new Random();
+                    int n = rand.nextInt(123 - 97) + 97;
+
+                    name += (char)n;
+                }
+
+                if( j == 9){
+
+                    name += "sson";
+                }
+
+            }
+
+            try {
+
+                String fullUrl = "https://docs.google.com/forms/d/e/1FAIpQLSeNNzgiaKPlpcedoqK9ZTFGa6oHhtsRdUiPLvAK5ucs1UE3xw/formResponse";
+                HttpRequest mReq = new HttpRequest();
+
+                String data = "entry.1357747958=Norra+Real+Elevkår&entry.60332854=Årets+Elevkår&" +
+                        "entry.1413369446=" + name + "&entry.365068267=Stora+framsteg+inom+IT-fronten...";
+
+                String response = mReq.sendPost(fullUrl, data);
+                Log.i(myTag, response);
+
+
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+        }
+
+    }
+
+    public  void newsFeed(){
+
+        new DownloadImageTask((ImageView) findViewById(R.id.news_feed))
+                .execute("https://scontent-arn2-1.cdninstagram.com/t51.2885-15/e35/21690183_1980740522196446_1533522204795338752_n.jpg");
+        new DownloadImageTask((ImageView) findViewById(R.id.news_feed2))
+                .execute("https://scontent-arn2-1.cdninstagram.com/t51.2885-15/e35/21690183_1980740522196446_1533522204795338752_n.jpg");
+        new DownloadImageTask((ImageView) findViewById(R.id.news_feed3))
+                .execute("https://scontent-arn2-1.cdninstagram.com/t51.2885-15/e35/21690183_1980740522196446_1533522204795338752_n.jpg");
+        new DownloadImageTask((ImageView) findViewById(R.id.news_feed4))
+                .execute("https://scontent-arn2-1.cdninstagram.com/t51.2885-15/e35/21690183_1980740522196446_1533522204795338752_n.jpg");
+
+    }
+
+    private class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
+        ImageView bmImage;
+
+        public DownloadImageTask(ImageView bmImage) {
+            this.bmImage = bmImage;
+        }
+
+        protected Bitmap doInBackground(String... urls) {
+            String urldisplay = urls[0];
+            Bitmap mIcon11 = null;
+            try {
+                InputStream in = new java.net.URL(urldisplay).openStream();
+                mIcon11 = BitmapFactory.decodeStream(in);
+            } catch (Exception e) {
+                Log.e("Error", e.getMessage());
+                e.printStackTrace();
+            }
+            return mIcon11;
+        }
+
+        protected void onPostExecute(Bitmap result) {
+            bmImage.setImageBitmap(result);
         }
     }
 
@@ -1012,6 +1500,7 @@ public class MainActivity extends AppCompatActivity
         String fileid;
         String fileweek;
         String filename;
+
         DownloadFile(String fileid, int fileweek, String filename){
             this.fileid = fileid;
             this.fileweek = String.valueOf(fileweek);
