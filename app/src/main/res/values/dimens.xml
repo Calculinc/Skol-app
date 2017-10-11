@@ -9,4 +9,6 @@
     <dimen name="dp_unit2">0dp</dimen>
     <dimen name="image_width">280dp</dimen>
     <dimen name="login_textbox">40dp</dimen>
+    <dimen name="matchange">196dp</dimen>
+    <dimen name="matchangepadding">10dp</dimen>
 </resources>

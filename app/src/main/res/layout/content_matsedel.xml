@@ -12,7 +12,7 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        android:background="@drawable/login_background_gradient"
+        android:background="@color/colorMatBackground"
         android:animateLayoutChanges="true">
 
         <LinearLayout
@@ -45,26 +45,33 @@
 
         <LinearLayout
             android:layout_width="match_parent"
+            android:id="@+id/matsedel_belt"
             android:layout_height="50dp"
+            android:layout_marginTop="10dp"
             android:orientation="horizontal"
             android:gravity="center"
-            android:elevation="3dp" >
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:elevation="3dp"
+            android:background="@drawable/rect_matsedel_belt">
 
             <RatingBar
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:id="@+id/rating_bar"
-                android:secondaryProgressTint="#00ffffff"/>
+                android:secondaryProgressTint="#00ffffff" />
 
             <Button
                 android:gravity="center"
                 android:layout_width="78dp"
                 android:layout_height="33dp"
                 android:text="@string/Buttontext_rösta"
+                android:textSize="15sp"
                 android:onClick="röstning"
                 android:textStyle="normal"
+                android:elevation="3dp"
+                android:layout_marginLeft="10dp"
                 android:textColor="@color/colorMatBeltButtonText"
-                android:layout_gravity="center_vertical"
                 android:background="@drawable/rect_matsedel_button"/>
 
         </LinearLayout>
@@ -89,7 +96,7 @@
             android:layout_height="match_parent"
             android:fadeScrollbars="true"
             android:requiresFadingEdge="vertical"
-            android:fadingEdgeLength="15dp">
+            android:fadingEdgeLength="0dp">
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -113,6 +120,7 @@
                     android:id="@+id/matsedel_monday">
 
                     <TextView
+                        android:id="@+id/mat_title_måndag"
                         android:layout_width="160dp"
                         android:layout_height="35dp"
                         android:layout_gravity="center"
@@ -156,6 +164,7 @@
                     android:id="@+id/matsedel_tuesday">
 
                     <TextView
+                        android:id="@+id/mat_title_tisdag"
                         android:layout_width="160dp"
                         android:layout_height="35dp"
                         android:layout_gravity="center"
@@ -197,6 +206,7 @@
                     android:id="@+id/matsedel_wednesday">
 
                     <TextView
+                        android:id="@+id/mat_title_onsdag"
                         android:layout_width="160dp"
                         android:layout_height="35dp"
                         android:layout_gravity="center"
@@ -239,6 +249,7 @@
                     android:id="@+id/matsedel_thursday">
 
                     <TextView
+                        android:id="@+id/mat_title_torsdag"
                         android:layout_width="160dp"
                         android:layout_height="35dp"
                         android:layout_gravity="center"
@@ -280,6 +291,7 @@
                     android:id="@+id/matsedel_friday">
 
                     <TextView
+                        android:id="@+id/mat_title_fredag"
                         android:layout_width="160dp"
                         android:layout_height="35dp"
                         android:layout_gravity="center"

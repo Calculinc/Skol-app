@@ -100,6 +100,7 @@ public class MainActivity extends AppCompatActivity
     double matsedelratingAmountOfVotes;
     double matsedelratingTotal;
     String votingID;
+    String downloaddatum = "";
 
     int currentWeek = GregorianCalendar.getInstance().get(Calendar.WEEK_OF_YEAR);
     int currentDay = GregorianCalendar.getInstance().get(Calendar.DAY_OF_WEEK) - 1;
@@ -336,9 +337,9 @@ public class MainActivity extends AppCompatActivity
             switch(position) {
 
                 case 0:
-                    return new FirstFragment();
-                case 1:
                     return new SecondFragment();
+                case 1:
+                    return new FirstFragment();
                 default:
                     return null;
             }
@@ -770,8 +771,17 @@ public class MainActivity extends AppCompatActivity
                 }
             });
 
-            matsedel t = new matsedel();
-            t.start();
+            VoteRight();
+
+            foodSchemeDownload H = new foodSchemeDownload();
+            H.start();
+            try {
+                H.join();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+
+            applyMenu();
         }
     }
 
@@ -1137,6 +1147,71 @@ public class MainActivity extends AppCompatActivity
 
     }
 
+    private void VoteRight(){
+
+        new DownloadWebpageTask(new AsyncResult() {
+            @Override
+            public void onResult(JSONObject object) {
+
+                String matVoteFileName = "mat.txt";
+                File matfil = new File(matVoteFileName);
+                String filedatum = "ö";
+                boolean qwerty;
+
+                try {
+                    FileInputStream fis = openFileInput(matVoteFileName);
+                    InputStreamReader isr = new InputStreamReader(fis);
+                    BufferedReader bufferedReader = new BufferedReader(isr);
+                    StringBuilder sb = new StringBuilder();
+                    String line;
+                    while ((line = bufferedReader.readLine()) != null) {
+                        sb.append(line);
+                    }
+                    filedatum = sb.toString();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                }
+
+                try {
+                    JSONArray rows = object.getJSONArray("rows");
+                    JSONObject row = rows.getJSONObject(0);
+                    JSONArray columns = row.getJSONArray("c");
+                    matsedelrating = columns.getJSONObject(0).getDouble("v");
+                    matsedelratingAmountOfVotes = columns.getJSONObject(2).getDouble("v");
+                    matsedelratingTotal = columns.getJSONObject(1).getDouble("v");
+                    downloaddatum = columns.getJSONObject(4).getString("v") + "/" + columns.getJSONObject(6).getString("v") + "/" + columns.getJSONObject(7).getString("v");
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+                qwerty = filedatum.equals(downloaddatum) || !matfil.exists();
+
+                final TextView klickahär = (TextView) findViewById(R.id.klicka_rösta_mat);
+                final LinearLayout matbelt = (LinearLayout) findViewById(R.id.matsedel_belt);
+                final TextView ratingtext = (TextView) findViewById(R.id.rating_text);
+                final RatingBar ratingBarOutput = (RatingBar) findViewById(R.id.rating_output_view);
+
+                if (filedatum.equals(downloaddatum) || !matfil.exists())
+                {
+
+
+                } else {
+
+                    klickahär.setVisibility(View.GONE);
+                    ratingtext.setVisibility(View.VISIBLE);
+                    ratingBarOutput.setVisibility(View.VISIBLE);
+                    matbelt.setVisibility(View.VISIBLE);
+
+                }
+
+                ratingtext.setText(String.valueOf(matsedelrating));
+                ratingBarOutput.setRating((float)matsedelrating);
+
+            }
+        } ).execute("https://spreadsheets.google.com/tq?key=" + MatvoteDataBaseKey );
+    }
+
     public void applyMenu() {
         runOnUiThread(new Runnable() {
             @Override
@@ -1150,14 +1225,19 @@ public class MainActivity extends AppCompatActivity
                     TextView textView4 = (TextView) findViewById(R.id.test_text4);
                     TextView textView5 = (TextView) findViewById(R.id.test_text5);
 
-                    final TextView ratingtext = (TextView) findViewById(R.id.rating_text);
-                    final RatingBar ratingBarOutput = (RatingBar) findViewById(R.id.rating_output_view);
-
                     LinearLayout monday = (LinearLayout) findViewById(R.id.matsedel_monday);
                     LinearLayout tuesday = (LinearLayout) findViewById(R.id.matsedel_tuesday);
                     LinearLayout wednesday = (LinearLayout) findViewById(R.id.matsedel_wednesday);
                     LinearLayout thursday = (LinearLayout) findViewById(R.id.matsedel_thursday);
                     LinearLayout friday = (LinearLayout) findViewById(R.id.matsedel_friday);
+
+                    final int[] matdayTitle = {
+                            R.id.mat_title_måndag,
+                            R.id.mat_title_tisdag,
+                            R.id.mat_title_onsdag,
+                            R.id.mat_title_torsdag,
+                            R.id.mat_title_fredag
+                    };
 
                     TextView dagens = (TextView) findViewById(R.id.dagens_mat);
 
@@ -1216,25 +1296,10 @@ public class MainActivity extends AppCompatActivity
                             friday.setVisibility(View.GONE);
                         }
 
-                        Thread t = new Thread(new Runnable() {
-                            @Override
-                            public void run() {
-                                new DownloadWebpageTask(new AsyncResult() {
-                                    @Override
-                                    public void onResult(JSONObject object) {
-
-                                        jsonParseMatrating(object);
-
-                                        ratingtext.setText(String.valueOf(matsedelrating));
-                                        ratingBarOutput.setRating((float)matsedelrating);
-
-                                    }
-                                } ).execute("https://spreadsheets.google.com/tq?key=" + MatvoteDataBaseKey );
-                            }
-                        });
-                        t.start();
-
                         dagens.setText(mat[1]);
+
+                        TextView Dagens = (TextView) findViewById(matdayTitle[foodDay - 1]);
+                        Dagens.setText("Dagens Mat");
 
                     } else {
 
@@ -1255,26 +1320,25 @@ public class MainActivity extends AppCompatActivity
         });
     }
 
-    private class matsedel extends Thread {
-        public void run() {
-
-
-            foodSchemeDownload H = new foodSchemeDownload();
-            H.start();
-            try {
-                H.join();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-
-            applyMenu();
-        }
-    }
-
     public void röstning(View view) {
 
         final RatingBar ratingBar = (RatingBar) findViewById(R.id.rating_bar);
         final Animation anim_button_click = AnimationUtils.loadAnimation(this, R.anim.anim_button_click);
+
+        final TextView klickahär = (TextView) findViewById(R.id.klicka_rösta_mat);
+        final LinearLayout matbelt = (LinearLayout) findViewById(R.id.matsedel_belt);
+        final TextView ratingtext = (TextView) findViewById(R.id.rating_text);
+        final RatingBar ratingBarOutput = (RatingBar) findViewById(R.id.rating_output_view);
+        final LinearLayout viewpagerlayout = (LinearLayout) findViewById(R.id.layout_pager);
+
+        klickahär.setVisibility(View.GONE);
+        ratingtext.setVisibility(View.VISIBLE);
+        ratingBarOutput.setVisibility(View.VISIBLE);
+        matbelt.setVisibility(View.GONE);
+
+        LinearLayout.LayoutParams paramsBlank2 = new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, Math.round(getResources().getDimension(R.dimen.matchange)));
+        viewpagerlayout.setLayoutParams(paramsBlank2);
+
 
         view.startAnimation(anim_button_click);
         final String matrating = String.valueOf(ratingBar.getRating()).replace(".",",");
@@ -1301,17 +1365,7 @@ public class MainActivity extends AppCompatActivity
 
     private void jsonParseMatrating(JSONObject object) {
 
-        try {
-            JSONArray rows = object.getJSONArray("rows");
-            JSONObject row = rows.getJSONObject(0);
-            JSONArray columns = row.getJSONArray("c");
-            matsedelrating = columns.getJSONObject(0).getDouble("v");
-            matsedelratingAmountOfVotes = columns.getJSONObject(2).getDouble("v");
-            matsedelratingTotal = columns.getJSONObject(1).getDouble("v");
 
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
     }
 
     public void postFormRegisterData(String Namn, String Efternamn, String Mobil, String Stad, String Födsel, int gender) {
