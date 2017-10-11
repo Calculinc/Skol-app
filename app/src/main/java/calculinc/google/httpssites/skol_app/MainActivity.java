@@ -91,7 +91,6 @@ public class MainActivity extends AppCompatActivity
     boolean loginPhoneAccepted = false;
     boolean loginCityAccepted = false;
     boolean loginPersonalIdAccepted = false;
-    boolean loginNovaCodeAccepted = false;
     boolean loginPassCodeAccepted = false;
 
     final String myTag = "DocsUpload";
@@ -108,7 +107,6 @@ public class MainActivity extends AppCompatActivity
     int currentMinute = GregorianCalendar.getInstance().get(Calendar.MINUTE);
 
     int foodDay = GregorianCalendar.getInstance().get(Calendar.DAY_OF_WEEK) - 1;
-    int testnum = 0;
     int downloadWeek, focusDay;
 
     String schemaFileName = "Nova.txt";
@@ -163,14 +161,12 @@ public class MainActivity extends AppCompatActivity
         final EditText phone = (EditText) findViewById(R.id.mobile_number);
         final EditText city = (EditText) findViewById(R.id.city);
         final EditText personal_id = (EditText) findViewById(R.id.personalid);
-        final EditText novaCode = (EditText) findViewById(R.id.nova_code);
         final EditText passCode = (EditText) findViewById(R.id.passcode);
         name.addTextChangedListener(nameTextWatcher);
         surname.addTextChangedListener(surnameTextWatcher);
         phone.addTextChangedListener(phoneTextWatcher);
         city.addTextChangedListener(cityTextWatcher);
         personal_id.addTextChangedListener(personalIdTextWatcher);
-        novaCode.addTextChangedListener(novaCodeTextWatcher);
         passCode.addTextChangedListener(passCodeTextWatcher);
     }
 
@@ -234,18 +230,6 @@ public class MainActivity extends AppCompatActivity
         public void afterTextChanged(Editable s) {}
     };
 
-    private TextWatcher novaCodeTextWatcher = new TextWatcher() {
-        @Override
-        public void onTextChanged(CharSequence s, int start, int before, int count) {
-            novaCodeCheck(s.toString());
-        }
-
-        @Override
-        public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
-        @Override
-        public void afterTextChanged(Editable s) {}
-    };
-
     private TextWatcher passCodeTextWatcher = new TextWatcher() {
         @Override
         public void onTextChanged(CharSequence s, int start, int before, int count) {
@@ -297,15 +281,6 @@ public class MainActivity extends AppCompatActivity
     public void personalIdCheck(String content){
         loginPersonalIdAccepted = content.length() == 6;
         if (loginPersonalIdAccepted) {
-            //Update indicator here
-        } else {
-            //Update indicator here
-        }
-    }
-
-    public void novaCodeCheck(String content){
-        loginNovaCodeAccepted = content.length() == 0 || content.length() == 4;
-        if (loginNovaCodeAccepted) {
             //Update indicator here
         } else {
             //Update indicator here
@@ -445,7 +420,6 @@ public class MainActivity extends AppCompatActivity
                 phoneCheck(loginParams[2]);
                 cityCheck(loginParams[3]);
                 personalIdCheck(id_number);
-                novaCodeCheck(fyra_sista);
                 passCodeCheck(loginParams[6]);
             }
         }catch (IOException e) {
@@ -482,7 +456,7 @@ public class MainActivity extends AppCompatActivity
         }
         final String Gender = genderStrings[spinnerLoginGender.getSelectedItemPosition()];
 
-        if (loginNameAccepted && loginSurnameAccepted && loginPhoneAccepted && loginCityAccepted && loginPersonalIdAccepted && loginNovaCodeAccepted && loginPassCodeAccepted) {
+        if (loginNameAccepted && loginSurnameAccepted && loginPhoneAccepted && loginCityAccepted && loginPersonalIdAccepted && loginPassCodeAccepted) {
             new DownloadWebpageTask(new AsyncResult() {
                 @Override
                 public void onResult(JSONObject object) {
@@ -1154,9 +1128,8 @@ public class MainActivity extends AppCompatActivity
             public void onResult(JSONObject object) {
 
                 String matVoteFileName = "mat.txt";
-                File matfil = new File(matVoteFileName);
+                File matfil = new File(getFilesDir() + "/" + matVoteFileName);
                 String filedatum = "ö";
-                boolean qwerty;
 
                 try {
                     FileInputStream fis = openFileInput(matVoteFileName);
@@ -1185,28 +1158,35 @@ public class MainActivity extends AppCompatActivity
                     e.printStackTrace();
                 }
 
-                qwerty = filedatum.equals(downloaddatum) || !matfil.exists();
+                final boolean qwerty = filedatum.equals(downloaddatum) || !matfil.exists();
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        final TextView klickahär = (TextView) findViewById(R.id.klicka_rösta_mat);
+                        final LinearLayout matbelt = (LinearLayout) findViewById(R.id.matsedel_belt);
+                        final TextView ratingText = (TextView) findViewById(R.id.rating_text);
+                        final RatingBar ratingBarOutput = (RatingBar) findViewById(R.id.rating_output_view);
 
-                final TextView klickahär = (TextView) findViewById(R.id.klicka_rösta_mat);
-                final LinearLayout matbelt = (LinearLayout) findViewById(R.id.matsedel_belt);
-                final TextView ratingtext = (TextView) findViewById(R.id.rating_text);
-                final RatingBar ratingBarOutput = (RatingBar) findViewById(R.id.rating_output_view);
+                        if (qwerty) {
 
-                if (filedatum.equals(downloaddatum) || !matfil.exists())
-                {
+                            klickahär.setVisibility(View.GONE);
+                            ratingText.setVisibility(View.VISIBLE);
+                            ratingBarOutput.setVisibility(View.VISIBLE);
+                            matbelt.setVisibility(View.GONE);
 
+                        } else {
 
-                } else {
+                            klickahär.setVisibility(View.GONE);
+                            ratingText.setVisibility(View.VISIBLE);
+                            ratingBarOutput.setVisibility(View.VISIBLE);
+                            matbelt.setVisibility(View.VISIBLE);
 
-                    klickahär.setVisibility(View.GONE);
-                    ratingtext.setVisibility(View.VISIBLE);
-                    ratingBarOutput.setVisibility(View.VISIBLE);
-                    matbelt.setVisibility(View.VISIBLE);
+                        }
 
-                }
-
-                ratingtext.setText(String.valueOf(matsedelrating));
-                ratingBarOutput.setRating((float)matsedelrating);
+                        ratingText.setText(String.valueOf(matsedelrating));
+                        ratingBarOutput.setRating((float)matsedelrating);
+                    }
+                });
 
             }
         } ).execute("https://spreadsheets.google.com/tq?key=" + MatvoteDataBaseKey );
@@ -1325,21 +1305,6 @@ public class MainActivity extends AppCompatActivity
         final RatingBar ratingBar = (RatingBar) findViewById(R.id.rating_bar);
         final Animation anim_button_click = AnimationUtils.loadAnimation(this, R.anim.anim_button_click);
 
-        final TextView klickahär = (TextView) findViewById(R.id.klicka_rösta_mat);
-        final LinearLayout matbelt = (LinearLayout) findViewById(R.id.matsedel_belt);
-        final TextView ratingtext = (TextView) findViewById(R.id.rating_text);
-        final RatingBar ratingBarOutput = (RatingBar) findViewById(R.id.rating_output_view);
-        final LinearLayout viewpagerlayout = (LinearLayout) findViewById(R.id.layout_pager);
-
-        klickahär.setVisibility(View.GONE);
-        ratingtext.setVisibility(View.VISIBLE);
-        ratingBarOutput.setVisibility(View.VISIBLE);
-        matbelt.setVisibility(View.GONE);
-
-        LinearLayout.LayoutParams paramsBlank2 = new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, Math.round(getResources().getDimension(R.dimen.matchange)));
-        viewpagerlayout.setLayoutParams(paramsBlank2);
-
-
         view.startAnimation(anim_button_click);
         final String matrating = String.valueOf(ratingBar.getRating()).replace(".",",");
 
@@ -1347,9 +1312,7 @@ public class MainActivity extends AppCompatActivity
         String[] charSwap2 = { "%c3%85", "%c3%84", "%c3%96", "%c3%a5", "%c3%a4", "%c3%b6"};
 
         for (int i = 0; i < 6 ; i++) {
-
             votingID = votingID.replace( charSwap[i] , charSwap2[i] );
-
         }
 
         Thread t = new Thread(new Runnable() {
@@ -1360,11 +1323,6 @@ public class MainActivity extends AppCompatActivity
             }
         });
         t.start();
-
-    }
-
-    private void jsonParseMatrating(JSONObject object) {
-
 
     }
 
@@ -1390,8 +1348,6 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
-
-
     public void postMatsedelRatingData(String matrating) {
 
         try {
@@ -1404,14 +1360,45 @@ public class MainActivity extends AppCompatActivity
             String response = mReq.sendPost(fullUrl, data);
             Log.i(myTag, response);
 
-            final RatingBar ratingBarOutput = (RatingBar) findViewById(R.id.rating_output_view);
-            final TextView ratingText = (TextView) findViewById(R.id.rating_text);
-            final RatingBar ratingBar = (RatingBar) findViewById(R.id.rating_bar);
+            //UI code block
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    final RatingBar ratingBarOutput = (RatingBar) findViewById(R.id.rating_output_view);
+                    final TextView ratingText = (TextView) findViewById(R.id.rating_text);
+                    final RatingBar ratingBar = (RatingBar) findViewById(R.id.rating_bar);
 
-            float tempChange = (float)((matsedelratingTotal + ratingBar.getRating()) / (matsedelratingAmountOfVotes + 1.0D));
+                    float tempChange = (float)((matsedelratingTotal + ratingBar.getRating()) / (matsedelratingAmountOfVotes + 1.0D));
 
-            ratingBarOutput.setRating(tempChange);
-            ratingText.setText(String.valueOf(tempChange));
+                    ratingBarOutput.setRating(tempChange);
+                    ratingText.setText(String.valueOf(tempChange));
+
+                    //On successful vote
+                    final TextView klickahär = (TextView) findViewById(R.id.klicka_rösta_mat);
+                    final LinearLayout matbelt = (LinearLayout) findViewById(R.id.matsedel_belt);
+                    final LinearLayout viewpagerlayout = (LinearLayout) findViewById(R.id.layout_pager);
+
+                    klickahär.setVisibility(View.GONE);
+                    ratingText.setVisibility(View.VISIBLE);
+                    ratingBarOutput.setVisibility(View.VISIBLE);
+                    matbelt.setVisibility(View.GONE);
+
+                    LinearLayout.LayoutParams paramsBlank2 = new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, Math.round(getResources().getDimension(R.dimen.matchange)));
+                    viewpagerlayout.setLayoutParams(paramsBlank2);
+                }
+            });
+
+            //File update
+            String matVoteFileName = "mat.txt";
+            File matfil = new File(getFilesDir() + "/" + matVoteFileName);
+            matfil.delete();
+            try {
+                FileOutputStream outputStream = openFileOutput(matVoteFileName,MODE_PRIVATE);
+                outputStream.write(downloaddatum.getBytes());
+                outputStream.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
 
         } catch (Exception e) {
             e.printStackTrace();

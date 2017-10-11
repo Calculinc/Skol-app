@@ -70,7 +70,7 @@
                 android:onClick="röstning"
                 android:textStyle="normal"
                 android:elevation="3dp"
-                android:layout_marginLeft="10dp"
+                android:layout_marginStart="10dp"
                 android:textColor="@color/colorMatBeltButtonText"
                 android:background="@drawable/rect_matsedel_button"/>
 
