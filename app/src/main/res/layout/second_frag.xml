@@ -41,18 +41,18 @@
                     android:gravity="center"
                     android:textSize="14sp"
                     android:text="Klicka rösta för att se matbetyget"
-                    android:visibility="visible"/>
+                    android:visibility="gone"/>
 
                 <TextView
                     android:id="@+id/rating_text"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textSize="25sp"
-                    android:textColor="@color/colorThird"
+                    android:textColor="@color/matsedelBlackText"
                     android:ems="4"
                     android:maxLength="4"
                     android:gravity="center"
-                    android:visibility="gone"/>
+                    android:visibility="visible"/>
 
                 <RatingBar
                     android:layout_width="wrap_content"
@@ -62,7 +62,7 @@
                     android:max="5"
                     android:secondaryProgressTint="#00ffffff"
                     android:stepSize="0.01"
-                    android:visibility="gone"/>
+                    android:visibility="visible"/>
 
         </LinearLayout>
 

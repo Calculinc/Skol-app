@@ -146,13 +146,13 @@ public class MainActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        TextView kek = (TextView) findViewById(R.id.öpö);
-        kek.setText(String.valueOf(currentHour));
-
         schemaTimeRefresh bootUpTimeSync = new schemaTimeRefresh();
         bootUpTimeSync.start();
 
         getSavedLoginContent();
+
+        viewFuckingPager();
+        viewPager();
 
         Log.i(myTag, "OnCreate()");
 
@@ -708,7 +708,6 @@ public class MainActivity extends AppCompatActivity
                 public void run() {
                     theSwtich();
                     fidget_spinner();
-                    viewPager();
                 }
             });
 
@@ -741,11 +740,12 @@ public class MainActivity extends AppCompatActivity
             runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-                    viewFuckingPager();
+
                 }
             });
 
-            VoteRight();
+            getVoteRight G = new getVoteRight();
+            G.start();
 
             foodSchemeDownload H = new foodSchemeDownload();
             H.start();
@@ -1121,75 +1121,86 @@ public class MainActivity extends AppCompatActivity
 
     }
 
-    private void VoteRight(){
+    private class getVoteRight extends Thread {
+        public void run() {
+            new DownloadWebpageTask(new AsyncResult() {
+                @Override
+                public void onResult(JSONObject object) {
 
-        new DownloadWebpageTask(new AsyncResult() {
-            @Override
-            public void onResult(JSONObject object) {
+                    String matVoteFileName = "mat.txt";
+                    File matfil = new File(getFilesDir() + "/" + matVoteFileName);
+                    String filedatum = "";
 
-                String matVoteFileName = "mat.txt";
-                File matfil = new File(getFilesDir() + "/" + matVoteFileName);
-                String filedatum = "ö";
+                    //Temporary code for animation-testing
+                    //matfil.delete();
+                    //Delete the above when necessary
 
-                try {
-                    FileInputStream fis = openFileInput(matVoteFileName);
-                    InputStreamReader isr = new InputStreamReader(fis);
-                    BufferedReader bufferedReader = new BufferedReader(isr);
-                    StringBuilder sb = new StringBuilder();
-                    String line;
-                    while ((line = bufferedReader.readLine()) != null) {
-                        sb.append(line);
-                    }
-                    filedatum = sb.toString();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-
-                try {
-                    JSONArray rows = object.getJSONArray("rows");
-                    JSONObject row = rows.getJSONObject(0);
-                    JSONArray columns = row.getJSONArray("c");
-                    matsedelrating = columns.getJSONObject(0).getDouble("v");
-                    matsedelratingAmountOfVotes = columns.getJSONObject(2).getDouble("v");
-                    matsedelratingTotal = columns.getJSONObject(1).getDouble("v");
-                    downloaddatum = columns.getJSONObject(4).getString("v") + "/" + columns.getJSONObject(6).getString("v") + "/" + columns.getJSONObject(7).getString("v");
-
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
-
-                final boolean qwerty = filedatum.equals(downloaddatum) || !matfil.exists();
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        final TextView klickahär = (TextView) findViewById(R.id.klicka_rösta_mat);
-                        final LinearLayout matbelt = (LinearLayout) findViewById(R.id.matsedel_belt);
-                        final TextView ratingText = (TextView) findViewById(R.id.rating_text);
-                        final RatingBar ratingBarOutput = (RatingBar) findViewById(R.id.rating_output_view);
-
-                        if (qwerty) {
-
-                            klickahär.setVisibility(View.GONE);
-                            ratingText.setVisibility(View.VISIBLE);
-                            ratingBarOutput.setVisibility(View.VISIBLE);
-                            matbelt.setVisibility(View.GONE);
-
-                        } else {
-
-                            klickahär.setVisibility(View.GONE);
-                            ratingText.setVisibility(View.VISIBLE);
-                            ratingBarOutput.setVisibility(View.VISIBLE);
-                            matbelt.setVisibility(View.VISIBLE);
-
+                    try {
+                        FileInputStream fis = openFileInput(matVoteFileName);
+                        InputStreamReader isr = new InputStreamReader(fis);
+                        BufferedReader bufferedReader = new BufferedReader(isr);
+                        StringBuilder sb = new StringBuilder();
+                        String line;
+                        while ((line = bufferedReader.readLine()) != null) {
+                            sb.append(line);
                         }
-
-                        ratingText.setText(String.valueOf(matsedelrating));
-                        ratingBarOutput.setRating((float)matsedelrating);
+                        filedatum = sb.toString();
+                    } catch (IOException e) {
+                        e.printStackTrace();
                     }
-                });
+                    downloaddatum = filedatum;
+                    try {
+                        JSONArray rows = object.getJSONArray("rows");
+                        JSONObject row = rows.getJSONObject(0);
+                        JSONArray columns = row.getJSONArray("c");
+                        matsedelrating = columns.getJSONObject(0).getDouble("v");
+                        matsedelratingAmountOfVotes = columns.getJSONObject(2).getDouble("v");
+                        matsedelratingTotal = columns.getJSONObject(1).getDouble("v");
+                        downloaddatum = columns.getJSONObject(4).getString("v") + "/" + columns.getJSONObject(6).getString("v") + "/" + columns.getJSONObject(7).getString("v");
 
-            }
-        } ).execute("https://spreadsheets.google.com/tq?key=" + MatvoteDataBaseKey );
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                    final boolean qwerty = !downloaddatum.equals(filedatum);
+
+                    final ViewFlipper matVf = (ViewFlipper) findViewById(R.id.mat_vf);
+
+                    if (qwerty) {
+                        matVf.setDisplayedChild(1);
+                    } else {
+                        matVf.setDisplayedChild(2);
+                    }
+
+                    final TextView ratingText = (TextView) findViewById(R.id.rating_text);
+                    final RatingBar ratingBarOutput = (RatingBar) findViewById(R.id.rating_output_view);
+
+                    ratingBarOutput.setRating((float)matsedelrating);
+                    ratingText.setText(String.valueOf(matsedelrating));
+                    String kek = "E";
+
+                    /**
+                     final TextView klickahär = (TextView) findViewById(R.id.klicka_rösta_mat);
+                     final LinearLayout matbelt = (LinearLayout) findViewById(R.id.matsedel_belt);
+
+                     if (qwerty) {
+
+                     klickahär.setVisibility(View.GONE);
+                     ratingText.setVisibility(View.VISIBLE);
+                     ratingBarOutput.setVisibility(View.VISIBLE);
+                     matbelt.setVisibility(View.GONE);
+
+                     } else {
+
+                     klickahär.setVisibility(View.GONE);
+                     ratingText.setVisibility(View.VISIBLE);
+                     ratingBarOutput.setVisibility(View.VISIBLE);
+                     matbelt.setVisibility(View.VISIBLE);
+
+                     }**/
+
+                }
+            } ).execute("https://spreadsheets.google.com/tq?key=" + MatvoteDataBaseKey );
+        }
     }
 
     public void applyMenu() {
@@ -1218,8 +1229,6 @@ public class MainActivity extends AppCompatActivity
                             R.id.mat_title_torsdag,
                             R.id.mat_title_fredag
                     };
-
-                    TextView dagens = (TextView) findViewById(R.id.dagens_mat);
 
                     LinearLayout progressLayout = (LinearLayout) findViewById(R.id.progress_layout);
 
@@ -1276,8 +1285,6 @@ public class MainActivity extends AppCompatActivity
                             friday.setVisibility(View.GONE);
                         }
 
-                        dagens.setText(mat[1]);
-
                         TextView Dagens = (TextView) findViewById(matdayTitle[foodDay - 1]);
                         Dagens.setText("Dagens Mat");
 
@@ -1288,8 +1295,6 @@ public class MainActivity extends AppCompatActivity
                         textView3.setText(mat[3]);
                         textView4.setText(mat[4]);
                         textView5.setText(mat[5]);
-
-                        dagens.setText(mat[1]);
                     }
 
                 } catch (NumberFormatException e) {
@@ -1374,6 +1379,11 @@ public class MainActivity extends AppCompatActivity
                     ratingText.setText(String.valueOf(tempChange));
 
                     //On successful vote
+                    final ViewFlipper matVf = (ViewFlipper) findViewById(R.id.mat_vf);
+
+                    matVf.setDisplayedChild(2);
+
+                    /**
                     final TextView klickahär = (TextView) findViewById(R.id.klicka_rösta_mat);
                     final LinearLayout matbelt = (LinearLayout) findViewById(R.id.matsedel_belt);
                     final LinearLayout viewpagerlayout = (LinearLayout) findViewById(R.id.layout_pager);
@@ -1385,6 +1395,7 @@ public class MainActivity extends AppCompatActivity
 
                     LinearLayout.LayoutParams paramsBlank2 = new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, Math.round(getResources().getDimension(R.dimen.matchange)));
                     viewpagerlayout.setLayoutParams(paramsBlank2);
+                     **/
                 }
             });
 
