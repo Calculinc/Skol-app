@@ -112,7 +112,7 @@
                   -->
     <color name="colorStyleAppThemePrimary">@color/colorPrimary</color>
     <color name="colorStyleAppThemeSecondary">@color/colorDrawerGradientStart</color><!--  Statusbar color -->
-    <color name="colorStyleAppThemeThird">@color/colorSecondary</color><!--  ratingbarfull, switch-day and editText cursor color -->
+    <color name="colorStyleAppThemeThird">@color/colorStyleAppThemeSecondary</color><!--  ratingbarfull, switch-day and editText cursor color -->
 
 
     <!--  Other colors

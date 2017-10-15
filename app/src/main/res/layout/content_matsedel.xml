@@ -39,8 +39,6 @@
                 <include android:id="@+id/Dont_use1" layout="@layout/first_frag" />
                 <include android:id="@+id/Dont_use2" layout="@layout/second_frag" />
 
-
-
             </ViewFlipper>
 
         </LinearLayout>
@@ -49,7 +47,6 @@
             android:layout_width="match_parent"
             android:id="@+id/matsedel_belt"
             android:layout_height="20dp"
-            android:layout_marginTop="10dp"
             android:orientation="horizontal"
             android:gravity="center"
             android:layout_marginLeft="10dp"

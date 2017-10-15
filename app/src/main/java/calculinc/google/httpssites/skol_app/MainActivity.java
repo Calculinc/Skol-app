@@ -100,6 +100,7 @@ public class MainActivity extends AppCompatActivity
     double matsedelratingTotal;
     String votingID;
     String downloaddatum = "";
+    String personalVote;
 
     int currentWeek = GregorianCalendar.getInstance().get(Calendar.WEEK_OF_YEAR);
     int currentDay = GregorianCalendar.getInstance().get(Calendar.DAY_OF_WEEK) - 1;
@@ -1144,7 +1145,10 @@ public class MainActivity extends AppCompatActivity
                         while ((line = bufferedReader.readLine()) != null) {
                             sb.append(line);
                         }
-                        filedatum = sb.toString();
+                        String[] data = sb.toString().split("%");
+                        filedatum = data[0];
+                        personalVote = data[1];
+
                     } catch (IOException e) {
                         e.printStackTrace();
                     }
@@ -1176,7 +1180,9 @@ public class MainActivity extends AppCompatActivity
 
                     ratingBarOutput.setRating((float)matsedelrating);
                     ratingText.setText(String.valueOf(matsedelrating));
-                    String kek = "E";
+
+                    final TextView statistik = (TextView) findViewById(R.id.statistik);
+                    statistik.setText(personalVote);
 
                     /**
                      final TextView klickahär = (TextView) findViewById(R.id.klicka_rösta_mat);
@@ -1285,8 +1291,13 @@ public class MainActivity extends AppCompatActivity
                             friday.setVisibility(View.GONE);
                         }
 
-                        TextView Dagens = (TextView) findViewById(matdayTitle[foodDay - 1]);
-                        Dagens.setText("Dagens Mat");
+                        if( GregorianCalendar.getInstance().get(Calendar.DAY_OF_WEEK) != Calendar.SATURDAY && GregorianCalendar.getInstance().get(Calendar.DAY_OF_WEEK) != Calendar.SUNDAY )
+                        {
+
+                            TextView Dagens = (TextView) findViewById(matdayTitle[foodDay - 1]);
+                            Dagens.setText("Dagens Mat");
+
+                        }
 
                     } else {
 
@@ -1372,6 +1383,7 @@ public class MainActivity extends AppCompatActivity
                     final RatingBar ratingBarOutput = (RatingBar) findViewById(R.id.rating_output_view);
                     final TextView ratingText = (TextView) findViewById(R.id.rating_text);
                     final RatingBar ratingBar = (RatingBar) findViewById(R.id.rating_bar);
+                    final TextView statistik = (TextView) findViewById(R.id.statistik);
 
                     float tempChange = (float)((matsedelratingTotal + ratingBar.getRating()) / (matsedelratingAmountOfVotes + 1.0D));
 
@@ -1382,6 +1394,8 @@ public class MainActivity extends AppCompatActivity
                     final ViewFlipper matVf = (ViewFlipper) findViewById(R.id.mat_vf);
 
                     matVf.setDisplayedChild(2);
+                    statistik.setText(String.valueOf(ratingBar.getRating()));
+
 
                     /**
                     final TextView klickahär = (TextView) findViewById(R.id.klicka_rösta_mat);
@@ -1400,12 +1414,16 @@ public class MainActivity extends AppCompatActivity
             });
 
             //File update
+            final RatingBar ratingBar = (RatingBar) findViewById(R.id.rating_bar);
+            String separator = "%";
             String matVoteFileName = "mat.txt";
             File matfil = new File(getFilesDir() + "/" + matVoteFileName);
             matfil.delete();
             try {
                 FileOutputStream outputStream = openFileOutput(matVoteFileName,MODE_PRIVATE);
                 outputStream.write(downloaddatum.getBytes());
+                outputStream.write(separator.getBytes());
+                outputStream.write(String.valueOf(ratingBar.getRating()).getBytes());
                 outputStream.close();
             } catch (IOException e) {
                 e.printStackTrace();

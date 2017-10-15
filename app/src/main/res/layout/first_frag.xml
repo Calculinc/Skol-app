@@ -23,12 +23,12 @@
             android:animateLayoutChanges="true">
 
             <TextView
-                android:id="@+id/dagens_mat"
+                android:id="@+id/statistik"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:textColor="@color/colorMatIdagText"
                 android:layout_marginTop="10dp"
-                android:layout_marginBottom="2dp"
+                android:layout_marginBottom="10dp"
                 android:layout_marginRight="10dp"
                 android:layout_marginLeft="10dp"
                 android:textSize="15sp"
@@ -50,11 +50,11 @@
             android:animateLayoutChanges="true">
 
             <TextView
-                android:layout_width="160dp"
+                android:layout_width="wrap_content"
                 android:layout_height="35dp"
                 android:layout_gravity="center"
                 android:layout_marginTop="15dp"
-                android:text="Dagens mat"
+                android:text="Statistik för nördar"
                 android:textSize="20sp"
                 android:textColor="@color/colorMatIdagHeaderText"
                 android:gravity="center" />
