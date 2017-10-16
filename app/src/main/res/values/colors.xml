@@ -12,9 +12,9 @@
 
     <!--  Drawer colors
           -->
-    <color name="colorDrawerGradientStart">#7eaca4</color>
-    <color name="colorDrawerGradientCenter">#679c87</color>
-    <color name="colorDrawerGradientEnd">#569970</color>
+    <color name="colorDrawerGradientStart">#56c77e</color>
+    <color name="colorDrawerGradientCenter">#27a382</color>
+    <color name="colorDrawerGradientEnd">#3a6064</color>
     <color name="colorDrawerGradientTextHeader">@color/colorThird</color>
     <color name="colorDrawerGradientText">@color/colorThird</color>
 

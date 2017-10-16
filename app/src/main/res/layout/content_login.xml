@@ -16,10 +16,10 @@
 
         <ImageView
             android:layout_width="130dp"
-            android:layout_height="130dp"
+            android:layout_height="122dp"
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="80dp"
-            android:src="@drawable/applogga" />
+            android:src="@drawable/norra_iconv2" />
 
         <LinearLayout
             android:layout_width="match_parent"
