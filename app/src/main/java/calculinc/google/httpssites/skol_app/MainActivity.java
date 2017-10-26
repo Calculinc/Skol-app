@@ -13,8 +13,11 @@ import android.support.v4.content.ContextCompat;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout.LayoutParams;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Base64;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -48,6 +51,7 @@ import com.itextpdf.text.pdf.parser.PdfTextExtractor;
 
 import org.json.JSONArray;
 import org.json.JSONObject;
+import org.jsoup.Connection;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -62,7 +66,9 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.net.URLDecoder;
 import java.net.URLEncoder;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.Random;
@@ -119,6 +125,9 @@ public class MainActivity extends AppCompatActivity
     boolean DayPref;
     File DayPrefFile;
 
+    private RecyclerView recyclerView;
+    private RecyclerView.Adapter adapter;
+
     final String[] genderStrings = {
             "Kvinna",
             "Man",
@@ -128,6 +137,7 @@ public class MainActivity extends AppCompatActivity
     String LoginDataBaseKey = "11SYOpe7-x_N2xQtjjgs7nUD9t7nRRBvp59O694rrmHc";
     String MatvoteDataBaseKey = "1KWnx2XtVrc229M2ixsgu5xXkpaxkHwZMf0nZdElxWRM";
     String[] mat;
+    String dagensMat;
     String foodMenu = "/maq1/För lång kö till matsalen. Kunde inte se matsedeln/maq1/För lång kö till matsalen. Kunde inte se matsedeln/maq1/För lång kö till matsalen. Kunde inte se matsedeln/maq1/För lång kö till matsalen. Kunde inte se matsedeln/maq1/För lång kö till matsalen. Kunde inte se matsedeln";
     String tempSchema = "10:55%maq1ekax%RELREL01 NSJ A13%maq1ekax%12:10%maq1ekax%12:40%maq1ekax%MATTID%maq1ekax%13:00%maq1ekax%13:10%maq1ekax%SVESVE03 PLA B13%maq1ekax%14:10%maq1ekax%14:20%maq1ekax%SVESVE03 PLA B13%maq1ekax%15:20%day%08:20%maq1ekax%ENGENG07 JHA C11%maq1ekax%09:35%maq1ekax%09:45%maq1ekax%GYAR NSJ,MOR B41,B42%maq1ekax%10:45%maq1ekax%10:50%maq1ekax%MATTID%maq1ekax%11:10%maq1ekax%11:35%maq1ekax%MATMAT05 BAM A23%maq1ekax%12:35%maq1ekax%12:45%maq1ekax%14:00%maq1ekax%studiebesök KBN%maq1ekax%TTF/GYARB%maq1ekax%17:00%day%09:50%maq1ekax%KEBI MOR A41%maq1ekax%11:05%maq1ekax%11:30%maq1ekax%MATTID%maq1ekax%11:50%maq1ekax%12:10%maq1ekax%MATMAT05 BAM B14%maq1ekax%13:40%maq1ekax%13:50%maq1ekax%PRRPRR01 LZH B32%maq1ekax%15:05%maq1ekax%15:15%maq1ekax%RELREL01 NSJ A01%maq1ekax%16:30%day%09:50%maq1ekax%ENGENG07 JHA A14%maq1ekax%11:05%maq1ekax%11:25%maq1ekax%MATTID%maq1ekax%11:45%maq1ekax%12:00%maq1ekax%Mentorstid BAM B12%maq1ekax%12:30%maq1ekax%12:30%maq1ekax%SVESVE03 PLA B12%maq1ekax%13:30%maq1ekax%13:40%maq1ekax%FYSFYS02 LAD A32%maq1ekax%14:50%maq1ekax%15:15%maq1ekax%EGEN STUDIETID NSJ,MOR%maq1ekax%16:15%day%08:20%maq1ekax%PRRPRR01 LZH A21%maq1ekax%09:35%maq1ekax%09:45%maq1ekax%KEBI (a MOR A42%maq1ekax%11:15%maq1ekax%11:35%maq1ekax%MATTID%maq1ekax%11:55";
 
@@ -154,6 +164,7 @@ public class MainActivity extends AppCompatActivity
 
         viewFuckingPager();
         viewPager();
+        recyclerViewAdapter();
 
         Log.i(myTag, "OnCreate()");
 
@@ -374,6 +385,15 @@ public class MainActivity extends AppCompatActivity
 
         TabLayout tabLayout = (TabLayout) findViewById(R.id.tab_layout);
         tabLayout.setupWithViewPager(pager);
+    }
+
+    public void recyclerViewAdapter() {
+
+        // set up the RecyclerView
+        recyclerView = (RecyclerView) findViewById(R.id.nyheter_recyclerview);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        recyclerView.setHasFixedSize(true);
+
     }
 
     public void getSavedLoginContent() {
@@ -693,8 +713,10 @@ public class MainActivity extends AppCompatActivity
         public void run() {
             runOnUiThread(new Runnable() {
                 @Override
+
                 public void run() {
-                    newsFeed();
+                    newsFeedDownload H = new newsFeedDownload();
+                    H.start();
                 }
             });
 
@@ -1068,6 +1090,100 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
+    private class newsFeedDownload extends Thread {
+        public void run() {
+            Document doc;
+
+
+            try {
+
+                doc = Jsoup.connect("http://instagram.com/norraselevkar/").get();
+                Elements script = doc.select("script");
+
+                Element picUrls = script.get(1);
+
+                String[] rawText = picUrls.toString().split(" ");
+
+                ArrayList<String> imageUrls = new ArrayList<>();
+                ArrayList<String> caption = new ArrayList<>();
+
+                String[] charSwap = { "Å", "Ä", "Ö", "å", "ä", "ö"};
+                String[] charSwap2 = { "\t\\u00c5", "\t\\u00c4", "\t\\u00D6", "\t\\u00e5", "\\u00e4", "\t\\u00f6"};
+
+                String temp = "";
+                StringBuilder sb = new StringBuilder();
+
+                int status = 0;
+
+                for (int i = 0; i < rawText.length; i++) {
+
+                    if(rawText[i].equals("\"display_src\":") ) {
+
+                        imageUrls.add(rawText[i +1 ].replace("\"","").replace(",",""));
+                    }
+
+
+                    if (rawText[i].equals("\"comments\":")) {
+
+                        status = 0;
+
+                        temp = sb.toString();
+
+                        temp.replace("\"","").replace(",","");
+
+                        for (int j = 0; j < 6 ; j++) {
+
+                            temp.replace(charSwap2[j], charSwap[j]);
+
+                        }
+
+                        caption.add(temp);
+
+                        sb.setLength(0);
+                    }
+
+
+                    if (status == 1) {
+
+                        sb.append(rawText[i]);
+                        sb.append(" ");
+
+                    }
+
+                    if (rawText[i].equals("\"caption\":")) {
+
+                        status = 1;
+                    }
+
+                }
+
+
+                applyNewsFeed(imageUrls, caption);
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+
+        }
+
+    }
+
+
+    public void applyNewsFeed(final ArrayList<String> imageUrls, final ArrayList<String> caption) {
+
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+
+                adapter = new MyRecyclerViewAdapter(getApplicationContext(), caption, imageUrls);
+                recyclerView.setAdapter(adapter);
+
+            }
+        });
+
+    }
+
     private class foodSchemeDownload extends Thread {
         public void run() {
             Document doc;
@@ -1158,8 +1274,8 @@ public class MainActivity extends AppCompatActivity
                         JSONObject row = rows.getJSONObject(0);
                         JSONArray columns = row.getJSONArray("c");
                         matsedelrating = columns.getJSONObject(0).getDouble("v");
-                        matsedelratingAmountOfVotes = columns.getJSONObject(2).getDouble("v");
                         matsedelratingTotal = columns.getJSONObject(1).getDouble("v");
+                        matsedelratingAmountOfVotes = columns.getJSONObject(2).getDouble("v");
                         downloaddatum = columns.getJSONObject(4).getString("v") + "/" + columns.getJSONObject(6).getString("v") + "/" + columns.getJSONObject(7).getString("v");
 
                     } catch (JSONException e) {
@@ -1241,6 +1357,16 @@ public class MainActivity extends AppCompatActivity
                     progressLayout.setVisibility(View.GONE);
 
                     mat = foodMenu.split("/maq1/");
+
+                    String[] charSwap = { "Å", "Ä", "Ö", "å", "ä", "ö"};
+                    String[] charSwap2 = { "%c3%85", "%c3%84", "%c3%96", "%c3%a5", "%c3%a4", "%c3%b6"};
+
+                    dagensMat = mat[1].replace("\n\n","\n");
+
+                    for (int i = 0; i < 6 ; i++) {
+
+                        dagensMat = dagensMat.replace( charSwap[i] , charSwap2[i] );
+                    }
 
                     if (mat.length == 6) {
 
@@ -1371,10 +1497,27 @@ public class MainActivity extends AppCompatActivity
             HttpRequest mReq = new HttpRequest();
 
             String data = "entry.1218691264=" + votingID + "&"
-                    + "entry.1809891164=" + matrating ;
+                    + "entry.1809891164=" + matrating + "&"
+                    + "entry.83499785=" + dagensMat;
 
             String response = mReq.sendPost(fullUrl, data);
             Log.i(myTag, response);
+
+            //File update
+            final RatingBar ratingBar = (RatingBar) findViewById(R.id.rating_bar);
+            String separator = "%";
+            String matVoteFileName = "mat.txt";
+            File matfil = new File(getFilesDir() + "/" + matVoteFileName);
+            matfil.delete();
+            try {
+                FileOutputStream outputStream = openFileOutput(matVoteFileName,MODE_PRIVATE);
+                outputStream.write(downloaddatum.getBytes());
+                outputStream.write(separator.getBytes());
+                outputStream.write(String.valueOf(ratingBar.getRating()).getBytes());
+                outputStream.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
 
             //UI code block
             runOnUiThread(new Runnable() {
@@ -1412,22 +1555,6 @@ public class MainActivity extends AppCompatActivity
                      **/
                 }
             });
-
-            //File update
-            final RatingBar ratingBar = (RatingBar) findViewById(R.id.rating_bar);
-            String separator = "%";
-            String matVoteFileName = "mat.txt";
-            File matfil = new File(getFilesDir() + "/" + matVoteFileName);
-            matfil.delete();
-            try {
-                FileOutputStream outputStream = openFileOutput(matVoteFileName,MODE_PRIVATE);
-                outputStream.write(downloaddatum.getBytes());
-                outputStream.write(separator.getBytes());
-                outputStream.write(String.valueOf(ratingBar.getRating()).getBytes());
-                outputStream.close();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -1504,19 +1631,6 @@ public class MainActivity extends AppCompatActivity
 
     }
 
-    public  void newsFeed(){
-
-        new DownloadImageTask((ImageView) findViewById(R.id.news_feed))
-                .execute("https://scontent-arn2-1.cdninstagram.com/t51.2885-15/e35/21690183_1980740522196446_1533522204795338752_n.jpg");
-        new DownloadImageTask((ImageView) findViewById(R.id.news_feed2))
-                .execute("https://scontent-arn2-1.cdninstagram.com/t51.2885-15/e35/21690183_1980740522196446_1533522204795338752_n.jpg");
-        new DownloadImageTask((ImageView) findViewById(R.id.news_feed3))
-                .execute("https://scontent-arn2-1.cdninstagram.com/t51.2885-15/e35/21690183_1980740522196446_1533522204795338752_n.jpg");
-        new DownloadImageTask((ImageView) findViewById(R.id.news_feed4))
-                .execute("https://scontent-arn2-1.cdninstagram.com/t51.2885-15/e35/21690183_1980740522196446_1533522204795338752_n.jpg");
-
-    }
-
     private class DownloadImageTask extends AsyncTask<String, Void, Bitmap> {
         ImageView bmImage;
 
@@ -1542,7 +1656,8 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
-    public void fidget_spinner(){
+
+        public void fidget_spinner(){
 
         Spinner spinnerLoginGender = (Spinner) findViewById(R.id.fidget_spinner);
         Spinner spinnerSchemaType = (Spinner) findViewById(R.id.typ_spinner);

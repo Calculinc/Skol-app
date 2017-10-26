@@ -12,34 +12,41 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        android:background="@drawable/login_background_gradient">
+        android:background="@drawable/login_gradient_background"
+        android:animateLayoutChanges="true">
 
         <ImageView
             android:layout_width="130dp"
-            android:layout_height="122dp"
+            android:layout_height="130dp"
             android:layout_gravity="center_horizontal"
             android:layout_marginTop="80dp"
-            android:src="@drawable/norra_iconv2" />
+
+            android:background="@drawable/nr_logga_fixed"/>
 
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal" >
+            android:gravity="center_horizontal"
+            android:layout_gravity="center_horizontal"
+            android:layout_marginTop="20dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:background="@drawable/rect_login_big"
+            android:orientation="horizontal"
+            android:elevation="3dp">
 
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:gravity="center_horizontal"
+                android:gravity="right"
                 android:layout_gravity="center_horizontal"
-                android:layout_marginRight="3dp"
                 android:layout_weight="1">
 
                 <EditText
                     android:layout_width="160dp"
                     android:layout_height="@dimen/login_textbox"
                     android:id="@+id/name1"
-                    android:layout_marginTop="20dp"
                     android:paddingLeft="8dp"
                     android:hint="@string/Hint_förnamn"
                     android:inputType="textCapSentences"
@@ -48,11 +55,16 @@
                     android:textColorHint="@color/colorLoginTextHint"
                     android:background="@drawable/rect_login_textbox"/>
 
+                <View
+                    android:layout_width="wrap_content"
+                    android:layout_height="1dp"
+                    android:background="@color/colorLoginRectLines">
+                </View>
+
                 <EditText
                     android:layout_width="160dp"
                     android:layout_height="@dimen/login_textbox"
                     android:id="@+id/mobile_number"
-                    android:layout_marginTop="20dp"
                     android:paddingLeft="8dp"
                     android:hint="@string/Hint_telefon"
                     android:inputType="phone"
@@ -61,11 +73,16 @@
                     android:textColorHint="@color/colorLoginTextHint"
                     android:background="@drawable/rect_login_textbox"/>
 
+                <View
+                    android:layout_width="wrap_content"
+                    android:layout_height="1dp"
+                    android:background="@color/colorLoginRectLines">
+                </View>
+
                 <EditText
                     android:id="@+id/personalid"
                     android:layout_width="160dp"
                     android:layout_height="@dimen/login_textbox"
-                    android:layout_marginTop="20dp"
                     android:hint="@string/Hint_personnummer"
                     android:paddingLeft="8dp"
                     android:inputType="number"
@@ -74,11 +91,16 @@
                     android:textColorHint="@color/colorLoginTextHint"
                     android:background="@drawable/rect_login_textbox"/>
 
+                <View
+                    android:layout_width="wrap_content"
+                    android:layout_height="1dp"
+                    android:background="@color/colorLoginRectLines">
+                </View>
+
                 <EditText
                     android:layout_width="160dp"
                     android:layout_height="@dimen/login_textbox"
                     android:id="@+id/passcode"
-                    android:layout_marginTop="20dp"
                     android:paddingLeft="8dp"
                     android:hint="@string/Hint_passcod"
                     android:inputType="numberPassword"
@@ -89,20 +111,24 @@
 
             </LinearLayout>
 
+            <View
+                android:layout_width="1dp"
+                android:layout_height="match_parent"
+                android:background="@color/colorLoginRectLines">
+            </View>
+
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="vertical"
-                android:gravity="center_horizontal"
+                android:gravity="left"
                 android:layout_gravity="center_horizontal"
-                android:layout_marginLeft="3dp"
                 android:layout_weight="1">
 
                 <EditText
                     android:layout_width="160dp"
                     android:layout_height="@dimen/login_textbox"
                     android:id="@+id/name2"
-                    android:layout_marginTop="20dp"
                     android:paddingLeft="8dp"
                     android:hint="@string/Hint_efternamn"
                     android:inputType="textCapSentences"
@@ -111,11 +137,16 @@
                     android:textColorHint="@color/colorLoginTextHint"
                     android:background="@drawable/rect_login_textbox"/>
 
+                <View
+                    android:layout_width="wrap_content"
+                    android:layout_height="1dp"
+                    android:background="@color/colorLoginRectLines">
+                </View>
+
                 <EditText
                     android:layout_width="160dp"
                     android:layout_height="@dimen/login_textbox"
                     android:id="@+id/city"
-                    android:layout_marginTop="20dp"
                     android:paddingLeft="8dp"
                     android:hint="@string/Hint_stad"
                     android:inputType="textCapSentences"
@@ -124,11 +155,16 @@
                     android:textColorHint="@color/colorLoginTextHint"
                     android:background="@drawable/rect_login_textbox"/>
 
+                <View
+                    android:layout_width="wrap_content"
+                    android:layout_height="1dp"
+                    android:background="@color/colorLoginRectLines">
+                </View>
+
                 <EditText
                     android:layout_width="160dp"
                     android:layout_height="@dimen/login_textbox"
                     android:id="@+id/nova_code"
-                    android:layout_marginTop="20dp"
                     android:paddingLeft="8dp"
                     android:hint="@string/Hint_novacode"
                     android:inputType="numberPassword"
@@ -137,10 +173,15 @@
                     android:textColorHint="@color/colorLoginTextHint"
                     android:background="@drawable/rect_login_textbox"/>
 
+                <View
+                    android:layout_width="wrap_content"
+                    android:layout_height="1dp"
+                    android:background="@color/colorLoginRectLines">
+                </View>
+
                 <Spinner
                     android:layout_width="160dp"
                     android:layout_height="@dimen/login_textbox"
-                    android:layout_marginTop="20dp"
                     android:dropDownSelector="@color/colorLoginDropdownSelected"
                     android:id="@+id/fidget_spinner"
                     android:textColor="@color/colorLoginText"
@@ -152,36 +193,39 @@
 
         </LinearLayout>
 
-        <RelativeLayout
-            android:layout_width="345dp"
-            android:layout_height="40dp"
+        <Button
+            android:id="@+id/login_button"
+            android:layout_width="match_parent"
+            android:layout_height="55dp"
             android:layout_marginTop="20dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
             android:layout_gravity="center_horizontal"
-            android:clipChildren="false">
+            android:gravity="center"
+            android:visibility="visible"
+            android:text="@string/Buttontext_logga_in"
+            android:textStyle="normal"
+            android:textColor="@color/colorLoginButtonText"
+            android:background="@drawable/rect_login_button"
+            android:onClick="loginSubmit"
+            android:elevation="3dp"/>
 
-            <Button
-                android:id="@+id/login_button"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:visibility="visible"
-                android:text="@string/Buttontext_logga_in"
-                android:textStyle="normal"
-                android:textColor="@color/colorLoginButtonText"
-                android:background="@drawable/rect_login_button"
-                android:onClick="loginSubmit" />
-
-            <Button
-                android:id="@+id/logout_button"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:visibility="gone"
-                android:text="@string/Buttontext_logga_ut"
-                android:textStyle="normal"
-                android:textColor="@color/colorLoginButtonText"
-                android:background="@drawable/rect_login_button"
-                android:onClick="logoutSubmit" />
-
-        </RelativeLayout>
+        <Button
+            android:id="@+id/logout_button"
+            android:layout_width="match_parent"
+            android:layout_height="55dp"
+            android:layout_marginTop="20dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:layout_gravity="center_horizontal"
+            android:gravity="center"
+            android:visibility="gone"
+            android:text="@string/Buttontext_logga_ut"
+            android:textStyle="normal"
+            android:textColor="@color/colorLoginButtonText"
+            android:background="@drawable/rect_login_button"
+            android:onClick="logoutSubmit"
+            android:elevation="3dp"/>
 
     </LinearLayout>
 

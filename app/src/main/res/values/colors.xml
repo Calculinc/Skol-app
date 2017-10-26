@@ -9,6 +9,11 @@
     <color name="colorTitleBarBackground">@color/colorSecondary</color>
     <color name="colorTitleBarText">#ffffff</color>
 
+    <!--  Applogga colors
+     -->
+
+
+    <color name="colorApplogga">#ffffff</color>
 
     <!--  Drawer colors
           -->
@@ -54,8 +59,8 @@
     <color name="colorSchemaViewVeckaDays">@color/colorThird</color>
     <color name="colorSchemaViewVeckaLektionBackground">@color/colorSecondary</color>
     <color name="colorSchemaViewVeckaDayLines">#ffffff</color>
-    <color name="colorSchemaViewVeckaTimelines">@color/colorSecondary</color>
-    <color name="colorSchemaViewVeckaTimelineText">@color/colorSecondary</color>
+    <color name="colorSchemaViewVeckaTimelines">#a7a7a7</color>
+    <color name="colorSchemaViewVeckaTimelineText">#a7a7a7</color>
 
     <color name="colorSchemaViewDayBackground">#ffffff</color>
     <color name="colorSchemaViewDayHeader">@color/colorPrimary</color>
@@ -94,18 +99,23 @@
 
     <!--  Login colors
               -->
-    <color name="colorLoginBackground">#ca5f45</color>
+    <color name="colorLoginBackground">#e7e7e7</color>
 
-    <color name="colorLoginText">@color/colorThird</color>
-    <color name="colorLoginTextHint">#79819c</color>
+    <color name="colorLoginText">#ffffff</color>
+    <color name="colorLoginTextHint">#c7c7c7</color>
     <color name="colorLoginTextDrawable">@color/colorSecondary</color>
     <color name="colorLoginSpinnerDrawable">@color/colorSecondary</color>
     <color name="colorLoginDropdownBackground">@color/colorThird</color>
     <color name="colorLoginDropdownText">@color/colorSecondary</color>
     <color name="colorLoginDropdownSelected">#ffffff</color>
-    <color name="colorLoginButton">@color/colorSecondary</color>
+    <color name="colorLoginButton">#75ffffff</color>
     <color name="colorLoginButtonText">#ffffff</color>
-    <color name="colorLoginRectTextbox">#75ffffff</color>
+    <color name="colorLoginRectTextbox">#00ffffff</color>
+
+    <color name="colorLoginRectLines">#50e7e7e7</color>
+    <color name="colorLoginRectBig">#ffffff</color>
+
+
 
 
     <!--  Style colors
