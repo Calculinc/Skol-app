@@ -49,6 +49,7 @@ import android.widget.ViewFlipper;
 import com.itextpdf.text.pdf.PdfReader;
 import com.itextpdf.text.pdf.parser.PdfTextExtractor;
 
+import org.apache.commons.lang3.StringEscapeUtils;
 import org.json.JSONArray;
 import org.json.JSONObject;
 import org.jsoup.Connection;
@@ -72,6 +73,8 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.Random;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -107,7 +110,10 @@ public class MainActivity extends AppCompatActivity
     String votingID;
     String downloaddatum = "";
     String personalVote;
+    String test = "\ud83c\udf38 ON WEDNESDAY WE WEAR PINK \ud83c\udf38\n\nSista onsdagen i den rosa-m\u00e5naden! Vi kommer att hylla detta genom att ha en v\\u00e4lg\\u00f6renhetsf\\u00f6rs\\u00e4ljning nu p\\u00e5 onsdag vid h\\u00e4starna. Denna g\\u00e5ng g\\u00e5r summan till @cancerfonden . Det som kommer att s\\u00e4ljas \\u00e4r kaffe, te och bakelser med ett valfritt pris. Du f\\u00e5r g\\u00e4rna komma kl\\u00e4dd i rosa f\\u00f6r att visa att du \\u00e4r med oss och st\\u00f6ttar. \\n#elevk\\u00e5r\\nMindre \\u00e4n tre,\\n/Styrelsen";
+    String test2 = "\\ud83c\\udf83HALLOWEENEVENT P\\u00c5 STURECOMPAGNIET\\ud83c\\udf83\\nIdag p\\u00e5b\\u00f6rjas h\\u00f6stlovet och det inneb\\u00e4r att Halloween \\u00e4r runt h\\u00f6rnet. Detta firar vi givetvis med ett 18+evenemang p\\u00e5 en av Stockholms mest exklusiva klubbar.  Den f\\u00f6rsta november har vi ett evenemang tillsammans med Blackeberg, Enskilda, Kungsholmen, \\u00d6stra Real m.m. p\\u00e5 STURECOMPAGNIET. IDAG \\u00e4r sista dagen att s\\u00e4kra din biljett och detta g\\u00f6r du genom att swisha till k\\u00e5ren med namn s\\u00e5 skriver vi upp er p\\u00e5 listan. \\ud83d\\udc7b\\nP.S. Elevk\\u00e5ren kommer LOTTA UT fem stycken biljetter, och det enda ni beh\\u00f6ver g\\u00f6ra f\\u00f6r att delta i lottningen \\u00e4r att attenda Facebook evenemanget (s\\u00f6k: Norra Real x Sturecompagniet x Halloween) senast klockan 18.00 i eftermiddag. Vi ses v\\u00e4l d\\u00e4r? \\ud83d\\udd78\\ud83d\\udc80";
 
+    String test3 = "\\ud83c\\udf83HALLOWEENEVENT P\\u00c5 STURECOMPAGNIET\\ud83c\\udf83\\nIdag p\\u00e5b\\u00f6rjas h\\u00f6stlovet och det inneb\\u00e4r att Halloween \\u00e4r runt h\\u00f6rnet. Detta firar vi givetvis med ett 18+evenemang p\\u00e5 en av Stockholms mest exklusiva klubbar.  Den f\\u00f6rsta november har vi ett evenemang tillsammans med Blackeberg Enskilda \\u00d6stra Real m.m. p\\u00e5 STURECOMPAGNIET. IDAG \\u00e4r sista dagen att s\\u00e4kra din biljett och detta g\\u00f6r du genom att swisha till k\\u00e5ren med namn s\\u00e5 skriver vi upp er p\\u00e5 listan. \\ud83d\\udc7b\\nP.S. Elevk\\u00e5ren kommer LOTTA UT fem stycken biljetter och det enda ni beh\\u00f6ver g\\u00f6ra f\\u00f6r att delta i lottningen \\u00e4r att attenda Facebook evenemanget (s\\u00f6k: Norra Real x Sturecompagniet x Halloween) senast klockan 18.00 i eftermiddag. Vi ses v\\u00e4l d\\u00e4r? \\ud83d\\udd78\\ud83d\\udc80 ";
     int currentWeek = GregorianCalendar.getInstance().get(Calendar.WEEK_OF_YEAR);
     int currentDay = GregorianCalendar.getInstance().get(Calendar.DAY_OF_WEEK) - 1;
     int currentHour = GregorianCalendar.getInstance().get(Calendar.HOUR_OF_DAY);
@@ -1107,9 +1113,6 @@ public class MainActivity extends AppCompatActivity
                 ArrayList<String> imageUrls = new ArrayList<>();
                 ArrayList<String> caption = new ArrayList<>();
 
-                String[] charSwap = { "Å", "Ä", "Ö", "å", "ä", "ö"};
-                String[] charSwap2 = { "\t\\u00c5", "\t\\u00c4", "\t\\u00D6", "\t\\u00e5", "\\u00e4", "\t\\u00f6"};
-
                 String temp = "";
                 StringBuilder sb = new StringBuilder();
 
@@ -1127,19 +1130,14 @@ public class MainActivity extends AppCompatActivity
 
                         status = 0;
 
-                        temp = sb.toString();
+                        temp = sb.toString().replace("\"","").replace(",","");
 
-                        temp.replace("\"","").replace(",","");
-
-                        for (int j = 0; j < 6 ; j++) {
-
-                            temp.replace(charSwap2[j], charSwap[j]);
-
-                        }
+                        temp = StringEscapeUtils.unescapeJava(temp);
 
                         caption.add(temp);
 
                         sb.setLength(0);
+
                     }
 
 
@@ -1157,7 +1155,6 @@ public class MainActivity extends AppCompatActivity
 
                 }
 
-
                 applyNewsFeed(imageUrls, caption);
 
             } catch (IOException e) {
@@ -1168,7 +1165,6 @@ public class MainActivity extends AppCompatActivity
         }
 
     }
-
 
     public void applyNewsFeed(final ArrayList<String> imageUrls, final ArrayList<String> caption) {
 
@@ -1656,8 +1652,7 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
-
-        public void fidget_spinner(){
+    public void fidget_spinner(){
 
         Spinner spinnerLoginGender = (Spinner) findViewById(R.id.fidget_spinner);
         Spinner spinnerSchemaType = (Spinner) findViewById(R.id.typ_spinner);
