@@ -7,7 +7,7 @@ android {
     defaultConfig {
         applicationId "calculinc.google.httpssites.skol_app"
         vectorDrawables.useSupportLibrary = true
-        minSdkVersion 15
+        minSdkVersion 21
         targetSdkVersion 25
         versionCode 1
         versionName "1.0"
@@ -32,4 +32,8 @@ dependencies {
     testCompile 'junit:junit:4.12'
     compile files('libs/itextg-5.5.10.jar')
     compile files('libs/jsoup-1.10.3.jar')
+    compile "com.squareup.picasso:picasso:2.4.0"
+    compile 'com.android.support:appcompat-v7:25.1.1'
+    compile 'com.android.support:recyclerview-v7:25.1.1'
+    compile 'org.apache.commons:commons-lang3:3.4'
 }

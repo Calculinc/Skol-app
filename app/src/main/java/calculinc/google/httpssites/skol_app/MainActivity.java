@@ -13,8 +13,11 @@ import android.support.v4.content.ContextCompat;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout.LayoutParams;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.util.Base64;
 import android.util.Log;
 import android.view.Gravity;
 import android.view.LayoutInflater;
@@ -46,8 +49,10 @@ import android.widget.ViewFlipper;
 import com.itextpdf.text.pdf.PdfReader;
 import com.itextpdf.text.pdf.parser.PdfTextExtractor;
 
+import org.apache.commons.lang3.StringEscapeUtils;
 import org.json.JSONArray;
 import org.json.JSONObject;
+import org.jsoup.Connection;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -62,10 +67,14 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
+import java.net.URLDecoder;
 import java.net.URLEncoder;
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
 import java.util.Random;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -91,7 +100,6 @@ public class MainActivity extends AppCompatActivity
     boolean loginPhoneAccepted = false;
     boolean loginCityAccepted = false;
     boolean loginPersonalIdAccepted = false;
-    boolean loginNovaCodeAccepted = false;
     boolean loginPassCodeAccepted = false;
 
     final String myTag = "DocsUpload";
@@ -100,14 +108,18 @@ public class MainActivity extends AppCompatActivity
     double matsedelratingAmountOfVotes;
     double matsedelratingTotal;
     String votingID;
+    String downloaddatum = "";
+    String personalVote;
+    String test = "\ud83c\udf38 ON WEDNESDAY WE WEAR PINK \ud83c\udf38\n\nSista onsdagen i den rosa-m\u00e5naden! Vi kommer att hylla detta genom att ha en v\\u00e4lg\\u00f6renhetsf\\u00f6rs\\u00e4ljning nu p\\u00e5 onsdag vid h\\u00e4starna. Denna g\\u00e5ng g\\u00e5r summan till @cancerfonden . Det som kommer att s\\u00e4ljas \\u00e4r kaffe, te och bakelser med ett valfritt pris. Du f\\u00e5r g\\u00e4rna komma kl\\u00e4dd i rosa f\\u00f6r att visa att du \\u00e4r med oss och st\\u00f6ttar. \\n#elevk\\u00e5r\\nMindre \\u00e4n tre,\\n/Styrelsen";
+    String test2 = "\\ud83c\\udf83HALLOWEENEVENT P\\u00c5 STURECOMPAGNIET\\ud83c\\udf83\\nIdag p\\u00e5b\\u00f6rjas h\\u00f6stlovet och det inneb\\u00e4r att Halloween \\u00e4r runt h\\u00f6rnet. Detta firar vi givetvis med ett 18+evenemang p\\u00e5 en av Stockholms mest exklusiva klubbar.  Den f\\u00f6rsta november har vi ett evenemang tillsammans med Blackeberg, Enskilda, Kungsholmen, \\u00d6stra Real m.m. p\\u00e5 STURECOMPAGNIET. IDAG \\u00e4r sista dagen att s\\u00e4kra din biljett och detta g\\u00f6r du genom att swisha till k\\u00e5ren med namn s\\u00e5 skriver vi upp er p\\u00e5 listan. \\ud83d\\udc7b\\nP.S. Elevk\\u00e5ren kommer LOTTA UT fem stycken biljetter, och det enda ni beh\\u00f6ver g\\u00f6ra f\\u00f6r att delta i lottningen \\u00e4r att attenda Facebook evenemanget (s\\u00f6k: Norra Real x Sturecompagniet x Halloween) senast klockan 18.00 i eftermiddag. Vi ses v\\u00e4l d\\u00e4r? \\ud83d\\udd78\\ud83d\\udc80";
 
+    String test3 = "\\ud83c\\udf83HALLOWEENEVENT P\\u00c5 STURECOMPAGNIET\\ud83c\\udf83\\nIdag p\\u00e5b\\u00f6rjas h\\u00f6stlovet och det inneb\\u00e4r att Halloween \\u00e4r runt h\\u00f6rnet. Detta firar vi givetvis med ett 18+evenemang p\\u00e5 en av Stockholms mest exklusiva klubbar.  Den f\\u00f6rsta november har vi ett evenemang tillsammans med Blackeberg Enskilda \\u00d6stra Real m.m. p\\u00e5 STURECOMPAGNIET. IDAG \\u00e4r sista dagen att s\\u00e4kra din biljett och detta g\\u00f6r du genom att swisha till k\\u00e5ren med namn s\\u00e5 skriver vi upp er p\\u00e5 listan. \\ud83d\\udc7b\\nP.S. Elevk\\u00e5ren kommer LOTTA UT fem stycken biljetter och det enda ni beh\\u00f6ver g\\u00f6ra f\\u00f6r att delta i lottningen \\u00e4r att attenda Facebook evenemanget (s\\u00f6k: Norra Real x Sturecompagniet x Halloween) senast klockan 18.00 i eftermiddag. Vi ses v\\u00e4l d\\u00e4r? \\ud83d\\udd78\\ud83d\\udc80 ";
     int currentWeek = GregorianCalendar.getInstance().get(Calendar.WEEK_OF_YEAR);
     int currentDay = GregorianCalendar.getInstance().get(Calendar.DAY_OF_WEEK) - 1;
     int currentHour = GregorianCalendar.getInstance().get(Calendar.HOUR_OF_DAY);
     int currentMinute = GregorianCalendar.getInstance().get(Calendar.MINUTE);
 
     int foodDay = GregorianCalendar.getInstance().get(Calendar.DAY_OF_WEEK) - 1;
-    int testnum = 0;
     int downloadWeek, focusDay;
 
     String schemaFileName = "Nova.txt";
@@ -119,6 +131,9 @@ public class MainActivity extends AppCompatActivity
     boolean DayPref;
     File DayPrefFile;
 
+    private RecyclerView recyclerView;
+    private RecyclerView.Adapter adapter;
+
     final String[] genderStrings = {
             "Kvinna",
             "Man",
@@ -128,6 +143,7 @@ public class MainActivity extends AppCompatActivity
     String LoginDataBaseKey = "11SYOpe7-x_N2xQtjjgs7nUD9t7nRRBvp59O694rrmHc";
     String MatvoteDataBaseKey = "1KWnx2XtVrc229M2ixsgu5xXkpaxkHwZMf0nZdElxWRM";
     String[] mat;
+    String dagensMat;
     String foodMenu = "/maq1/För lång kö till matsalen. Kunde inte se matsedeln/maq1/För lång kö till matsalen. Kunde inte se matsedeln/maq1/För lång kö till matsalen. Kunde inte se matsedeln/maq1/För lång kö till matsalen. Kunde inte se matsedeln/maq1/För lång kö till matsalen. Kunde inte se matsedeln";
     String tempSchema = "10:55%maq1ekax%RELREL01 NSJ A13%maq1ekax%12:10%maq1ekax%12:40%maq1ekax%MATTID%maq1ekax%13:00%maq1ekax%13:10%maq1ekax%SVESVE03 PLA B13%maq1ekax%14:10%maq1ekax%14:20%maq1ekax%SVESVE03 PLA B13%maq1ekax%15:20%day%08:20%maq1ekax%ENGENG07 JHA C11%maq1ekax%09:35%maq1ekax%09:45%maq1ekax%GYAR NSJ,MOR B41,B42%maq1ekax%10:45%maq1ekax%10:50%maq1ekax%MATTID%maq1ekax%11:10%maq1ekax%11:35%maq1ekax%MATMAT05 BAM A23%maq1ekax%12:35%maq1ekax%12:45%maq1ekax%14:00%maq1ekax%studiebesök KBN%maq1ekax%TTF/GYARB%maq1ekax%17:00%day%09:50%maq1ekax%KEBI MOR A41%maq1ekax%11:05%maq1ekax%11:30%maq1ekax%MATTID%maq1ekax%11:50%maq1ekax%12:10%maq1ekax%MATMAT05 BAM B14%maq1ekax%13:40%maq1ekax%13:50%maq1ekax%PRRPRR01 LZH B32%maq1ekax%15:05%maq1ekax%15:15%maq1ekax%RELREL01 NSJ A01%maq1ekax%16:30%day%09:50%maq1ekax%ENGENG07 JHA A14%maq1ekax%11:05%maq1ekax%11:25%maq1ekax%MATTID%maq1ekax%11:45%maq1ekax%12:00%maq1ekax%Mentorstid BAM B12%maq1ekax%12:30%maq1ekax%12:30%maq1ekax%SVESVE03 PLA B12%maq1ekax%13:30%maq1ekax%13:40%maq1ekax%FYSFYS02 LAD A32%maq1ekax%14:50%maq1ekax%15:15%maq1ekax%EGEN STUDIETID NSJ,MOR%maq1ekax%16:15%day%08:20%maq1ekax%PRRPRR01 LZH A21%maq1ekax%09:35%maq1ekax%09:45%maq1ekax%KEBI (a MOR A42%maq1ekax%11:15%maq1ekax%11:35%maq1ekax%MATTID%maq1ekax%11:55";
 
@@ -147,13 +163,14 @@ public class MainActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
-        TextView kek = (TextView) findViewById(R.id.öpö);
-        kek.setText(String.valueOf(currentHour));
-
         schemaTimeRefresh bootUpTimeSync = new schemaTimeRefresh();
         bootUpTimeSync.start();
 
         getSavedLoginContent();
+
+        viewFuckingPager();
+        viewPager();
+        recyclerViewAdapter();
 
         Log.i(myTag, "OnCreate()");
 
@@ -162,14 +179,12 @@ public class MainActivity extends AppCompatActivity
         final EditText phone = (EditText) findViewById(R.id.mobile_number);
         final EditText city = (EditText) findViewById(R.id.city);
         final EditText personal_id = (EditText) findViewById(R.id.personalid);
-        final EditText novaCode = (EditText) findViewById(R.id.nova_code);
         final EditText passCode = (EditText) findViewById(R.id.passcode);
         name.addTextChangedListener(nameTextWatcher);
         surname.addTextChangedListener(surnameTextWatcher);
         phone.addTextChangedListener(phoneTextWatcher);
         city.addTextChangedListener(cityTextWatcher);
         personal_id.addTextChangedListener(personalIdTextWatcher);
-        novaCode.addTextChangedListener(novaCodeTextWatcher);
         passCode.addTextChangedListener(passCodeTextWatcher);
     }
 
@@ -225,18 +240,6 @@ public class MainActivity extends AppCompatActivity
         @Override
         public void onTextChanged(CharSequence s, int start, int before, int count) {
             personalIdCheck(s.toString());
-        }
-
-        @Override
-        public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
-        @Override
-        public void afterTextChanged(Editable s) {}
-    };
-
-    private TextWatcher novaCodeTextWatcher = new TextWatcher() {
-        @Override
-        public void onTextChanged(CharSequence s, int start, int before, int count) {
-            novaCodeCheck(s.toString());
         }
 
         @Override
@@ -302,15 +305,6 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
-    public void novaCodeCheck(String content){
-        loginNovaCodeAccepted = content.length() == 0 || content.length() == 4;
-        if (loginNovaCodeAccepted) {
-            //Update indicator here
-        } else {
-            //Update indicator here
-        }
-    }
-
     public void passCodeCheck(String content){
         loginPassCodeAccepted = content.length() == 4;
         if (loginPassCodeAccepted) {
@@ -336,9 +330,9 @@ public class MainActivity extends AppCompatActivity
             switch(position) {
 
                 case 0:
-                    return new FirstFragment();
-                case 1:
                     return new SecondFragment();
+                case 1:
+                    return new FirstFragment();
                 default:
                     return null;
             }
@@ -399,6 +393,15 @@ public class MainActivity extends AppCompatActivity
         tabLayout.setupWithViewPager(pager);
     }
 
+    public void recyclerViewAdapter() {
+
+        // set up the RecyclerView
+        recyclerView = (RecyclerView) findViewById(R.id.nyheter_recyclerview);
+        recyclerView.setLayoutManager(new LinearLayoutManager(this));
+        recyclerView.setHasFixedSize(true);
+
+    }
+
     public void getSavedLoginContent() {
         loginFile = new File(getFilesDir() + "/" + loginFileName);
         loggenIn = loginFile.exists();
@@ -444,7 +447,6 @@ public class MainActivity extends AppCompatActivity
                 phoneCheck(loginParams[2]);
                 cityCheck(loginParams[3]);
                 personalIdCheck(id_number);
-                novaCodeCheck(fyra_sista);
                 passCodeCheck(loginParams[6]);
             }
         }catch (IOException e) {
@@ -481,7 +483,7 @@ public class MainActivity extends AppCompatActivity
         }
         final String Gender = genderStrings[spinnerLoginGender.getSelectedItemPosition()];
 
-        if (loginNameAccepted && loginSurnameAccepted && loginPhoneAccepted && loginCityAccepted && loginPersonalIdAccepted && loginNovaCodeAccepted && loginPassCodeAccepted) {
+        if (loginNameAccepted && loginSurnameAccepted && loginPhoneAccepted && loginCityAccepted && loginPersonalIdAccepted && loginPassCodeAccepted) {
             new DownloadWebpageTask(new AsyncResult() {
                 @Override
                 public void onResult(JSONObject object) {
@@ -717,8 +719,10 @@ public class MainActivity extends AppCompatActivity
         public void run() {
             runOnUiThread(new Runnable() {
                 @Override
+
                 public void run() {
-                    newsFeed();
+                    newsFeedDownload H = new newsFeedDownload();
+                    H.start();
                 }
             });
 
@@ -733,7 +737,6 @@ public class MainActivity extends AppCompatActivity
                 public void run() {
                     theSwtich();
                     fidget_spinner();
-                    viewPager();
                 }
             });
 
@@ -766,12 +769,22 @@ public class MainActivity extends AppCompatActivity
             runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-                    viewFuckingPager();
+
                 }
             });
 
-            matsedel t = new matsedel();
-            t.start();
+            getVoteRight G = new getVoteRight();
+            G.start();
+
+            foodSchemeDownload H = new foodSchemeDownload();
+            H.start();
+            try {
+                H.join();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+
+            applyMenu();
         }
     }
 
@@ -1083,6 +1096,90 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
+    private class newsFeedDownload extends Thread {
+        public void run() {
+            Document doc;
+
+
+            try {
+
+                doc = Jsoup.connect("http://instagram.com/norraselevkar/").get();
+                Elements script = doc.select("script");
+
+                Element picUrls = script.get(1);
+
+                String[] rawText = picUrls.toString().split(" ");
+
+                ArrayList<String> imageUrls = new ArrayList<>();
+                ArrayList<String> caption = new ArrayList<>();
+
+                String temp = "";
+                StringBuilder sb = new StringBuilder();
+
+                int status = 0;
+
+                for (int i = 0; i < rawText.length; i++) {
+
+                    if(rawText[i].equals("\"display_src\":") ) {
+
+                        imageUrls.add(rawText[i +1 ].replace("\"","").replace(",",""));
+                    }
+
+
+                    if (rawText[i].equals("\"comments\":")) {
+
+                        status = 0;
+
+                        temp = sb.toString().replace("\"","").replace(",","");
+
+                        temp = StringEscapeUtils.unescapeJava(temp);
+
+                        caption.add(temp);
+
+                        sb.setLength(0);
+
+                    }
+
+
+                    if (status == 1) {
+
+                        sb.append(rawText[i]);
+                        sb.append(" ");
+
+                    }
+
+                    if (rawText[i].equals("\"caption\":")) {
+
+                        status = 1;
+                    }
+
+                }
+
+                applyNewsFeed(imageUrls, caption);
+
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+
+        }
+
+    }
+
+    public void applyNewsFeed(final ArrayList<String> imageUrls, final ArrayList<String> caption) {
+
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+
+                adapter = new MyRecyclerViewAdapter(getApplicationContext(), caption, imageUrls);
+                recyclerView.setAdapter(adapter);
+
+            }
+        });
+
+    }
+
     private class foodSchemeDownload extends Thread {
         public void run() {
             Document doc;
@@ -1137,6 +1234,93 @@ public class MainActivity extends AppCompatActivity
 
     }
 
+    private class getVoteRight extends Thread {
+        public void run() {
+            new DownloadWebpageTask(new AsyncResult() {
+                @Override
+                public void onResult(JSONObject object) {
+
+                    String matVoteFileName = "mat.txt";
+                    File matfil = new File(getFilesDir() + "/" + matVoteFileName);
+                    String filedatum = "";
+
+                    //Temporary code for animation-testing
+                    //matfil.delete();
+                    //Delete the above when necessary
+
+                    try {
+                        FileInputStream fis = openFileInput(matVoteFileName);
+                        InputStreamReader isr = new InputStreamReader(fis);
+                        BufferedReader bufferedReader = new BufferedReader(isr);
+                        StringBuilder sb = new StringBuilder();
+                        String line;
+                        while ((line = bufferedReader.readLine()) != null) {
+                            sb.append(line);
+                        }
+                        String[] data = sb.toString().split("%");
+                        filedatum = data[0];
+                        personalVote = data[1];
+
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+                    downloaddatum = filedatum;
+                    try {
+                        JSONArray rows = object.getJSONArray("rows");
+                        JSONObject row = rows.getJSONObject(0);
+                        JSONArray columns = row.getJSONArray("c");
+                        matsedelrating = columns.getJSONObject(0).getDouble("v");
+                        matsedelratingTotal = columns.getJSONObject(1).getDouble("v");
+                        matsedelratingAmountOfVotes = columns.getJSONObject(2).getDouble("v");
+                        downloaddatum = columns.getJSONObject(4).getString("v") + "/" + columns.getJSONObject(6).getString("v") + "/" + columns.getJSONObject(7).getString("v");
+
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+                    final boolean qwerty = !downloaddatum.equals(filedatum);
+
+                    final ViewFlipper matVf = (ViewFlipper) findViewById(R.id.mat_vf);
+
+                    if (qwerty) {
+                        matVf.setDisplayedChild(1);
+                    } else {
+                        matVf.setDisplayedChild(2);
+                    }
+
+                    final TextView ratingText = (TextView) findViewById(R.id.rating_text);
+                    final RatingBar ratingBarOutput = (RatingBar) findViewById(R.id.rating_output_view);
+
+                    ratingBarOutput.setRating((float)matsedelrating);
+                    ratingText.setText(String.valueOf(matsedelrating));
+
+                    final TextView statistik = (TextView) findViewById(R.id.statistik);
+                    statistik.setText(personalVote);
+
+                    /**
+                     final TextView klickahär = (TextView) findViewById(R.id.klicka_rösta_mat);
+                     final LinearLayout matbelt = (LinearLayout) findViewById(R.id.matsedel_belt);
+
+                     if (qwerty) {
+
+                     klickahär.setVisibility(View.GONE);
+                     ratingText.setVisibility(View.VISIBLE);
+                     ratingBarOutput.setVisibility(View.VISIBLE);
+                     matbelt.setVisibility(View.GONE);
+
+                     } else {
+
+                     klickahär.setVisibility(View.GONE);
+                     ratingText.setVisibility(View.VISIBLE);
+                     ratingBarOutput.setVisibility(View.VISIBLE);
+                     matbelt.setVisibility(View.VISIBLE);
+
+                     }**/
+
+                }
+            } ).execute("https://spreadsheets.google.com/tq?key=" + MatvoteDataBaseKey );
+        }
+    }
+
     public void applyMenu() {
         runOnUiThread(new Runnable() {
             @Override
@@ -1150,22 +1334,35 @@ public class MainActivity extends AppCompatActivity
                     TextView textView4 = (TextView) findViewById(R.id.test_text4);
                     TextView textView5 = (TextView) findViewById(R.id.test_text5);
 
-                    final TextView ratingtext = (TextView) findViewById(R.id.rating_text);
-                    final RatingBar ratingBarOutput = (RatingBar) findViewById(R.id.rating_output_view);
-
                     LinearLayout monday = (LinearLayout) findViewById(R.id.matsedel_monday);
                     LinearLayout tuesday = (LinearLayout) findViewById(R.id.matsedel_tuesday);
                     LinearLayout wednesday = (LinearLayout) findViewById(R.id.matsedel_wednesday);
                     LinearLayout thursday = (LinearLayout) findViewById(R.id.matsedel_thursday);
                     LinearLayout friday = (LinearLayout) findViewById(R.id.matsedel_friday);
 
-                    TextView dagens = (TextView) findViewById(R.id.dagens_mat);
+                    final int[] matdayTitle = {
+                            R.id.mat_title_måndag,
+                            R.id.mat_title_tisdag,
+                            R.id.mat_title_onsdag,
+                            R.id.mat_title_torsdag,
+                            R.id.mat_title_fredag
+                    };
 
                     LinearLayout progressLayout = (LinearLayout) findViewById(R.id.progress_layout);
 
                     progressLayout.setVisibility(View.GONE);
 
                     mat = foodMenu.split("/maq1/");
+
+                    String[] charSwap = { "Å", "Ä", "Ö", "å", "ä", "ö"};
+                    String[] charSwap2 = { "%c3%85", "%c3%84", "%c3%96", "%c3%a5", "%c3%a4", "%c3%b6"};
+
+                    dagensMat = mat[1].replace("\n\n","\n");
+
+                    for (int i = 0; i < 6 ; i++) {
+
+                        dagensMat = dagensMat.replace( charSwap[i] , charSwap2[i] );
+                    }
 
                     if (mat.length == 6) {
 
@@ -1216,25 +1413,13 @@ public class MainActivity extends AppCompatActivity
                             friday.setVisibility(View.GONE);
                         }
 
-                        Thread t = new Thread(new Runnable() {
-                            @Override
-                            public void run() {
-                                new DownloadWebpageTask(new AsyncResult() {
-                                    @Override
-                                    public void onResult(JSONObject object) {
+                        if( GregorianCalendar.getInstance().get(Calendar.DAY_OF_WEEK) != Calendar.SATURDAY && GregorianCalendar.getInstance().get(Calendar.DAY_OF_WEEK) != Calendar.SUNDAY )
+                        {
 
-                                        jsonParseMatrating(object);
+                            TextView Dagens = (TextView) findViewById(matdayTitle[foodDay - 1]);
+                            Dagens.setText("Dagens Mat");
 
-                                        ratingtext.setText(String.valueOf(matsedelrating));
-                                        ratingBarOutput.setRating((float)matsedelrating);
-
-                                    }
-                                } ).execute("https://spreadsheets.google.com/tq?key=" + MatvoteDataBaseKey );
-                            }
-                        });
-                        t.start();
-
-                        dagens.setText(mat[1]);
+                        }
 
                     } else {
 
@@ -1243,8 +1428,6 @@ public class MainActivity extends AppCompatActivity
                         textView3.setText(mat[3]);
                         textView4.setText(mat[4]);
                         textView5.setText(mat[5]);
-
-                        dagens.setText(mat[1]);
                     }
 
                 } catch (NumberFormatException e) {
@@ -1253,22 +1436,6 @@ public class MainActivity extends AppCompatActivity
             }
 
         });
-    }
-
-    private class matsedel extends Thread {
-        public void run() {
-
-
-            foodSchemeDownload H = new foodSchemeDownload();
-            H.start();
-            try {
-                H.join();
-            } catch (InterruptedException e) {
-                e.printStackTrace();
-            }
-
-            applyMenu();
-        }
     }
 
     public void röstning(View view) {
@@ -1283,9 +1450,7 @@ public class MainActivity extends AppCompatActivity
         String[] charSwap2 = { "%c3%85", "%c3%84", "%c3%96", "%c3%a5", "%c3%a4", "%c3%b6"};
 
         for (int i = 0; i < 6 ; i++) {
-
             votingID = votingID.replace( charSwap[i] , charSwap2[i] );
-
         }
 
         Thread t = new Thread(new Runnable() {
@@ -1297,21 +1462,6 @@ public class MainActivity extends AppCompatActivity
         });
         t.start();
 
-    }
-
-    private void jsonParseMatrating(JSONObject object) {
-
-        try {
-            JSONArray rows = object.getJSONArray("rows");
-            JSONObject row = rows.getJSONObject(0);
-            JSONArray columns = row.getJSONArray("c");
-            matsedelrating = columns.getJSONObject(0).getDouble("v");
-            matsedelratingAmountOfVotes = columns.getJSONObject(2).getDouble("v");
-            matsedelratingTotal = columns.getJSONObject(1).getDouble("v");
-
-        } catch (JSONException e) {
-            e.printStackTrace();
-        }
     }
 
     public void postFormRegisterData(String Namn, String Efternamn, String Mobil, String Stad, String Födsel, int gender) {
@@ -1336,8 +1486,6 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
-
-
     public void postMatsedelRatingData(String matrating) {
 
         try {
@@ -1345,19 +1493,64 @@ public class MainActivity extends AppCompatActivity
             HttpRequest mReq = new HttpRequest();
 
             String data = "entry.1218691264=" + votingID + "&"
-                    + "entry.1809891164=" + matrating ;
+                    + "entry.1809891164=" + matrating + "&"
+                    + "entry.83499785=" + dagensMat;
 
             String response = mReq.sendPost(fullUrl, data);
             Log.i(myTag, response);
 
-            final RatingBar ratingBarOutput = (RatingBar) findViewById(R.id.rating_output_view);
-            final TextView ratingText = (TextView) findViewById(R.id.rating_text);
+            //File update
             final RatingBar ratingBar = (RatingBar) findViewById(R.id.rating_bar);
+            String separator = "%";
+            String matVoteFileName = "mat.txt";
+            File matfil = new File(getFilesDir() + "/" + matVoteFileName);
+            matfil.delete();
+            try {
+                FileOutputStream outputStream = openFileOutput(matVoteFileName,MODE_PRIVATE);
+                outputStream.write(downloaddatum.getBytes());
+                outputStream.write(separator.getBytes());
+                outputStream.write(String.valueOf(ratingBar.getRating()).getBytes());
+                outputStream.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
 
-            float tempChange = (float)((matsedelratingTotal + ratingBar.getRating()) / (matsedelratingAmountOfVotes + 1.0D));
+            //UI code block
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    final RatingBar ratingBarOutput = (RatingBar) findViewById(R.id.rating_output_view);
+                    final TextView ratingText = (TextView) findViewById(R.id.rating_text);
+                    final RatingBar ratingBar = (RatingBar) findViewById(R.id.rating_bar);
+                    final TextView statistik = (TextView) findViewById(R.id.statistik);
 
-            ratingBarOutput.setRating(tempChange);
-            ratingText.setText(String.valueOf(tempChange));
+                    float tempChange = (float)((matsedelratingTotal + ratingBar.getRating()) / (matsedelratingAmountOfVotes + 1.0D));
+
+                    ratingBarOutput.setRating(tempChange);
+                    ratingText.setText(String.valueOf(tempChange));
+
+                    //On successful vote
+                    final ViewFlipper matVf = (ViewFlipper) findViewById(R.id.mat_vf);
+
+                    matVf.setDisplayedChild(2);
+                    statistik.setText(String.valueOf(ratingBar.getRating()));
+
+
+                    /**
+                    final TextView klickahär = (TextView) findViewById(R.id.klicka_rösta_mat);
+                    final LinearLayout matbelt = (LinearLayout) findViewById(R.id.matsedel_belt);
+                    final LinearLayout viewpagerlayout = (LinearLayout) findViewById(R.id.layout_pager);
+
+                    klickahär.setVisibility(View.GONE);
+                    ratingText.setVisibility(View.VISIBLE);
+                    ratingBarOutput.setVisibility(View.VISIBLE);
+                    matbelt.setVisibility(View.GONE);
+
+                    LinearLayout.LayoutParams paramsBlank2 = new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, Math.round(getResources().getDimension(R.dimen.matchange)));
+                    viewpagerlayout.setLayoutParams(paramsBlank2);
+                     **/
+                }
+            });
 
         } catch (Exception e) {
             e.printStackTrace();
@@ -1431,19 +1624,6 @@ public class MainActivity extends AppCompatActivity
             }
 
         }
-
-    }
-
-    public  void newsFeed(){
-
-        new DownloadImageTask((ImageView) findViewById(R.id.news_feed))
-                .execute("https://scontent-arn2-1.cdninstagram.com/t51.2885-15/e35/21690183_1980740522196446_1533522204795338752_n.jpg");
-        new DownloadImageTask((ImageView) findViewById(R.id.news_feed2))
-                .execute("https://scontent-arn2-1.cdninstagram.com/t51.2885-15/e35/21690183_1980740522196446_1533522204795338752_n.jpg");
-        new DownloadImageTask((ImageView) findViewById(R.id.news_feed3))
-                .execute("https://scontent-arn2-1.cdninstagram.com/t51.2885-15/e35/21690183_1980740522196446_1533522204795338752_n.jpg");
-        new DownloadImageTask((ImageView) findViewById(R.id.news_feed4))
-                .execute("https://scontent-arn2-1.cdninstagram.com/t51.2885-15/e35/21690183_1980740522196446_1533522204795338752_n.jpg");
 
     }
 

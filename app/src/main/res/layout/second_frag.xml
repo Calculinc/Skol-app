@@ -21,7 +21,8 @@
             android:layout_marginBottom="10dp"
             android:layout_marginRight="10dp"
             android:layout_marginLeft="10dp"
-            android:background="@drawable/rect_matsedel_dagens">
+            android:background="@drawable/rect_matsedel_dagens"
+            android:animateLayoutChanges="true">
 
                 <TextView
                     android:layout_width="160dp"
@@ -34,14 +35,24 @@
                     android:gravity="center"/>
 
                 <TextView
+                    android:id="@+id/klicka_rösta_mat"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="center"
+                    android:textSize="14sp"
+                    android:text="Klicka rösta för att se matbetyget"
+                    android:visibility="gone"/>
+
+                <TextView
                     android:id="@+id/rating_text"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:textSize="25sp"
-                    android:textColor="@color/colorThird"
+                    android:textColor="@color/matsedelBlackText"
                     android:ems="4"
                     android:maxLength="4"
-                    android:gravity="center"/>
+                    android:gravity="center"
+                    android:visibility="visible"/>
 
                 <RatingBar
                     android:layout_width="wrap_content"
@@ -50,7 +61,8 @@
                     android:isIndicator="true"
                     android:max="5"
                     android:secondaryProgressTint="#00ffffff"
-                    android:stepSize="0.01"/>
+                    android:stepSize="0.01"
+                    android:visibility="visible"/>
 
         </LinearLayout>
 

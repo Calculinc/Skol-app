@@ -1,14 +1,14 @@
 <vector xmlns:android="http://schemas.android.com/apk/res/android"
     android:width="63dp"
     android:height="33dp"
-    android:viewportHeight="100"
+    android:viewportHeight="101"
     android:viewportWidth="100">
 
     <group android:name="foreground">
         <path
             android:strokeColor="@color/colorSchemaViewVeckaTimelines"
-            android:strokeWidth="1"
-            android:pathData="M0,50 L50,50 Z M0,99 L25,99 Z" />
+            android:strokeWidth="3"
+            android:pathData="M0,50 L40,50 Z M0,99 L25,99 Z" />
     </group>
 
 </vector>

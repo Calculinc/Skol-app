@@ -9,12 +9,17 @@
     <color name="colorTitleBarBackground">@color/colorSecondary</color>
     <color name="colorTitleBarText">#ffffff</color>
 
+    <!--  Applogga colors
+     -->
+
+
+    <color name="colorApplogga">#ffffff</color>
 
     <!--  Drawer colors
           -->
-    <color name="colorDrawerGradientStart">#0b1433</color>
-    <color name="colorDrawerGradientCenter">#1e3164</color>
-    <color name="colorDrawerGradientEnd">#5d6e93</color>
+    <color name="colorDrawerGradientStart">#56c77e</color>
+    <color name="colorDrawerGradientCenter">#27a382</color>
+    <color name="colorDrawerGradientEnd">#3a6064</color>
     <color name="colorDrawerGradientTextHeader">@color/colorThird</color>
     <color name="colorDrawerGradientText">@color/colorThird</color>
 
@@ -26,9 +31,9 @@
 
     <!--  Other Backgrounds
          -->
-    <color name="colorDrawerGradientStart1">#7c1d3b</color>
-    <color name="colorDrawerGradientCenter2">#9b1640</color>
-    <color name="colorDrawerGradientEnd3">#ce285d</color>
+    <color name="colorDrawerGradientStart1">@color/colorDrawerGradientStart</color>
+    <color name="colorDrawerGradientCenter2">@color/colorDrawerGradientCenter</color>
+    <color name="colorDrawerGradientEnd3">@color/colorDrawerGradientEnd</color>
 
     <!--  Schema colors
           -->
@@ -54,8 +59,8 @@
     <color name="colorSchemaViewVeckaDays">@color/colorThird</color>
     <color name="colorSchemaViewVeckaLektionBackground">@color/colorSecondary</color>
     <color name="colorSchemaViewVeckaDayLines">#ffffff</color>
-    <color name="colorSchemaViewVeckaTimelines">@color/colorSecondary</color>
-    <color name="colorSchemaViewVeckaTimelineText">@color/colorSecondary</color>
+    <color name="colorSchemaViewVeckaTimelines">#a7a7a7</color>
+    <color name="colorSchemaViewVeckaTimelineText">#a7a7a7</color>
 
     <color name="colorSchemaViewDayBackground">#ffffff</color>
     <color name="colorSchemaViewDayHeader">@color/colorPrimary</color>
@@ -67,61 +72,69 @@
 
     <!--  Matsedel colors
               -->
-    <color name="colorMatBackground">#293961</color>
+    <color name="colorMatBackground">#e7e7e7</color>
 
     <color name="colorMatIdagBackground">#ffffff</color>
-    <color name="colorMatIdagBox">#75ffffff</color>
-    <color name="colorMatIdagHeaderText">@color/colorSecondary</color>
-    <color name="colorMatIdagText">@color/colorThird</color>
+    <color name="colorMatIdagBox">#ffffff</color>
+    <color name="colorMatIdagHeaderText">@color/HeaderTextColor</color>
+    <color name="colorMatIdagText">@color/matsedelBlackText</color>
 
     <color name="colorMatBeltBackground">@color/colorBackground</color>
     <color name="colorMatBeltRatingFull">#ffb3dd</color>
     <color name="colorMatBeltRatingEmpty">#ffb3dd</color>
     <color name="colorMatBeltRatingHalf">#ffb3dd</color>
-    <color name="colorMatBeltButton">#75ffffff</color>
-    <color name="colorMatBeltButtonText">#ffffff</color>
+    <color name="colorMatBeltButton">#acacac</color>
+    <color name="colorMatBeltButtonText">#8e8e8e</color>
 
     <color name="colorMatSedelBackground">#ffffff</color>
-    <color name="colorMatSedelBox">#75ffffff</color>
-    <color name="colorMatSedelBoxHeader">@color/colorThird</color>
-    <color name="colorMatSedelBoxText">@color/colorThird</color>
+    <color name="colorMatSedelBox">#ffffff</color>
+    <color name="colorMatSedelBoxHeader">@color/HeaderTextColor</color>
+    <color name="colorMatSedelBoxText">@color/matsedelBlackText</color>
 
     <color name="colorMatSedelTextBox">#50ffffff</color>
+
+    <color name="matsedelBlackText">#878787</color>
+    <color name="HeaderTextColor">#569970</color>
 
 
     <!--  Login colors
               -->
-    <color name="colorLoginBackground">#ca5f45</color>
+    <color name="colorLoginBackground">#e7e7e7</color>
 
-    <color name="colorLoginText">@color/colorThird</color>
-    <color name="colorLoginTextHint">#79819c</color>
+    <color name="colorLoginText">#ffffff</color>
+    <color name="colorLoginTextHint">#c7c7c7</color>
     <color name="colorLoginTextDrawable">@color/colorSecondary</color>
     <color name="colorLoginSpinnerDrawable">@color/colorSecondary</color>
     <color name="colorLoginDropdownBackground">@color/colorThird</color>
     <color name="colorLoginDropdownText">@color/colorSecondary</color>
     <color name="colorLoginDropdownSelected">#ffffff</color>
-    <color name="colorLoginButton">@color/colorSecondary</color>
+    <color name="colorLoginButton">#75ffffff</color>
     <color name="colorLoginButtonText">#ffffff</color>
-    <color name="colorLoginRectTextbox">#75ffffff</color>
+    <color name="colorLoginRectTextbox">#00ffffff</color>
+
+    <color name="colorLoginRectLines">#50e7e7e7</color>
+    <color name="colorLoginRectBig">#ffffff</color>
+
+
 
 
     <!--  Style colors
                   -->
     <color name="colorStyleAppThemePrimary">@color/colorPrimary</color>
-    <color name="colorStyleAppThemeSecondary">#0b1433</color><!--  Statusbar color -->
-    <color name="colorStyleAppThemeThird">@color/colorFade</color><!--  ratingbarfull, switch-day and editText cursor color -->
+    <color name="colorStyleAppThemeSecondary">@color/colorDrawerGradientStart</color><!--  Statusbar color -->
+    <color name="colorStyleAppThemeThird">@color/colorStyleAppThemeSecondary</color><!--  ratingbarfull, switch-day and editText cursor color -->
 
 
     <!--  Other colors
               -->
     <color name="colorTest">#d615a9</color>
-    <color name="colorFade">#75ffffff</color>
+    <color name="colorFade">#7514642c</color>
 
 
 
 
-    <color name="colorPrimary">#6a728b</color>
-    <color name="colorSecondary">#011a3c</color>
+    <color name="colorPrimary">#3b543e</color>
+    <color name="colorSecondary">#1a472a</color>
     <color name="colorThird">#d9d9d9</color>
 
 
