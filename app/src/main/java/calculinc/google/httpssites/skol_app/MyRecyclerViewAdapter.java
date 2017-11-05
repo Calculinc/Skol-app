@@ -3,6 +3,7 @@ package calculinc.google.httpssites.skol_app;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.media.Image;
 import android.os.AsyncTask;
 import android.support.v7.widget.RecyclerView;
@@ -12,6 +13,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.squareup.picasso.Picasso;
@@ -28,15 +30,18 @@ public class MyRecyclerViewAdapter extends RecyclerView.Adapter<MyRecyclerViewAd
 
     private List<String> mData = Collections.emptyList();
     private List<String> mUrl = Collections.emptyList();
+    private List<String> mCommercialData = Collections.emptyList();
     private Context context;
     private LayoutInflater mInflater;
     private ItemClickListener mClickListener;
+    LinearLayout commercialLayout;
 
     // data is passed into the constructor
-    public MyRecyclerViewAdapter(Context context, List<String> data, List<String> data2) {
+    public MyRecyclerViewAdapter(Context context, List<String> data, List<String> data2,  List<String> data3) {
         this.mInflater = LayoutInflater.from(context);
         this.mData = data;
         this.mUrl = data2;
+        this.mCommercialData = data3;
         this.context = context;
     }
 
@@ -51,9 +56,27 @@ public class MyRecyclerViewAdapter extends RecyclerView.Adapter<MyRecyclerViewAd
     // binds the data to the textview in each row
     @Override
     public void onBindViewHolder(ViewHolder holder, int position) {
-        String caption = mData.get(position);
-        holder.myTextView.setText(caption);
+
+        holder.myTextView.setText(mData.get(position));
         Picasso.with(context).load(mUrl.get(position)).into(holder.myImageView);
+
+        try {
+            Picasso.with(context).load(mCommercialData.get(0)).into(holder.commercialImageView);
+
+            holder.commercialHeader.setText(mCommercialData.get(1));
+            holder.commercialTextView.setText(mCommercialData.get(2));
+            holder.commercialHeader.setTextColor(Color.parseColor(mCommercialData.get(3)));
+            holder.view1.setBackgroundColor(Color.parseColor(mCommercialData.get(3)));
+            holder.view2.setBackgroundColor(Color.parseColor(mCommercialData.get(3)));
+
+        } catch (Exception e) {
+            e.printStackTrace();
+        }
+
+        if (position == 0 && mCommercialData.size() > 2 ) {
+
+            commercialLayout.setVisibility(View.VISIBLE);
+        }
     }
 
     // total number of rows
@@ -67,11 +90,22 @@ public class MyRecyclerViewAdapter extends RecyclerView.Adapter<MyRecyclerViewAd
     public class ViewHolder extends RecyclerView.ViewHolder implements View.OnClickListener {
         public TextView myTextView;
         public ImageView myImageView;
+        public TextView commercialTextView;
+        public ImageView commercialImageView;
+        public TextView commercialHeader;
+        public View view1;
+        public View view2;
 
         public ViewHolder(View itemView) {
             super(itemView);
             myTextView = (TextView) itemView.findViewById(R.id.recycler_row_text);
             myImageView = (ImageView) itemView.findViewById(R.id.news_feed_image);
+            commercialImageView = (ImageView) itemView.findViewById(R.id.news_feed_image_commercial);
+            commercialTextView = (TextView) itemView.findViewById(R.id.recycler_row_text_commercial);
+            commercialLayout = (LinearLayout) itemView.findViewById(R.id.nyheter_commercial_layout);
+            commercialHeader = (TextView) itemView.findViewById(R.id.commercial_header_name);
+            view1 = (View) itemView.findViewById(R.id.commercial_header_view1);
+            view2 = (View) itemView.findViewById(R.id.commercial_header_view2);
             itemView.setOnClickListener(this);
         }
 

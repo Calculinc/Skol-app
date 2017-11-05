@@ -3,6 +3,7 @@ package calculinc.google.httpssites.skol_app;
 import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
@@ -39,6 +40,7 @@ import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
+import android.widget.ProgressBar;
 import android.widget.RatingBar;
 import android.widget.RelativeLayout;
 import android.widget.Spinner;
@@ -47,6 +49,7 @@ import android.widget.TextView;
 import android.widget.ViewFlipper;
 
 import com.itextpdf.text.pdf.PdfReader;
+import com.itextpdf.text.pdf.parser.Line;
 import com.itextpdf.text.pdf.parser.PdfTextExtractor;
 
 import org.apache.commons.lang3.StringEscapeUtils;
@@ -110,10 +113,7 @@ public class MainActivity extends AppCompatActivity
     String votingID;
     String downloaddatum = "";
     String personalVote;
-    String test = "\ud83c\udf38 ON WEDNESDAY WE WEAR PINK \ud83c\udf38\n\nSista onsdagen i den rosa-m\u00e5naden! Vi kommer att hylla detta genom att ha en v\\u00e4lg\\u00f6renhetsf\\u00f6rs\\u00e4ljning nu p\\u00e5 onsdag vid h\\u00e4starna. Denna g\\u00e5ng g\\u00e5r summan till @cancerfonden . Det som kommer att s\\u00e4ljas \\u00e4r kaffe, te och bakelser med ett valfritt pris. Du f\\u00e5r g\\u00e4rna komma kl\\u00e4dd i rosa f\\u00f6r att visa att du \\u00e4r med oss och st\\u00f6ttar. \\n#elevk\\u00e5r\\nMindre \\u00e4n tre,\\n/Styrelsen";
-    String test2 = "\\ud83c\\udf83HALLOWEENEVENT P\\u00c5 STURECOMPAGNIET\\ud83c\\udf83\\nIdag p\\u00e5b\\u00f6rjas h\\u00f6stlovet och det inneb\\u00e4r att Halloween \\u00e4r runt h\\u00f6rnet. Detta firar vi givetvis med ett 18+evenemang p\\u00e5 en av Stockholms mest exklusiva klubbar.  Den f\\u00f6rsta november har vi ett evenemang tillsammans med Blackeberg, Enskilda, Kungsholmen, \\u00d6stra Real m.m. p\\u00e5 STURECOMPAGNIET. IDAG \\u00e4r sista dagen att s\\u00e4kra din biljett och detta g\\u00f6r du genom att swisha till k\\u00e5ren med namn s\\u00e5 skriver vi upp er p\\u00e5 listan. \\ud83d\\udc7b\\nP.S. Elevk\\u00e5ren kommer LOTTA UT fem stycken biljetter, och det enda ni beh\\u00f6ver g\\u00f6ra f\\u00f6r att delta i lottningen \\u00e4r att attenda Facebook evenemanget (s\\u00f6k: Norra Real x Sturecompagniet x Halloween) senast klockan 18.00 i eftermiddag. Vi ses v\\u00e4l d\\u00e4r? \\ud83d\\udd78\\ud83d\\udc80";
 
-    String test3 = "\\ud83c\\udf83HALLOWEENEVENT P\\u00c5 STURECOMPAGNIET\\ud83c\\udf83\\nIdag p\\u00e5b\\u00f6rjas h\\u00f6stlovet och det inneb\\u00e4r att Halloween \\u00e4r runt h\\u00f6rnet. Detta firar vi givetvis med ett 18+evenemang p\\u00e5 en av Stockholms mest exklusiva klubbar.  Den f\\u00f6rsta november har vi ett evenemang tillsammans med Blackeberg Enskilda \\u00d6stra Real m.m. p\\u00e5 STURECOMPAGNIET. IDAG \\u00e4r sista dagen att s\\u00e4kra din biljett och detta g\\u00f6r du genom att swisha till k\\u00e5ren med namn s\\u00e5 skriver vi upp er p\\u00e5 listan. \\ud83d\\udc7b\\nP.S. Elevk\\u00e5ren kommer LOTTA UT fem stycken biljetter och det enda ni beh\\u00f6ver g\\u00f6ra f\\u00f6r att delta i lottningen \\u00e4r att attenda Facebook evenemanget (s\\u00f6k: Norra Real x Sturecompagniet x Halloween) senast klockan 18.00 i eftermiddag. Vi ses v\\u00e4l d\\u00e4r? \\ud83d\\udd78\\ud83d\\udc80 ";
     int currentWeek = GregorianCalendar.getInstance().get(Calendar.WEEK_OF_YEAR);
     int currentDay = GregorianCalendar.getInstance().get(Calendar.DAY_OF_WEEK) - 1;
     int currentHour = GregorianCalendar.getInstance().get(Calendar.HOUR_OF_DAY);
@@ -131,6 +131,8 @@ public class MainActivity extends AppCompatActivity
     boolean DayPref;
     File DayPrefFile;
 
+    ArrayList<String> urlCheck = new ArrayList<>();
+
     private RecyclerView recyclerView;
     private RecyclerView.Adapter adapter;
 
@@ -142,6 +144,7 @@ public class MainActivity extends AppCompatActivity
 
     String LoginDataBaseKey = "11SYOpe7-x_N2xQtjjgs7nUD9t7nRRBvp59O694rrmHc";
     String MatvoteDataBaseKey = "1KWnx2XtVrc229M2ixsgu5xXkpaxkHwZMf0nZdElxWRM";
+    String CommercialDataBaseKey = "1_-tmo7u4h0Z57coNfbzX945wrHy6g0ixdTgy-cjaMJE";
     String[] mat;
     String dagensMat;
     String foodMenu = "/maq1/För lång kö till matsalen. Kunde inte se matsedeln/maq1/För lång kö till matsalen. Kunde inte se matsedeln/maq1/För lång kö till matsalen. Kunde inte se matsedeln/maq1/För lång kö till matsalen. Kunde inte se matsedeln/maq1/För lång kö till matsalen. Kunde inte se matsedeln";
@@ -186,6 +189,17 @@ public class MainActivity extends AppCompatActivity
         city.addTextChangedListener(cityTextWatcher);
         personal_id.addTextChangedListener(personalIdTextWatcher);
         passCode.addTextChangedListener(passCodeTextWatcher);
+
+        recyclerView.smoothScrollToPosition(0);
+
+        start();
+    }
+
+    public void start() {
+
+        nyheterSelect click = new nyheterSelect();
+        click.start();
+
     }
 
     private TextWatcher nameTextWatcher = new TextWatcher() {
@@ -976,8 +990,6 @@ public class MainActivity extends AppCompatActivity
 
                                     schema_space.addView(linear);
 
-
-
                                     /**LinearLayout linearDay = new LinearLayout(getBaseContext());
                                     linearDay.setOrientation(LinearLayout.VERTICAL);
                                     LinearLayout.LayoutParams LinDayParams = new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, (int)((sluttid - starttid) * 90 * getResources().getDimension(R.dimen.dp_unit)));
@@ -1100,7 +1112,6 @@ public class MainActivity extends AppCompatActivity
         public void run() {
             Document doc;
 
-
             try {
 
                 doc = Jsoup.connect("http://instagram.com/norraselevkar/").get();
@@ -1112,8 +1123,9 @@ public class MainActivity extends AppCompatActivity
 
                 ArrayList<String> imageUrls = new ArrayList<>();
                 ArrayList<String> caption = new ArrayList<>();
+                ArrayList<String> commercialData = new ArrayList<>();
 
-                String temp = "";
+                String temp;
                 StringBuilder sb = new StringBuilder();
 
                 int status = 0;
@@ -1130,11 +1142,11 @@ public class MainActivity extends AppCompatActivity
 
                         status = 0;
 
-                        temp = sb.toString().replace("\"","").replace(",","");
+                        temp = sb.toString().replace("\",","");
 
                         temp = StringEscapeUtils.unescapeJava(temp);
 
-                        caption.add(temp);
+                        caption.add(temp.substring(1));
 
                         sb.setLength(0);
 
@@ -1155,7 +1167,13 @@ public class MainActivity extends AppCompatActivity
 
                 }
 
-                applyNewsFeed(imageUrls, caption);
+                if ( !imageUrls.equals(urlCheck) ) {
+
+                    urlCheck = imageUrls;
+                    applyNewsFeed(imageUrls, caption, commercialData);
+                    commercialFeedDownload(imageUrls, caption, commercialData);
+
+                }
 
             } catch (IOException e) {
                 e.printStackTrace();
@@ -1166,14 +1184,52 @@ public class MainActivity extends AppCompatActivity
 
     }
 
-    public void applyNewsFeed(final ArrayList<String> imageUrls, final ArrayList<String> caption) {
+    private void commercialFeedDownload(final ArrayList<String> imageUrls, final ArrayList<String> caption, final ArrayList<String> commercialData) {
+
+        new DownloadWebpageTask(new AsyncResult() {
+            @Override
+            public void onResult(JSONObject object) {
+
+                try {
+                    JSONArray rows = object.getJSONArray("rows");
+                    for (int i = 0; i < rows.length(); i++) {
+
+                        commercialData.clear();
+
+                        JSONObject row = rows.getJSONObject(i);
+                        JSONArray columns = row.getJSONArray("c");
+                        String urlString = columns.getJSONObject(0).getString("v");
+                        String name = columns.getJSONObject(1).getString("v");
+                        String caption = columns.getJSONObject(2).getString("v");
+                        String color = columns.getJSONObject(3).getString("v");
+
+                        commercialData.add(urlString);
+                        commercialData.add(name);
+                        commercialData.add(caption);
+                        commercialData.add(color);
+                    }
+
+                    applyNewsFeed(imageUrls, caption, commercialData );
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        } ).execute("https://spreadsheets.google.com/tq?key=" + CommercialDataBaseKey);
+
+    }
+
+    public void applyNewsFeed(final ArrayList<String> imageUrls, final ArrayList<String> caption, final ArrayList<String> commercialData) {
 
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
 
-                adapter = new MyRecyclerViewAdapter(getApplicationContext(), caption, imageUrls);
+                adapter = new MyRecyclerViewAdapter(getApplicationContext(), caption, imageUrls, commercialData );
                 recyclerView.setAdapter(adapter);
+
+                final LinearLayout progressbar = (LinearLayout) findViewById(R.id.nyheter_progress_bar);
+                progressbar.setVisibility(View.GONE);
 
             }
         });
@@ -1186,7 +1242,15 @@ public class MainActivity extends AppCompatActivity
             int size;
 
             try {
-                doc = Jsoup.connect("http://skolmaten.se/norra-real/rss/").get();
+
+                if (GregorianCalendar.getInstance().get(Calendar.DAY_OF_WEEK) == Calendar.SUNDAY || GregorianCalendar.getInstance().get(Calendar.DAY_OF_WEEK) == Calendar.SATURDAY) {
+
+                    doc = Jsoup.connect("https://skolmaten.se/norra-real/rss/days/?limit=7").get();
+                } else {
+
+                    doc = Jsoup.connect("https://skolmaten.se/norra-real/rss/weeks/").get();
+                }
+
                 size = doc.select("description").size();
                 foodMenu = "";
 
@@ -1328,17 +1392,13 @@ public class MainActivity extends AppCompatActivity
 
                 try {
 
-                    TextView textView1 = (TextView) findViewById(R.id.test_text1);
-                    TextView textView2 = (TextView) findViewById(R.id.test_text2);
-                    TextView textView3 = (TextView) findViewById(R.id.test_text3);
-                    TextView textView4 = (TextView) findViewById(R.id.test_text4);
-                    TextView textView5 = (TextView) findViewById(R.id.test_text5);
-
-                    LinearLayout monday = (LinearLayout) findViewById(R.id.matsedel_monday);
-                    LinearLayout tuesday = (LinearLayout) findViewById(R.id.matsedel_tuesday);
-                    LinearLayout wednesday = (LinearLayout) findViewById(R.id.matsedel_wednesday);
-                    LinearLayout thursday = (LinearLayout) findViewById(R.id.matsedel_thursday);
-                    LinearLayout friday = (LinearLayout) findViewById(R.id.matsedel_friday);
+                    final int[] matdayBox = {
+                            R.id.matsedel_monday,
+                            R.id.matsedel_tuesday,
+                            R.id.matsedel_wednesday,
+                            R.id.matsedel_thursday,
+                            R.id.matsedel_friday
+                    };
 
                     final int[] matdayTitle = {
                             R.id.mat_title_måndag,
@@ -1346,6 +1406,14 @@ public class MainActivity extends AppCompatActivity
                             R.id.mat_title_onsdag,
                             R.id.mat_title_torsdag,
                             R.id.mat_title_fredag
+                    };
+
+                    final int[] matdayText = {
+                            R.id.test_text1,
+                            R.id.test_text2,
+                            R.id.test_text3,
+                            R.id.test_text4,
+                            R.id.test_text5
                     };
 
                     LinearLayout progressLayout = (LinearLayout) findViewById(R.id.progress_layout);
@@ -1357,77 +1425,30 @@ public class MainActivity extends AppCompatActivity
                     String[] charSwap = { "Å", "Ä", "Ö", "å", "ä", "ö"};
                     String[] charSwap2 = { "%c3%85", "%c3%84", "%c3%96", "%c3%a5", "%c3%a4", "%c3%b6"};
 
-                    dagensMat = mat[1].replace("\n\n","\n");
+                    dagensMat = mat[foodDay - 1].replace("\n\n","\n");
 
                     for (int i = 0; i < 6 ; i++) {
 
                         dagensMat = dagensMat.replace( charSwap[i] , charSwap2[i] );
                     }
 
-                    if (mat.length == 6) {
+                    for (int i = 0; i < 5 ; i++) {
 
-                        if (foodDay < 2) {
+                        TextView foodtext = (TextView) findViewById(matdayText[i]);
+                        foodtext.setText(mat[i + 1]);
 
-                            monday.setVisibility(View.VISIBLE);
-                            textView1.setText(mat[1]);
+                    }
 
-                        } else {
+                    if( GregorianCalendar.getInstance().get(Calendar.DAY_OF_WEEK) != Calendar.SATURDAY && GregorianCalendar.getInstance().get(Calendar.DAY_OF_WEEK) != Calendar.SUNDAY )
+                    {
+                        TextView Dagens = (TextView) findViewById(matdayTitle[foodDay - 1]);
+                        LinearLayout dagensMatBox = (LinearLayout) findViewById(matdayBox[foodDay-1]);
+                        TextView foodtext = (TextView) findViewById(matdayText[foodDay-1]);
 
-                            monday.setVisibility(View.GONE);
-                        }
-
-                        if (foodDay < 3) {
-
-                            tuesday.setVisibility(View.VISIBLE);
-                            textView2.setText(mat[3-foodDay]);
-
-                        } else {
-
-                            tuesday.setVisibility(View.GONE);
-                        }
-
-                        if (foodDay < 4) {
-                            wednesday.setVisibility(View.VISIBLE);
-                            textView3.setText(mat[4-foodDay]);
-
-                        } else {
-
-                            wednesday.setVisibility(View.GONE);
-                        }
-
-                        if (foodDay < 5) {
-                            thursday.setVisibility(View.VISIBLE);
-                            textView4.setText(mat[5-foodDay]);
-
-                        } else {
-
-                            thursday.setVisibility(View.GONE);
-                        }
-
-                        if (foodDay < 6) {
-                            friday.setVisibility(View.VISIBLE);
-                            textView5.setText(mat[6-foodDay]);
-
-                        } else {
-
-                            friday.setVisibility(View.GONE);
-                        }
-
-                        if( GregorianCalendar.getInstance().get(Calendar.DAY_OF_WEEK) != Calendar.SATURDAY && GregorianCalendar.getInstance().get(Calendar.DAY_OF_WEEK) != Calendar.SUNDAY )
-                        {
-
-                            TextView Dagens = (TextView) findViewById(matdayTitle[foodDay - 1]);
-                            Dagens.setText("Dagens Mat");
-
-                        }
-
-                    } else {
-
-                        textView1.setText(mat[1]);
-                        textView2.setText(mat[2]);
-                        textView3.setText(mat[3]);
-                        textView4.setText(mat[4]);
-                        textView5.setText(mat[5]);
+                        Dagens.setText("Dagens Mat");
+                        Dagens.setTextColor(getResources().getColor(R.color.colorMatsedelHighLight));
+                        foodtext.setTextColor(getResources().getColor(R.color.colorMatsedelHighLight));
+                        dagensMatBox.setBackgroundResource(R.drawable.rect_matsedel_days_highlight);
                     }
 
                 } catch (NumberFormatException e) {
