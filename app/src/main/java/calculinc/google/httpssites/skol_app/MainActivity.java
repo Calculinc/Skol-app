@@ -1117,7 +1117,7 @@ public class MainActivity extends AppCompatActivity
                 doc = Jsoup.connect("http://instagram.com/norraselevkar/").get();
                 Elements script = doc.select("script");
 
-                Element picUrls = script.get(1);
+                Element picUrls = script.get(2);
 
                 String[] rawText = picUrls.toString().split(" ");
 
