@@ -80,24 +80,6 @@
                 </View>
 
                 <EditText
-                    android:id="@+id/personalid"
-                    android:layout_width="160dp"
-                    android:layout_height="@dimen/login_textbox"
-                    android:hint="@string/Hint_personnummer"
-                    android:paddingLeft="8dp"
-                    android:inputType="number"
-                    android:maxLength="6"
-                    android:textColor="@color/colorLoginText"
-                    android:textColorHint="@color/colorLoginTextHint"
-                    android:background="@drawable/rect_login_textbox"/>
-
-                <View
-                    android:layout_width="wrap_content"
-                    android:layout_height="1dp"
-                    android:background="@color/colorLoginRectLines">
-                </View>
-
-                <EditText
                     android:layout_width="160dp"
                     android:layout_height="@dimen/login_textbox"
                     android:id="@+id/passcode"
@@ -144,13 +126,13 @@
                 </View>
 
                 <EditText
+                    android:id="@+id/personalid"
                     android:layout_width="160dp"
                     android:layout_height="@dimen/login_textbox"
-                    android:id="@+id/city"
+                    android:hint="@string/Hint_personnummer"
                     android:paddingLeft="8dp"
-                    android:hint="@string/Hint_stad"
-                    android:inputType="textCapSentences"
-                    android:digits="abcdefghijklmnopqrstuvwxyzåäöABCDEFGHIJKLMNOPQRSTUVWXYZÅÄÖ-"
+                    android:inputType="number"
+                    android:maxLength="6"
                     android:textColor="@color/colorLoginText"
                     android:textColorHint="@color/colorLoginTextHint"
                     android:background="@drawable/rect_login_textbox"/>
@@ -171,22 +153,6 @@
                     android:maxLength="4"
                     android:textColor="@color/colorLoginText"
                     android:textColorHint="@color/colorLoginTextHint"
-                    android:background="@drawable/rect_login_textbox"/>
-
-                <View
-                    android:layout_width="wrap_content"
-                    android:layout_height="1dp"
-                    android:background="@color/colorLoginRectLines">
-                </View>
-
-                <Spinner
-                    android:layout_width="160dp"
-                    android:layout_height="@dimen/login_textbox"
-                    android:dropDownSelector="@color/colorLoginDropdownSelected"
-                    android:id="@+id/fidget_spinner"
-                    android:textColor="@color/colorLoginText"
-                    android:textColorHint="@color/colorLoginTextHint"
-                    android:popupBackground="@color/colorLoginDropdownBackground"
                     android:background="@drawable/rect_login_textbox"/>
 
             </LinearLayout>

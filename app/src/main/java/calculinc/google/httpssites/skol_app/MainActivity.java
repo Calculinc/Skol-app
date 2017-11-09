@@ -96,12 +96,10 @@ public class MainActivity extends AppCompatActivity
 
     String id_number;
     String fyra_sista;
-    int genderInteger = 0;
 
     boolean loginNameAccepted = false;
     boolean loginSurnameAccepted = false;
     boolean loginPhoneAccepted = false;
-    boolean loginCityAccepted = false;
     boolean loginPersonalIdAccepted = false;
     boolean loginPassCodeAccepted = false;
 
@@ -180,13 +178,11 @@ public class MainActivity extends AppCompatActivity
         final EditText name = (EditText) findViewById(R.id.name1);
         final EditText surname = (EditText) findViewById(R.id.name2);
         final EditText phone = (EditText) findViewById(R.id.mobile_number);
-        final EditText city = (EditText) findViewById(R.id.city);
         final EditText personal_id = (EditText) findViewById(R.id.personalid);
         final EditText passCode = (EditText) findViewById(R.id.passcode);
         name.addTextChangedListener(nameTextWatcher);
         surname.addTextChangedListener(surnameTextWatcher);
         phone.addTextChangedListener(phoneTextWatcher);
-        city.addTextChangedListener(cityTextWatcher);
         personal_id.addTextChangedListener(personalIdTextWatcher);
         passCode.addTextChangedListener(passCodeTextWatcher);
 
@@ -230,18 +226,6 @@ public class MainActivity extends AppCompatActivity
         @Override
         public void onTextChanged(CharSequence s, int start, int before, int count) {
             phoneCheck(s.toString());
-        }
-
-        @Override
-        public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
-        @Override
-        public void afterTextChanged(Editable s) {}
-    };
-
-    private TextWatcher cityTextWatcher = new TextWatcher() {
-        @Override
-        public void onTextChanged(CharSequence s, int start, int before, int count) {
-            cityCheck(s.toString());
         }
 
         @Override
@@ -295,15 +279,6 @@ public class MainActivity extends AppCompatActivity
     public void phoneCheck(String content){
         loginPhoneAccepted = content.length() == 10;
         if (loginPhoneAccepted) {
-            //Update indicator here
-        } else {
-            //Update indicator here
-        }
-    }
-
-    public void cityCheck(String content){
-        loginCityAccepted = content.length() >= 1;
-        if (loginCityAccepted) {
             //Update indicator here
         } else {
             //Update indicator here
@@ -435,15 +410,13 @@ public class MainActivity extends AppCompatActivity
                     sb.append(line);
                 }
                 String[] loginParams = sb.toString().split("%");
-                id_number = loginParams[4];
+                id_number = loginParams[3];
                 fyra_sista = loginParams[5];
-                genderInteger = Integer.parseInt(loginParams[7]);
                 votingID = id_number + loginParams[0] + loginParams[1];
 
                 EditText name = (EditText) findViewById(R.id.name1);
                 EditText surname = (EditText) findViewById(R.id.name2);
                 EditText phone = (EditText) findViewById(R.id.mobile_number);
-                EditText city = (EditText) findViewById(R.id.city);
                 EditText personalId = (EditText) findViewById(R.id.personalid);
                 EditText novacode = (EditText) findViewById(R.id.nova_code);
                 EditText passcode = (EditText) findViewById(R.id.passcode);
@@ -451,17 +424,15 @@ public class MainActivity extends AppCompatActivity
                 name.setText(loginParams[0]);
                 surname.setText(loginParams[1]);
                 phone.setText(loginParams[2]);
-                city.setText(loginParams[3]);
                 personalId.setText(id_number);
                 novacode.setText(fyra_sista);
-                passcode.setText(loginParams[6]);
+                passcode.setText(loginParams[4]);
 
                 nameCheck(loginParams[0]);
                 surnameCheck(loginParams[1]);
                 phoneCheck(loginParams[2]);
-                cityCheck(loginParams[3]);
                 personalIdCheck(id_number);
-                passCodeCheck(loginParams[6]);
+                passCodeCheck(loginParams[4]);
             }
         }catch (IOException e) {
             e.printStackTrace();
@@ -475,29 +446,18 @@ public class MainActivity extends AppCompatActivity
         final EditText name = (EditText) findViewById(R.id.name1);
         final EditText surname = (EditText) findViewById(R.id.name2);
         final EditText phone = (EditText) findViewById(R.id.mobile_number);
-        final EditText city = (EditText) findViewById(R.id.city);
         final EditText personal_id = (EditText) findViewById(R.id.personalid);
         final EditText passcode = (EditText) findViewById(R.id.passcode);
-        final Spinner spinnerLoginGender = (Spinner) findViewById(R.id.fidget_spinner);
 
         final String Namn = name.getText().toString();
         final String Efternamn = surname.getText().toString();
         final String Mobil = phone.getText().toString();
-        final String Stad = city.getText().toString();
         id_number = personal_id.getText().toString();
-        votingID = id_number + Namn + Efternamn;
         final String Code = passcode.getText().toString() + ".0";
-        final String Datum;{
-            char[] siffra = id_number.toCharArray();
-            if (siffra[0] == '9') {
-                Datum = "19" + siffra[0] + siffra[1] + "-" + siffra[2] + siffra[3] + "-" + siffra[4] + siffra[5];
-            } else {
-                Datum = "20" + siffra[0] + siffra[1] + "-" + siffra[2] + siffra[3] + "-" + siffra[4] + siffra[5];
-            }
-        }
-        final String Gender = genderStrings[spinnerLoginGender.getSelectedItemPosition()];
+        final String Datum = id_number;
+        votingID = id_number + Namn + Efternamn;
 
-        if (loginNameAccepted && loginSurnameAccepted && loginPhoneAccepted && loginCityAccepted && loginPersonalIdAccepted && loginPassCodeAccepted) {
+        if (loginNameAccepted && loginSurnameAccepted && loginPhoneAccepted && loginPersonalIdAccepted && loginPassCodeAccepted) {
             new DownloadWebpageTask(new AsyncResult() {
                 @Override
                 public void onResult(JSONObject object) {
@@ -509,11 +469,13 @@ public class MainActivity extends AppCompatActivity
                             JSONArray person = row.getJSONArray("c");
                             String JsonNamn = person.getJSONObject(1).getString("v");
                             String JsonEfternamn = person.getJSONObject(2).getString("v");
-                            String JsonStad = person.getJSONObject(4).getString("v");
-                            String JsonDatum = person.getJSONObject(5).getString("f");
-                            String JsonGender = person.getJSONObject(6).getString("v");
+                            char[] M = person.getJSONObject(3).getString("v").toCharArray();
+                            String JsonMobil = "" + M[0] + M[1] + M[2] + M[4] + M[5] + M[6] + M[7] + M[8] + M[9] + M[10];
+                            char[] D = person.getJSONObject(5).getString("f").toCharArray();
+                            String JsonDatum = "" + D[2] + D[3] + D[5] + D[6] + D[8] + D[9];
                             String JsonCode = person.getJSONObject(7).getString("v");
-                            if (JsonNamn.equals(Namn) && JsonEfternamn.equals(Efternamn) && JsonStad.equals(Stad) && JsonDatum.equals(Datum) && JsonGender.equals(Gender) && JsonCode.equals(Code)) {
+
+                            if (JsonNamn.equals(Namn) && JsonEfternamn.equals(Efternamn) && JsonMobil.equals(Mobil) && JsonDatum.equals(Datum) && JsonCode.equals(Code)) {
                                 logSucc = true;
                                 i = rows.length();
                             }
@@ -523,7 +485,7 @@ public class MainActivity extends AppCompatActivity
                         } else {
                             loginFail();
                         }
-                    } catch (JSONException e) {
+                    } catch (Exception e) {
                         e.printStackTrace();
                         loginFail();
                     }
@@ -542,20 +504,16 @@ public class MainActivity extends AppCompatActivity
         final EditText name = (EditText) findViewById(R.id.name1);
         final EditText surname = (EditText) findViewById(R.id.name2);
         final EditText phone = (EditText) findViewById(R.id.mobile_number);
-        final EditText city = (EditText) findViewById(R.id.city);
         final EditText personal_id = (EditText) findViewById(R.id.personalid);
         final EditText fyrasista = (EditText) findViewById(R.id.nova_code);
         final EditText passcode = (EditText) findViewById(R.id.passcode);
-        final Spinner spinnerLoginGender = (Spinner) findViewById(R.id.fidget_spinner);
 
         final String Namn = name.getText().toString();
         final String Efternamn = surname.getText().toString();
         final String Mobil = phone.getText().toString();
-        final String Stad = city.getText().toString();
         id_number = personal_id.getText().toString();
         fyra_sista = fyrasista.getText().toString();
         final String passCode = passcode.getText().toString();
-        final int id_spinneritemgender = spinnerLoginGender.getSelectedItemPosition();
 
         StringBuilder loginContent = new StringBuilder();{
             loginContent.append(Namn);
@@ -564,15 +522,11 @@ public class MainActivity extends AppCompatActivity
             loginContent.append("%");
             loginContent.append(Mobil);
             loginContent.append("%");
-            loginContent.append(Stad);
-            loginContent.append("%");
             loginContent.append(id_number);
-            loginContent.append("%");
-            loginContent.append(fyra_sista);
             loginContent.append("%");
             loginContent.append(passCode);
             loginContent.append("%");
-            loginContent.append(String.valueOf(id_spinneritemgender));
+            loginContent.append(fyra_sista);
         }
 
         FileOutputStream outputStream;
@@ -607,14 +561,11 @@ public class MainActivity extends AppCompatActivity
         final EditText name = (EditText) findViewById(R.id.name1);
         final EditText surname = (EditText) findViewById(R.id.name2);
         final EditText phone = (EditText) findViewById(R.id.mobile_number);
-        final EditText city = (EditText) findViewById(R.id.city);
         final EditText personal_id = (EditText) findViewById(R.id.personalid);
-        final Spinner spinnerLoginGender = (Spinner) findViewById(R.id.fidget_spinner);
 
         final String Namn = name.getText().toString();
         final String Efternamn = surname.getText().toString();
         final String Mobil = phone.getText().toString();
-        final String Stad = city.getText().toString();
         id_number = personal_id.getText().toString();
         final String datum;{
             char[] siffra = id_number.toCharArray();
@@ -624,12 +575,11 @@ public class MainActivity extends AppCompatActivity
                 datum = "20" + siffra[0] + siffra[1] + "-" + siffra[2] + siffra[3] + "-" + siffra[4] + siffra[5];
             }
         }
-        final int id_spinneritemgender = spinnerLoginGender.getSelectedItemPosition();
 
         Thread t = new Thread(new Runnable() {
             @Override
             public void run() {
-                postFormRegisterData(Namn, Efternamn, Mobil, Stad, datum, id_spinneritemgender);
+                //postFormRegisterData(Namn, Efternamn, Mobil, datum);
             }
         });
         t.start();
@@ -1675,24 +1625,19 @@ public class MainActivity extends AppCompatActivity
 
     public void fidget_spinner(){
 
-        Spinner spinnerLoginGender = (Spinner) findViewById(R.id.fidget_spinner);
         Spinner spinnerSchemaType = (Spinner) findViewById(R.id.typ_spinner);
 
 // Create an ArrayAdapter using the string array and a default spinner layout
-        ArrayAdapter adapterGender = ArrayAdapter.createFromResource(this, R.array.gender_array, R.layout.spinner_login_layout);
-        spinnerLoginGender.setAdapter(adapterGender);
 
         ArrayAdapter adapterTyp = ArrayAdapter.createFromResource(this, R.array.typ_array, R.layout.spinner_schema_layout);
         spinnerSchemaType.setAdapter(adapterTyp);
 
 // Specify the layout to use when the list of choices appears
-        adapterGender.setDropDownViewResource(R.layout.spinner_login_dropdown_layout);
         adapterTyp.setDropDownViewResource(R.layout.spinner_schema_dropdown_layout);
+
 // Apply the adapter to the spinner
-        spinnerLoginGender.setAdapter(adapterGender);
         spinnerSchemaType.setAdapter(adapterTyp);
 
-        spinnerLoginGender.setSelection(genderInteger);
 
     }
 
