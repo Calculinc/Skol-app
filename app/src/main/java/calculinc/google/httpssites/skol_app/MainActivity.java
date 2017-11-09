@@ -187,7 +187,6 @@ public class MainActivity extends AppCompatActivity
         passCode.addTextChangedListener(passCodeTextWatcher);
 
         recyclerView.smoothScrollToPosition(0);
-
         start();
     }
 
