@@ -14,6 +14,7 @@ import android.support.v4.content.ContextCompat;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
 import android.support.v4.widget.DrawerLayout.LayoutParams;
+import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
@@ -82,6 +83,7 @@ import java.util.regex.Pattern;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import android.support.v4.app.DialogFragment;
 
 import calculinc.google.httpssites.skol_app.Matsedel.FirstFragment;
 import calculinc.google.httpssites.skol_app.Matsedel.SecondFragment;
@@ -93,6 +95,8 @@ import calculinc.google.httpssites.skol_app.days.Wednesday;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
+
+    private Menu menu1;
 
     String id_number;
     String fyra_sista;
@@ -164,6 +168,8 @@ public class MainActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
+        navigationView.setCheckedItem(R.id.nav_nyheter);
+
         schemaTimeRefresh bootUpTimeSync = new schemaTimeRefresh();
         bootUpTimeSync.start();
 
@@ -192,8 +198,38 @@ public class MainActivity extends AppCompatActivity
 
     public void start() {
 
-        nyheterSelect click = new nyheterSelect();
-        click.start();
+        if (loggenIn) {
+
+            nyheterSelect click = new nyheterSelect();
+            click.start();
+
+        } else {
+
+            ViewFlipper vf = (ViewFlipper)findViewById(R.id.vf);
+            vf.setDisplayedChild(5);
+        }
+
+    }
+
+    public void freshLogin(View view) {
+
+        final ViewFlipper vf = (ViewFlipper)findViewById(R.id.vf);
+        final NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+
+        navigationView.setCheckedItem(R.id.nav_login);
+        vf.setDisplayedChild(4);
+
+    }
+
+    public void infoClick(View view) {
+
+        final Animation anim_button_click = AnimationUtils.loadAnimation(this, R.anim.anim_button_click);
+
+        view.startAnimation(anim_button_click);
+
+        DialogFragment newFragment = new InfoBox();
+        newFragment.show(getSupportFragmentManager(), "vafan");
+
 
     }
 
@@ -259,45 +295,63 @@ public class MainActivity extends AppCompatActivity
 
     public void nameCheck(String content){
         loginNameAccepted = content.length() >= 1;
+
+        final View view = (View) findViewById(R.id.checkbox_name);
         if (loginNameAccepted) {
+            view.setBackgroundResource(R.drawable.login_ok);
             //Update indicator here
         } else {
+            view.setBackgroundResource(R.drawable.login_not_ok);
             //Update indicator here
         }
     }
 
     public void surnameCheck(String content){
         loginSurnameAccepted = content.length() >= 1;
+
+        final View view = (View) findViewById(R.id.checkbox_surname);
         if (loginSurnameAccepted) {
+            view.setBackgroundResource(R.drawable.login_ok);
             //Update indicator here
         } else {
+            view.setBackgroundResource(R.drawable.login_not_ok);
             //Update indicator here
         }
     }
 
     public void phoneCheck(String content){
         loginPhoneAccepted = content.length() == 10;
+
+        final View view = (View) findViewById(R.id.checkbox_telephone);
         if (loginPhoneAccepted) {
+            view.setBackgroundResource(R.drawable.login_ok);
             //Update indicator here
         } else {
+            view.setBackgroundResource(R.drawable.login_not_ok);
             //Update indicator here
         }
     }
 
     public void personalIdCheck(String content){
         loginPersonalIdAccepted = content.length() == 6;
+        final View view = (View) findViewById(R.id.checkbox_personalid);
         if (loginPersonalIdAccepted) {
+            view.setBackgroundResource(R.drawable.login_ok);
             //Update indicator here
         } else {
+            view.setBackgroundResource(R.drawable.login_not_ok);
             //Update indicator here
         }
     }
 
     public void passCodeCheck(String content){
         loginPassCodeAccepted = content.length() == 4;
+        final View view = (View) findViewById(R.id.checkbox_passcode);
         if (loginPassCodeAccepted) {
+            view.setBackgroundResource(R.drawable.login_ok);
             //Update indicator here
         } else {
+            view.setBackgroundResource(R.drawable.login_not_ok);
             //Update indicator here
         }
     }
@@ -599,6 +653,11 @@ public class MainActivity extends AppCompatActivity
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.main, menu);
 
+        if (menu.size() > 2) {
+
+            menu1 = menu;
+        }
+
         return true;
     }
 
@@ -608,6 +667,7 @@ public class MainActivity extends AppCompatActivity
         // automatically handle clicks on the Home/Up button, so long
         // as you specify a parent activity in AndroidManifest.xml.
         int id = item.getItemId();
+
 
         //noinspection SimplifiableIfStatement
         if (id == R.id.action_settings) {

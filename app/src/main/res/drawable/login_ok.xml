@@ -1,0 +1,14 @@
+<vector xmlns:android="http://schemas.android.com/apk/res/android"
+    android:width="20dp"
+    android:height="20dp"
+    android:viewportHeight="36"
+    android:viewportWidth="36">
+
+    <group android:name="foreground">
+        <path
+            android:strokeColor="@color/colorLoginOKCheck"
+            android:strokeWidth="6"
+            android:pathData="M3,18 L13,28 L33,8" />
+    </group>
+
+</vector>

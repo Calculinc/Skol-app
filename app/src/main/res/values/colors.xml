@@ -123,6 +123,10 @@
     <color name="colorLoginRectLines">#50e7e7e7</color>
     <color name="colorLoginRectBig">#ffffff</color>
 
+    <color name="colorLoginOKCheck">#00ff00</color>
+    <color name="colorLoginNotOKCheck">#ff4040</color>
+    <color name="colorLoginInfo">#ffffff</color>
+
 
 
 

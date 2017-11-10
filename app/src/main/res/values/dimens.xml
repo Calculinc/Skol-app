@@ -11,4 +11,6 @@
     <dimen name="login_textbox">55dp</dimen>
     <dimen name="matchange">196dp</dimen>
     <dimen name="matchangepadding">10dp</dimen>
+
+    <dimen name="login_check_box_size">20dp</dimen>
 </resources>
