@@ -178,6 +178,7 @@ public class MainActivity extends AppCompatActivity
         viewFuckingPager();
         viewPager();
         recyclerViewAdapter();
+        theSwtich();
 
         Log.i(myTag, "OnCreate()");
 
@@ -652,11 +653,6 @@ public class MainActivity extends AppCompatActivity
     public boolean onCreateOptionsMenu(Menu menu) {
         // Inflate the menu; this adds items to the action bar if it is present.
         getMenuInflater().inflate(R.menu.main, menu);
-
-        if (menu.size() > 2) {
-
-            menu1 = menu;
-        }
 
         return true;
     }
