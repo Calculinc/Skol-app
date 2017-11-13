@@ -1430,7 +1430,7 @@ public class MainActivity extends AppCompatActivity
                     String[] charSwap = { "Å", "Ä", "Ö", "å", "ä", "ö"};
                     String[] charSwap2 = { "%c3%85", "%c3%84", "%c3%96", "%c3%a5", "%c3%a4", "%c3%b6"};
 
-                    dagensMat = mat[foodDay - 1].replace("\n\n","\n");
+                    dagensMat = mat[foodDay ].replace("\n\n","\n");
 
                     for (int i = 0; i < 6 ; i++) {
 
