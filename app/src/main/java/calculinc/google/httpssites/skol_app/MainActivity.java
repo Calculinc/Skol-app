@@ -769,12 +769,9 @@ public class MainActivity extends AppCompatActivity
                 e.printStackTrace();
             }
 
-
             String nameOfFile = "id:" + id_number + "week:" + downloadWeek + "_" + schemaFileName;
             schemaFile = new File(getFilesDir() + "/" + nameOfFile);
             String downloadID = id_number;
-
-
 
             DownloadFile M = new DownloadFile(downloadID,downloadWeek,nameOfFile);
             M.start();
@@ -786,8 +783,6 @@ public class MainActivity extends AppCompatActivity
 
             //drawSchema();
             drawSchemaTemp(true);
-
-
         }
     }
 
@@ -834,7 +829,7 @@ public class MainActivity extends AppCompatActivity
             runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-                    fidget_spinner();
+                    //fidget_spinner();
                 }
             });
 
@@ -919,7 +914,6 @@ public class MainActivity extends AppCompatActivity
         });
 
     }
-
 
     public void drawSchema() {
         runOnUiThread(new Runnable() {
