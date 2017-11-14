@@ -15,6 +15,7 @@
 
     <color name="colorApplogga">#ffffff</color>
 
+
     <!--  Drawer colors
           -->
     <color name="colorDrawerGradientStart">#56c77e</color>
@@ -44,6 +45,8 @@
     <!--  Schema colors
           -->
     <color name="colorSchemaBackground">#ffffff</color>
+
+    <color name="colorSchemaTempTint">#503a6064</color>
 
     <color name="colorSchemaLektionBackground">#ffffff</color>
     <color name="colorSchemaLektionBorder">@color/colorSecondary</color>

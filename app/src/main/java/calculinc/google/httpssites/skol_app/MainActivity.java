@@ -49,9 +49,11 @@ import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.ViewFlipper;
 
+import com.itextpdf.text.Image;
 import com.itextpdf.text.pdf.PdfReader;
 import com.itextpdf.text.pdf.parser.Line;
 import com.itextpdf.text.pdf.parser.PdfTextExtractor;
+import com.squareup.picasso.Picasso;
 
 import org.apache.commons.lang3.StringEscapeUtils;
 import org.json.JSONArray;
@@ -176,9 +178,9 @@ public class MainActivity extends AppCompatActivity
         getSavedLoginContent();
 
         viewFuckingPager();
-        viewPager();
+        //viewPager();
         recyclerViewAdapter();
-        theSwtich();
+        //theSwtich();
 
         Log.i(myTag, "OnCreate()");
 
@@ -754,8 +756,8 @@ public class MainActivity extends AppCompatActivity
             runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-                    theSwtich();
-                    fidget_spinner();
+                    //theSwtich();
+                    //fidget_spinner();
                 }
             });
 
@@ -767,9 +769,12 @@ public class MainActivity extends AppCompatActivity
                 e.printStackTrace();
             }
 
+
             String nameOfFile = "id:" + id_number + "week:" + downloadWeek + "_" + schemaFileName;
             schemaFile = new File(getFilesDir() + "/" + nameOfFile);
             String downloadID = id_number;
+
+
 
             DownloadFile M = new DownloadFile(downloadID,downloadWeek,nameOfFile);
             M.start();
@@ -779,7 +784,10 @@ public class MainActivity extends AppCompatActivity
                 e.printStackTrace();
             }
 
-            drawSchema();
+            //drawSchema();
+            drawSchemaTemp(true);
+
+
         }
     }
 
@@ -873,6 +881,45 @@ public class MainActivity extends AppCompatActivity
             }
         }
     }
+
+    public void drawSchemaTemp(final boolean status) {
+
+        runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                ViewFlipper vf = (ViewFlipper) findViewById(R.id.schema_week_vf);
+
+                try {
+
+                    ImageView imageView = (ImageView) findViewById(R.id.temp_weekly);
+
+                    String imageUrl = "http://www.novasoftware.se/ImgGen/schedulegenerator.aspx?format=png&schoolid=81530/sv-se&type=0&id=" + id_number + fyra_sista + "&period=&week=" + downloadWeek + "&mode=0&printer=0&colors=2&head=5&clock=7&foot=1&day=0&width=360&height=600";
+
+                    new DownloadImageTask((ImageView) findViewById(R.id.temp_weekly)) .execute(imageUrl);
+
+                    if (status) {
+
+                        vf.setDisplayedChild(1);
+                    } else {
+
+                        vf.setDisplayedChild(2);
+                    }
+
+
+                    //Picasso.with(getApplicationContext()).load(imageUrl).into(imageView);
+
+
+                } catch (Exception e) {
+
+                    vf.setDisplayedChild(2);
+
+                    e.printStackTrace();
+                }
+            }
+        });
+
+    }
+
 
     public void drawSchema() {
         runOnUiThread(new Runnable() {
@@ -1430,7 +1477,7 @@ public class MainActivity extends AppCompatActivity
                     String[] charSwap = { "Å", "Ä", "Ö", "å", "ä", "ö"};
                     String[] charSwap2 = { "%c3%85", "%c3%84", "%c3%96", "%c3%a5", "%c3%a4", "%c3%b6"};
 
-                    dagensMat = mat[foodDay ].replace("\n\n","\n");
+                    dagensMat = mat[foodDay].replace("\n\n","\n");
 
                     for (int i = 0; i < 6 ; i++) {
 
@@ -1668,6 +1715,7 @@ public class MainActivity extends AppCompatActivity
                 mIcon11 = BitmapFactory.decodeStream(in);
             } catch (Exception e) {
                 Log.e("Error", e.getMessage());
+                drawSchemaTemp(false);
                 e.printStackTrace();
             }
             return mIcon11;
