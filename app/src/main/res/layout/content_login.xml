@@ -36,10 +36,9 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="0dp"
+                android:layout_height="53dp"
                 android:orientation="horizontal"
-                android:gravity="center_horizontal"
-                android:layout_weight="1">
+                android:gravity="center_horizontal">
 
                 <EditText
                     android:layout_width="0dp"
@@ -112,10 +111,9 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="0dp"
+                android:layout_height="53dp"
                 android:orientation="horizontal"
-                android:gravity="center_horizontal"
-                android:layout_weight="1">
+                android:gravity="center_horizontal">
 
                 <EditText
                     android:layout_width="0dp"
@@ -189,10 +187,9 @@
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="0dp"
+                android:layout_height="53dp"
                 android:orientation="horizontal"
-                android:gravity="center_horizontal"
-                android:layout_weight="1">
+                android:gravity="center_horizontal">
 
                 <EditText
                     android:layout_width="0dp"
@@ -257,7 +254,6 @@
 
                 </LinearLayout>
 
-
             </LinearLayout>
 
         </LinearLayout>
@@ -295,6 +291,17 @@
             android:background="@drawable/rect_login_button"
             android:onClick="logoutSubmit"
             android:elevation="3dp"/>
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="30dp"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:textColor="@color/colorLoginRegisterText"
+            android:textColorLink="@color/colorLoginLinkText"
+            android:text="@string/register_link"
+            android:id="@+id/register_link" />
 
     </LinearLayout>
 

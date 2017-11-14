@@ -130,7 +130,8 @@
     <color name="colorLoginNotOKCheck">#ff4040</color>
     <color name="colorLoginInfo">#ffffff</color>
 
-
+    <color name="colorLoginRegisterText">#ffffff</color>
+    <color name="colorLoginLinkText">#0012b7</color>
 
 
     <!--  Style colors

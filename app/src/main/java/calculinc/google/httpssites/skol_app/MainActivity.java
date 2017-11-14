@@ -19,6 +19,7 @@ import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
+import android.text.method.LinkMovementMethod;
 import android.util.Base64;
 import android.util.Log;
 import android.view.Gravity;
@@ -98,8 +99,6 @@ import calculinc.google.httpssites.skol_app.days.Wednesday;
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
-    private Menu menu1;
-
     String id_number;
     String fyra_sista;
 
@@ -139,12 +138,6 @@ public class MainActivity extends AppCompatActivity
 
     private RecyclerView recyclerView;
     private RecyclerView.Adapter adapter;
-
-    final String[] genderStrings = {
-            "Kvinna",
-            "Man",
-            "Annat", "Annat", "Annat"
-    };
 
     String LoginDataBaseKey = "11SYOpe7-x_N2xQtjjgs7nUD9t7nRRBvp59O694rrmHc";
     String MatvoteDataBaseKey = "1KWnx2XtVrc229M2ixsgu5xXkpaxkHwZMf0nZdElxWRM";
@@ -197,6 +190,9 @@ public class MainActivity extends AppCompatActivity
 
         recyclerView.smoothScrollToPosition(0);
         start();
+
+        TextView t2 = (TextView) findViewById(R.id.register_link);
+        t2.setMovementMethod(LinkMovementMethod.getInstance());
     }
 
     public void start() {
@@ -1532,7 +1528,7 @@ public class MainActivity extends AppCompatActivity
     }
 
     public void postFormRegisterData(String Namn, String Efternamn, String Mobil, String Stad, String Födsel, int gender) {
-
+        /**
         String logingender = genderStrings[gender];
         try {
             String fullUrl = "https://docs.google.com/forms/d/e/1FAIpQLSfbgeZ2UMpuHDqSagZc2u39tjNhzmEF0toBYRsfFIyz6psiew/formResponse";
@@ -1550,7 +1546,7 @@ public class MainActivity extends AppCompatActivity
 
         } catch (Exception e) {
             e.printStackTrace();
-        }
+        }**/
     }
 
     public void postMatsedelRatingData(String matrating) {

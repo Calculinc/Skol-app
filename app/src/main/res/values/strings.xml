@@ -30,6 +30,8 @@
     <string name="Torsdag">Torsdag</string>
     <string name="Fredag">Fredag</string>
 
+    <string name="register_link"><a href="https://docs.google.com/forms/d/e/1FAIpQLSfbgeZ2UMpuHDqSagZc2u39tjNhzmEF0toBYRsfFIyz6psiew/viewform">Klicka här</a> för att registrera dig</string>
+
     <string name="info_text">Dina fyra sista siffror i ditt personnummer sparas endast lokalt på din enhet och används enbart för att hämta ditt personliga schema.\n\n/IT-Utskottet (Calculinc)</string>
     <string name="ok">Ok</string>
 
