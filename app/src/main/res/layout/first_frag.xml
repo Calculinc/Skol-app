@@ -8,52 +8,36 @@
     tools:context="calculinc.google.httpssites.skol_app.MainActivity"
     tools:showIn="@layout/app_bar_main">
 
-    <RelativeLayout
+    <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:gravity="center_horizontal"
-        android:animateLayoutChanges="true">
-
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:orientation="vertical"
-            android:gravity="center"
-            android:animateLayoutChanges="true">
-
-            <TextView
-                android:id="@+id/statistik"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:textColor="@color/colorMatIdagText"
-                android:layout_marginTop="10dp"
-                android:layout_marginBottom="10dp"
-                android:layout_marginRight="10dp"
-                android:layout_marginLeft="10dp"
-                android:textSize="15sp"
-                android:paddingTop="37dp"
-                android:gravity="top"
-                android:paddingRight="8dp"
-                android:paddingLeft="8dp"
-                android:elevation="3dp"
-                android:background="@drawable/rect_matsedel_dagens" />
-
-
-        </LinearLayout>
+        android:animateLayoutChanges="true"
+        android:orientation="vertical"
+        android:textColor="@color/colorMatIdagText"
+        android:paddingTop="0dp"
+        android:paddingRight="8dp"
+        android:paddingLeft="8dp"
+        android:elevation="3dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginLeft="10dp"
+        android:background="@drawable/rect_matsedel_dagens">
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
+            android:layout_height="wrap_content"
             android:orientation="vertical"
             android:gravity="center_horizontal"
+            android:layout_gravity="top"
             android:animateLayoutChanges="true">
 
             <TextView
-                android:layout_width="wrap_content"
+                android:layout_width="match_parent"
                 android:layout_height="35dp"
                 android:layout_gravity="center"
-                android:layout_marginTop="15dp"
+                android:layout_marginTop="5dp"
                 android:text="Statistik för nördar"
                 android:textSize="20sp"
                 android:textColor="@color/colorMatIdagHeaderText"
@@ -62,6 +46,178 @@
 
         </LinearLayout>
 
-    </RelativeLayout>
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:orientation="horizontal"
+            android:gravity="center"
+            android:animateLayoutChanges="true">
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:layout_weight="1"
+                android:gravity="left">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="top"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/colorMatIdagHeaderText"
+                        android:textSize="15sp"
+                        android:text="Din röstning: "
+                        android:gravity="left" />
+
+                    <TextView
+                        android:id="@+id/statistik_personal_vote"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/colorMatIdagText"
+                        android:textSize="15sp"
+                        android:gravity="left" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="top"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/colorMatIdagHeaderText"
+                        android:textSize="15sp"
+                        android:text="Standardavvikelse: "
+                        android:gravity="left" />
+
+                    <TextView
+                        android:id="@+id/statistik_stdev"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/colorMatIdagText"
+                        android:textSize="15sp"
+                        android:gravity="left" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="top"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/colorMatIdagHeaderText"
+                        android:textSize="15sp"
+                        android:text="Ditt röstnummer: "
+                        android:gravity="left" />
+
+                    <TextView
+                        android:id="@+id/statistik_nummer"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/colorMatIdagText"
+                        android:textSize="15sp"
+                        android:gravity="left" />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:orientation="vertical"
+                android:layout_weight="1"
+                android:gravity="left">
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="horizontal"
+                    android:layout_gravity="top">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/colorMatIdagHeaderText"
+                        android:textSize="15sp"
+                        android:text="Median: "
+                        android:gravity="left" />
+
+                    <TextView
+                        android:id="@+id/statistik_median"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/colorMatIdagText"
+                        android:textSize="15sp"
+                        android:gravity="left" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="top"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/colorMatIdagHeaderText"
+                        android:textSize="15sp"
+                        android:text="Antal röster: "
+                        android:gravity="left" />
+
+                    <TextView
+                        android:id="@+id/statistik_amount_of_votes"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/colorMatIdagText"
+                        android:textSize="15sp"
+                        android:gravity="left" />
+
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="top"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/colorMatIdagHeaderText"
+                        android:textSize="15sp"
+                        android:text="Hipster score: "
+                        android:gravity="left" />
+
+                    <TextView
+                        android:id="@+id/statistik_hipster"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:textColor="@color/colorMatIdagText"
+                        android:textSize="15sp"
+                        android:gravity="left" />
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+
+        </LinearLayout>
+
+    </LinearLayout>
 
 </android.support.constraint.ConstraintLayout>

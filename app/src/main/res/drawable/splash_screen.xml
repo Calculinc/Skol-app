@@ -1,0 +1,21 @@
+<?xml version="1.0" encoding="utf-8"?>
+<layer-list xmlns:android="http://schemas.android.com/apk/res/android">
+    <item>
+        <!-- drawable/circle_card_icon.xml -->
+        <shape xmlns:android="http://schemas.android.com/apk/res/android"
+            android:shape="rectangle">
+            <gradient
+                android:angle="270"
+                android:startColor="@color/colorDrawerGradientStart"
+                android:centerColor="@color/colorDrawerGradientCenter"
+                android:endColor="@color/colorDrawerGradientEnd"
+                android:type="linear" />
+        </shape>
+    </item>
+    <item android:drawable="@drawable/norra_clipart"
+        android:gravity="center"
+        android:top="80dp"
+        android:right="80dp"
+        android:left="80dp"
+        android:bottom="80dp"/>
+</layer-list>

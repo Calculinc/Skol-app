@@ -9,7 +9,7 @@
         android:layout_height="match_parent"
         android:orientation="vertical"
         android:elevation="3dp"
-        android:background="@color/colorSchemaBackground"
+        android:background="@drawable/rect_matsedel_dagens"
         android:layout_marginLeft="10dp"
         android:layout_marginRight="10dp"
         android:paddingTop="5dp"

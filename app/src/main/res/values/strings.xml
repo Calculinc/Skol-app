@@ -34,6 +34,7 @@
 
     <string name="info_text">Dina fyra sista siffror i ditt personnummer sparas endast lokalt på din enhet och används enbart för att hämta ditt personliga schema.\n\n/IT-Utskottet (Calculinc)</string>
     <string name="ok">Ok</string>
+    <string name="matsedel_ditt_resultat">Ok</string>
 
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>

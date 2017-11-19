@@ -111,8 +111,12 @@ public class MainActivity extends AppCompatActivity
     final String myTag = "DocsUpload";
 
     double matsedelrating;
-    double matsedelratingAmountOfVotes;
+    int matsedelratingAmountOfVotes;
     double matsedelratingTotal;
+    double matsedelMedian;
+    double matsedelStdev;
+
+    String personalVoteNumber = "";
     String votingID;
     String downloaddatum = "";
     String personalVote;
@@ -1350,10 +1354,6 @@ public class MainActivity extends AppCompatActivity
                     File matfil = new File(getFilesDir() + "/" + matVoteFileName);
                     String filedatum = "";
 
-                    //Temporary code for animation-testing
-                    //matfil.delete();
-                    //Delete the above when necessary
-
                     try {
                         FileInputStream fis = openFileInput(matVoteFileName);
                         InputStreamReader isr = new InputStreamReader(fis);
@@ -1366,8 +1366,9 @@ public class MainActivity extends AppCompatActivity
                         String[] data = sb.toString().split("%");
                         filedatum = data[0];
                         personalVote = data[1];
+                        personalVoteNumber = data[2];
 
-                    } catch (IOException e) {
+                    } catch (IOException | IndexOutOfBoundsException e) {
                         e.printStackTrace();
                     }
                     downloaddatum = filedatum;
@@ -1377,8 +1378,10 @@ public class MainActivity extends AppCompatActivity
                         JSONArray columns = row.getJSONArray("c");
                         matsedelrating = columns.getJSONObject(0).getDouble("v");
                         matsedelratingTotal = columns.getJSONObject(1).getDouble("v");
-                        matsedelratingAmountOfVotes = columns.getJSONObject(2).getDouble("v");
-                        downloaddatum = columns.getJSONObject(4).getString("v") + "/" + columns.getJSONObject(6).getString("v") + "/" + columns.getJSONObject(7).getString("v");
+                        matsedelratingAmountOfVotes = columns.getJSONObject(2).getInt("v");
+                        matsedelMedian = columns.getJSONObject(4).getDouble("v");
+                        matsedelStdev = columns.getJSONObject(3).getDouble("v");
+                        downloaddatum = columns.getJSONObject(5).getString("v") + "/" + columns.getJSONObject(6).getString("v") + "/" + columns.getJSONObject(7).getString("v");
 
                     } catch (JSONException e) {
                         e.printStackTrace();
@@ -1399,8 +1402,19 @@ public class MainActivity extends AppCompatActivity
                     ratingBarOutput.setRating((float)matsedelrating);
                     ratingText.setText(String.valueOf(matsedelrating));
 
-                    final TextView statistik = (TextView) findViewById(R.id.statistik);
-                    statistik.setText(personalVote);
+                    final TextView statistikPersonalVote = (TextView) findViewById(R.id.statistik_personal_vote);
+                    final TextView statistikMedian = (TextView) findViewById(R.id.statistik_median);
+                    final TextView statistikStdev = (TextView) findViewById(R.id.statistik_stdev);
+                    final TextView statistikAmountOfVotes = (TextView) findViewById(R.id.statistik_amount_of_votes);
+                    final TextView statistikPersonalNumber = (TextView) findViewById(R.id.statistik_nummer);
+                    final TextView statistikHipsterScore = (TextView) findViewById(R.id.statistik_hipster);
+
+                    statistikStdev.setText(String.valueOf(Math.round(matsedelStdev * 100d)/100d));
+                    statistikAmountOfVotes.setText(String.valueOf(matsedelratingAmountOfVotes));
+                    statistikMedian.setText(String.valueOf(matsedelMedian));
+                    statistikPersonalNumber.setText(personalVoteNumber.charAt(0) + "#");
+                    statistikHipsterScore.setText(String.valueOf(100));
+                    statistikPersonalVote.setText(personalVote);
 
                     /**
                      final TextView klickahär = (TextView) findViewById(R.id.klicka_rösta_mat);
@@ -1458,6 +1472,8 @@ public class MainActivity extends AppCompatActivity
                             R.id.test_text5
                     };
 
+                    String[] veckodagar = {"Måndag", "Tisdag", "Onsdag", "Torsdag", "Fredag"};
+
                     LinearLayout progressLayout = (LinearLayout) findViewById(R.id.progress_layout);
 
                     progressLayout.setVisibility(View.GONE);
@@ -1476,8 +1492,14 @@ public class MainActivity extends AppCompatActivity
 
                     for (int i = 0; i < 5 ; i++) {
 
+                        TextView Dagens = (TextView) findViewById(matdayTitle[i]);
+                        LinearLayout dagensMatBox = (LinearLayout) findViewById(matdayBox[i]);
                         TextView foodtext = (TextView) findViewById(matdayText[i]);
+
                         foodtext.setText(mat[i + 1]);
+                        dagensMatBox.setBackgroundResource(R.drawable.rect_matsedel_days);
+                        foodtext.setTextColor(getResources().getColor(R.color.colorMatSedelBoxText));
+                        Dagens.setText(veckodagar[i]);
 
                     }
 
@@ -1573,6 +1595,8 @@ public class MainActivity extends AppCompatActivity
                 outputStream.write(downloaddatum.getBytes());
                 outputStream.write(separator.getBytes());
                 outputStream.write(String.valueOf(ratingBar.getRating()).getBytes());
+                outputStream.write(separator.getBytes());
+                outputStream.write(String.valueOf(matsedelratingAmountOfVotes + 1.0D).getBytes());
                 outputStream.close();
             } catch (IOException e) {
                 e.printStackTrace();
@@ -1582,10 +1606,32 @@ public class MainActivity extends AppCompatActivity
             runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
+
                     final RatingBar ratingBarOutput = (RatingBar) findViewById(R.id.rating_output_view);
                     final TextView ratingText = (TextView) findViewById(R.id.rating_text);
                     final RatingBar ratingBar = (RatingBar) findViewById(R.id.rating_bar);
-                    final TextView statistik = (TextView) findViewById(R.id.statistik);
+                    final TextView statistikPersonalVote = (TextView) findViewById(R.id.statistik_personal_vote);
+                    final TextView statistikMedian = (TextView) findViewById(R.id.statistik_median);
+                    final TextView statistikStdev = (TextView) findViewById(R.id.statistik_stdev);
+                    final TextView statistikAmountOfVotes = (TextView) findViewById(R.id.statistik_amount_of_votes);
+                    final TextView statistikPersonalNumber = (TextView) findViewById(R.id.statistik_nummer);
+                    final TextView statistikHipsterScore = (TextView) findViewById(R.id.statistik_hipster);
+
+                    statistikStdev.setText(String.valueOf(Math.round(matsedelStdev * 100d)/100d));
+                    statistikAmountOfVotes.setText(String.valueOf(matsedelratingAmountOfVotes));
+
+                    if (matsedelratingAmountOfVotes == 0) {
+                        statistikMedian.setText(String.valueOf(ratingBar.getRating()));
+
+                    } else {
+                        statistikMedian.setText(String.valueOf(matsedelMedian));
+
+                    }
+
+                    statistikPersonalNumber.setText(personalVoteNumber.charAt(0) + "#");
+                    statistikHipsterScore.setText(String.valueOf(100));
+                    statistikPersonalVote.setText(personalVote);
+
 
                     float tempChange = (float)((matsedelratingTotal + ratingBar.getRating()) / (matsedelratingAmountOfVotes + 1.0D));
 
@@ -1596,7 +1642,7 @@ public class MainActivity extends AppCompatActivity
                     final ViewFlipper matVf = (ViewFlipper) findViewById(R.id.mat_vf);
 
                     matVf.setDisplayedChild(2);
-                    statistik.setText(String.valueOf(ratingBar.getRating()));
+                    statistikPersonalVote.setText(String.valueOf(ratingBar.getRating()));
 
 
                     /**
