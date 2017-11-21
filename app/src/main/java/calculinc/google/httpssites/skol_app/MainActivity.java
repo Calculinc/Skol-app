@@ -899,10 +899,8 @@ public class MainActivity extends AppCompatActivity
 
                         vf.setDisplayedChild(2);
                     }
-
-
+                    
                     //Picasso.with(getApplicationContext()).load(imageUrl).into(imageView);
-
 
                 } catch (Exception e) {
 
@@ -1618,7 +1616,7 @@ public class MainActivity extends AppCompatActivity
                     final TextView statistikHipsterScore = (TextView) findViewById(R.id.statistik_hipster);
 
                     statistikStdev.setText(String.valueOf(Math.round(matsedelStdev * 100d)/100d));
-                    statistikAmountOfVotes.setText(String.valueOf(matsedelratingAmountOfVotes));
+                    statistikAmountOfVotes.setText(String.valueOf(matsedelratingAmountOfVotes + 1));
 
                     if (matsedelratingAmountOfVotes == 0) {
                         statistikMedian.setText(String.valueOf(ratingBar.getRating()));
@@ -1628,10 +1626,9 @@ public class MainActivity extends AppCompatActivity
 
                     }
 
-                    statistikPersonalNumber.setText(personalVoteNumber.charAt(0) + "#");
+                    statistikPersonalNumber.setText("#" + String.valueOf(matsedelratingAmountOfVotes + 1).charAt(0));
                     statistikHipsterScore.setText(String.valueOf(100));
                     statistikPersonalVote.setText(personalVote);
-
 
                     float tempChange = (float)((matsedelratingTotal + ratingBar.getRating()) / (matsedelratingAmountOfVotes + 1.0D));
 
@@ -1643,7 +1640,6 @@ public class MainActivity extends AppCompatActivity
 
                     matVf.setDisplayedChild(2);
                     statistikPersonalVote.setText(String.valueOf(ratingBar.getRating()));
-
 
                     /**
                     final TextView klickahär = (TextView) findViewById(R.id.klicka_rösta_mat);
