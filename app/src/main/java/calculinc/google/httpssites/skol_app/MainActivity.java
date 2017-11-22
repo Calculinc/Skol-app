@@ -110,11 +110,11 @@ public class MainActivity extends AppCompatActivity
 
     final String myTag = "DocsUpload";
 
-    double matsedelrating;
-    int matsedelratingAmountOfVotes;
-    double matsedelratingTotal;
-    double matsedelMedian;
-    double matsedelStdev;
+    double matsedelrating = 0;
+    int matsedelratingAmountOfVotes = 0;
+    double matsedelratingTotal = 0;
+    double matsedelMedian = 0;
+    double matsedelStdev = 0;
 
     String personalVoteNumber = "";
     String votingID;
@@ -186,11 +186,14 @@ public class MainActivity extends AppCompatActivity
         final EditText phone = (EditText) findViewById(R.id.mobile_number);
         final EditText personal_id = (EditText) findViewById(R.id.personalid);
         final EditText passCode = (EditText) findViewById(R.id.passcode);
+        EditText novaCode = (EditText) findViewById(R.id.nova_code);
         name.addTextChangedListener(nameTextWatcher);
         surname.addTextChangedListener(surnameTextWatcher);
         phone.addTextChangedListener(phoneTextWatcher);
         personal_id.addTextChangedListener(personalIdTextWatcher);
         passCode.addTextChangedListener(passCodeTextWatcher);
+        novaCode.addTextChangedListener(novaTextWatcher);
+
 
         recyclerView.smoothScrollToPosition(0);
         start();
@@ -296,10 +299,23 @@ public class MainActivity extends AppCompatActivity
         public void afterTextChanged(Editable s) {}
     };
 
+    private TextWatcher novaTextWatcher = new TextWatcher() {
+        @Override
+        public void onTextChanged(CharSequence s, int start, int before, int count) {
+            EditText novaCode = (EditText) findViewById(R.id.nova_code);
+            fyra_sista = novaCode.getText().toString();
+        }
+
+        @Override
+        public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+        @Override
+        public void afterTextChanged(Editable s) {}
+    };
+
     public void nameCheck(String content){
         loginNameAccepted = content.length() >= 1;
 
-        final View view = (View) findViewById(R.id.checkbox_name);
+        final View view = findViewById(R.id.checkbox_name);
         if (loginNameAccepted) {
             view.setBackgroundResource(R.drawable.login_ok);
             //Update indicator here
@@ -312,7 +328,7 @@ public class MainActivity extends AppCompatActivity
     public void surnameCheck(String content){
         loginSurnameAccepted = content.length() >= 1;
 
-        final View view = (View) findViewById(R.id.checkbox_surname);
+        final View view = findViewById(R.id.checkbox_surname);
         if (loginSurnameAccepted) {
             view.setBackgroundResource(R.drawable.login_ok);
             //Update indicator here
@@ -325,7 +341,7 @@ public class MainActivity extends AppCompatActivity
     public void phoneCheck(String content){
         loginPhoneAccepted = content.length() == 10;
 
-        final View view = (View) findViewById(R.id.checkbox_telephone);
+        final View view = findViewById(R.id.checkbox_telephone);
         if (loginPhoneAccepted) {
             view.setBackgroundResource(R.drawable.login_ok);
             //Update indicator here
@@ -337,7 +353,8 @@ public class MainActivity extends AppCompatActivity
 
     public void personalIdCheck(String content){
         loginPersonalIdAccepted = content.length() == 6;
-        final View view = (View) findViewById(R.id.checkbox_personalid);
+
+        final View view =  findViewById(R.id.checkbox_personalid);
         if (loginPersonalIdAccepted) {
             view.setBackgroundResource(R.drawable.login_ok);
             //Update indicator here
@@ -349,7 +366,8 @@ public class MainActivity extends AppCompatActivity
 
     public void passCodeCheck(String content){
         loginPassCodeAccepted = content.length() == 4;
-        final View view = (View) findViewById(R.id.checkbox_passcode);
+
+        final View view = findViewById(R.id.checkbox_passcode);
         if (loginPassCodeAccepted) {
             view.setBackgroundResource(R.drawable.login_ok);
             //Update indicator here
@@ -448,6 +466,13 @@ public class MainActivity extends AppCompatActivity
     }
 
     public void getSavedLoginContent() {
+        EditText name = (EditText) findViewById(R.id.name1);
+        EditText surname = (EditText) findViewById(R.id.name2);
+        EditText phone = (EditText) findViewById(R.id.mobile_number);
+        EditText personalId = (EditText) findViewById(R.id.personalid);
+        EditText novacode = (EditText) findViewById(R.id.nova_code);
+        EditText passcode = (EditText) findViewById(R.id.passcode);
+
         loginFile = new File(getFilesDir() + "/" + loginFileName);
         loggenIn = loginFile.exists();
         try {
@@ -470,13 +495,6 @@ public class MainActivity extends AppCompatActivity
                 fyra_sista = loginParams[5];
                 votingID = id_number + loginParams[0] + loginParams[1];
 
-                EditText name = (EditText) findViewById(R.id.name1);
-                EditText surname = (EditText) findViewById(R.id.name2);
-                EditText phone = (EditText) findViewById(R.id.mobile_number);
-                EditText personalId = (EditText) findViewById(R.id.personalid);
-                EditText novacode = (EditText) findViewById(R.id.nova_code);
-                EditText passcode = (EditText) findViewById(R.id.passcode);
-
                 name.setText(loginParams[0]);
                 surname.setText(loginParams[1]);
                 phone.setText(loginParams[2]);
@@ -484,11 +502,29 @@ public class MainActivity extends AppCompatActivity
                 novacode.setText(fyra_sista);
                 passcode.setText(loginParams[4]);
 
-                nameCheck(loginParams[0]);
-                surnameCheck(loginParams[1]);
-                phoneCheck(loginParams[2]);
-                personalIdCheck(id_number);
-                passCodeCheck(loginParams[4]);
+                final View nameIcon = findViewById(R.id.checkbox_name);
+                final View surnameIcon = findViewById(R.id.checkbox_surname);
+                final View phoneIcon = findViewById(R.id.checkbox_telephone);
+                final View personalIdIcon = findViewById(R.id.checkbox_personalid);
+                final View passcodeIcon = findViewById(R.id.checkbox_passcode);
+
+                nameIcon.setBackgroundResource(R.drawable.login_locked);
+                surnameIcon.setBackgroundResource(R.drawable.login_locked);
+                phoneIcon.setBackgroundResource(R.drawable.login_locked);
+                personalIdIcon.setBackgroundResource(R.drawable.login_locked);
+                passcodeIcon.setBackgroundResource(R.drawable.login_locked);
+            } else {
+                name.setFocusable(true);
+                surname.setFocusable(true);
+                phone.setFocusable(true);
+                personalId.setFocusable(true);
+                passcode.setFocusable(true);
+
+                name.setFocusableInTouchMode(true);
+                surname.setFocusableInTouchMode(true);
+                phone.setFocusableInTouchMode(true);
+                personalId.setFocusableInTouchMode(true);
+                passcode.setFocusableInTouchMode(true);
             }
         }catch (IOException e) {
             e.printStackTrace();
@@ -498,6 +534,9 @@ public class MainActivity extends AppCompatActivity
     public void loginSubmit (View view) {
         final Animation anim_button_click = AnimationUtils.loadAnimation(this, R.anim.anim_button_click);
         view.startAnimation(anim_button_click);
+
+        TextView Error = (TextView) findViewById(R.id.login_error_text);
+        Error.setVisibility(View.INVISIBLE);
 
         final EditText name = (EditText) findViewById(R.id.name1);
         final EditText surname = (EditText) findViewById(R.id.name2);
@@ -509,11 +548,19 @@ public class MainActivity extends AppCompatActivity
         final String Efternamn = surname.getText().toString();
         final String Mobil = phone.getText().toString();
         id_number = personal_id.getText().toString();
-        final String Code = passcode.getText().toString() + ".0";
+        final String passCode = passcode.getText().toString();
+        final String Code = passCode + ".0";
         final String Datum = id_number;
         votingID = id_number + Namn + Efternamn;
 
+        nameCheck(Namn);
+        surnameCheck(Efternamn);
+        phoneCheck(Mobil);
+        personalIdCheck(id_number);
+        passCodeCheck(passCode);
+
         if (loginNameAccepted && loginSurnameAccepted && loginPhoneAccepted && loginPersonalIdAccepted && loginPassCodeAccepted) {
+
             new DownloadWebpageTask(new AsyncResult() {
                 @Override
                 public void onResult(JSONObject object) {
@@ -543,19 +590,37 @@ public class MainActivity extends AppCompatActivity
                         }
                     } catch (Exception e) {
                         e.printStackTrace();
-                        loginFail();
+                        loginConnectFail();
                     }
                 }
             } ).execute("https://spreadsheets.google.com/tq?key=" + LoginDataBaseKey);
 
+        } else {
+            loginFillFail();
         }
     }
 
     public void loginSucces() {
         final Button LoginButt = (Button) findViewById(R.id.login_button);
         final Button LogoutButt = (Button) findViewById(R.id.logout_button);
+        TextView Error = (TextView) findViewById(R.id.login_error_text);
+
         LoginButt.setVisibility(View.GONE);
         LogoutButt.setVisibility(View.VISIBLE);
+
+        Error.setVisibility(View.INVISIBLE);
+
+        final View nameIcon = findViewById(R.id.checkbox_name);
+        final View surnameIcon = findViewById(R.id.checkbox_surname);
+        final View phoneIcon = findViewById(R.id.checkbox_telephone);
+        final View personalIdIcon = findViewById(R.id.checkbox_personalid);
+        final View passcodeIcon = findViewById(R.id.checkbox_passcode);
+
+        nameIcon.setBackgroundResource(R.drawable.login_locked);
+        surnameIcon.setBackgroundResource(R.drawable.login_locked);
+        phoneIcon.setBackgroundResource(R.drawable.login_locked);
+        personalIdIcon.setBackgroundResource(R.drawable.login_locked);
+        passcodeIcon.setBackgroundResource(R.drawable.login_locked);
 
         final EditText name = (EditText) findViewById(R.id.name1);
         final EditText surname = (EditText) findViewById(R.id.name2);
@@ -563,6 +628,18 @@ public class MainActivity extends AppCompatActivity
         final EditText personal_id = (EditText) findViewById(R.id.personalid);
         final EditText fyrasista = (EditText) findViewById(R.id.nova_code);
         final EditText passcode = (EditText) findViewById(R.id.passcode);
+
+        name.setFocusable(false);
+        surname.setFocusable(false);
+        phone.setFocusable(false);
+        personal_id.setFocusable(false);
+        passcode.setFocusable(false);
+
+        name.setFocusableInTouchMode(false);
+        surname.setFocusableInTouchMode(false);
+        phone.setFocusableInTouchMode(false);
+        personal_id.setFocusableInTouchMode(false);
+        passcode.setFocusableInTouchMode(false);
 
         final String Namn = name.getText().toString();
         final String Efternamn = surname.getText().toString();
@@ -598,9 +675,35 @@ public class MainActivity extends AppCompatActivity
 
     public void loginFail() {
 
+        TextView Error = (TextView) findViewById(R.id.login_error_text);
+
+        Error.setVisibility(View.VISIBLE);
+        Error.setText("- Användare inte hittad -");
+    }
+
+    public void loginFillFail() {
+
+        TextView Error = (TextView) findViewById(R.id.login_error_text);
+
+        Error.setVisibility(View.VISIBLE);
+        Error.setText("- Fyll i alla fälten korrekt -");
+    }
+
+    public void loginConnectFail() {
+
+        TextView Error = (TextView) findViewById(R.id.login_error_text);
+
+        Error.setVisibility(View.VISIBLE);
+        Error.setText("- Kunde inte ansluta -");
     }
 
     public void logoutSubmit (View view) {
+        EditText name = (EditText) findViewById(R.id.name1);
+        EditText surname = (EditText) findViewById(R.id.name2);
+        EditText phone = (EditText) findViewById(R.id.mobile_number);
+        EditText personalId = (EditText) findViewById(R.id.personalid);
+        EditText passcode = (EditText) findViewById(R.id.passcode);
+
         final Button LoginButt = (Button) findViewById(R.id.login_button);
         final Button LogoutButt = (Button) findViewById(R.id.logout_button);
         LoginButt.setVisibility(View.VISIBLE);
@@ -608,37 +711,24 @@ public class MainActivity extends AppCompatActivity
 
         loginFile.delete();
         loggenIn = false;
-    }
 
-    public void registerSubmit (View view) {
-        final Animation anim_button_click = AnimationUtils.loadAnimation(this, R.anim.anim_button_click);
-        view.startAnimation(anim_button_click);
+        name.setFocusable(true);
+        surname.setFocusable(true);
+        phone.setFocusable(true);
+        personalId.setFocusable(true);
+        passcode.setFocusable(true);
 
-        final EditText name = (EditText) findViewById(R.id.name1);
-        final EditText surname = (EditText) findViewById(R.id.name2);
-        final EditText phone = (EditText) findViewById(R.id.mobile_number);
-        final EditText personal_id = (EditText) findViewById(R.id.personalid);
+        name.setFocusableInTouchMode(true);
+        surname.setFocusableInTouchMode(true);
+        phone.setFocusableInTouchMode(true);
+        personalId.setFocusableInTouchMode(true);
+        passcode.setFocusableInTouchMode(true);
 
-        final String Namn = name.getText().toString();
-        final String Efternamn = surname.getText().toString();
-        final String Mobil = phone.getText().toString();
-        id_number = personal_id.getText().toString();
-        final String datum;{
-            char[] siffra = id_number.toCharArray();
-            if (siffra[0] == '9') {
-                datum = "19" + siffra[0] + siffra[1] + "-" + siffra[2] + siffra[3] + "-" + siffra[4] + siffra[5];
-            } else {
-                datum = "20" + siffra[0] + siffra[1] + "-" + siffra[2] + siffra[3] + "-" + siffra[4] + siffra[5];
-            }
-        }
-
-        Thread t = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                //postFormRegisterData(Namn, Efternamn, Mobil, datum);
-            }
-        });
-        t.start();
+        nameCheck(name.getText().toString());
+        surnameCheck(surname.getText().toString());
+        phoneCheck(phone.getText().toString());
+        personalIdCheck(personalId.getText().toString());
+        passCodeCheck(passcode.getText().toString());
     }
 
     @Override
@@ -1381,7 +1471,7 @@ public class MainActivity extends AppCompatActivity
                         matsedelStdev = columns.getJSONObject(3).getDouble("v");
                         downloaddatum = columns.getJSONObject(5).getString("v") + "/" + columns.getJSONObject(6).getString("v") + "/" + columns.getJSONObject(7).getString("v");
 
-                    } catch (JSONException e) {
+                    } catch (JSONException | NullPointerException e) {
                         e.printStackTrace();
                     }
                     final boolean qwerty = !downloaddatum.equals(filedatum);
@@ -1410,29 +1500,15 @@ public class MainActivity extends AppCompatActivity
                     statistikStdev.setText(String.valueOf(Math.round(matsedelStdev * 100d)/100d));
                     statistikAmountOfVotes.setText(String.valueOf(matsedelratingAmountOfVotes));
                     statistikMedian.setText(String.valueOf(matsedelMedian));
-                    statistikPersonalNumber.setText(personalVoteNumber.charAt(0) + "#");
+                    try {
+                        statistikPersonalNumber.setText("#" + Math.round(Double.parseDouble(personalVoteNumber)));
+                    }
+                    catch (Exception e){
+                        e.printStackTrace();
+                        statistikPersonalNumber.setText("#");
+                    }
                     statistikHipsterScore.setText(String.valueOf(100));
                     statistikPersonalVote.setText(personalVote);
-
-                    /**
-                     final TextView klickahär = (TextView) findViewById(R.id.klicka_rösta_mat);
-                     final LinearLayout matbelt = (LinearLayout) findViewById(R.id.matsedel_belt);
-
-                     if (qwerty) {
-
-                     klickahär.setVisibility(View.GONE);
-                     ratingText.setVisibility(View.VISIBLE);
-                     ratingBarOutput.setVisibility(View.VISIBLE);
-                     matbelt.setVisibility(View.GONE);
-
-                     } else {
-
-                     klickahär.setVisibility(View.GONE);
-                     ratingText.setVisibility(View.VISIBLE);
-                     ratingBarOutput.setVisibility(View.VISIBLE);
-                     matbelt.setVisibility(View.VISIBLE);
-
-                     }**/
 
                 }
             } ).execute("https://spreadsheets.google.com/tq?key=" + MatvoteDataBaseKey );
@@ -1547,28 +1623,6 @@ public class MainActivity extends AppCompatActivity
 
     }
 
-    public void postFormRegisterData(String Namn, String Efternamn, String Mobil, String Stad, String Födsel, int gender) {
-        /**
-        String logingender = genderStrings[gender];
-        try {
-            String fullUrl = "https://docs.google.com/forms/d/e/1FAIpQLSfbgeZ2UMpuHDqSagZc2u39tjNhzmEF0toBYRsfFIyz6psiew/formResponse";
-            HttpRequest mReq = new HttpRequest();
-
-            String data = "entry.669832305=" + Namn + "&"
-                    + "entry.1465471991=" + Efternamn + "&"
-                    + "entry.1588314371=" + Mobil + "&"
-                    + "entry.1054214164=" + Stad + "&"
-                    + "entry.1765914386=" + Födsel + "&" //1999-11-06
-                    + "entry.1179920717=" + logingender;
-
-            String response = mReq.sendPost(fullUrl, data);
-            Log.i(myTag, response);
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }**/
-    }
-
     public void postMatsedelRatingData(String matrating) {
 
         try {
@@ -1626,7 +1680,7 @@ public class MainActivity extends AppCompatActivity
 
                     }
 
-                    statistikPersonalNumber.setText("#" + String.valueOf(matsedelratingAmountOfVotes + 1).charAt(0));
+                    statistikPersonalNumber.setText("#" + String.valueOf(Math.round(matsedelratingAmountOfVotes + 1)));
                     statistikHipsterScore.setText(String.valueOf(100));
                     statistikPersonalVote.setText(personalVote);
 
@@ -1641,93 +1695,11 @@ public class MainActivity extends AppCompatActivity
                     matVf.setDisplayedChild(2);
                     statistikPersonalVote.setText(String.valueOf(ratingBar.getRating()));
 
-                    /**
-                    final TextView klickahär = (TextView) findViewById(R.id.klicka_rösta_mat);
-                    final LinearLayout matbelt = (LinearLayout) findViewById(R.id.matsedel_belt);
-                    final LinearLayout viewpagerlayout = (LinearLayout) findViewById(R.id.layout_pager);
-
-                    klickahär.setVisibility(View.GONE);
-                    ratingText.setVisibility(View.VISIBLE);
-                    ratingBarOutput.setVisibility(View.VISIBLE);
-                    matbelt.setVisibility(View.GONE);
-
-                    LinearLayout.LayoutParams paramsBlank2 = new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, Math.round(getResources().getDimension(R.dimen.matchange)));
-                    viewpagerlayout.setLayoutParams(paramsBlank2);
-                     **/
                 }
             });
 
         } catch (Exception e) {
             e.printStackTrace();
-        }
-
-    }
-
-    public void spammaSverigesElevkårer(View view) {
-
-        final Animation anim_button_click = AnimationUtils.loadAnimation(this, R.anim.anim_button_click);
-
-        view.startAnimation(anim_button_click);
-
-        String name;
-
-        for (int i = 0; i < 25 ; i++) {
-
-            name = "";
-
-            for (int j = 0; j < 10; j++) {
-
-                if( j == 0){
-                    Random rand = new Random();
-                    int n = rand.nextInt(91 - 65) + 65;
-                    name += (char)n;
-                }
-
-                if( j < 5){
-
-                    Random rand = new Random();
-                    int n = rand.nextInt(123 - 97) + 97;
-
-                    name += (char)n;
-                }
-
-                if( j == 5){
-                    Random rand = new Random();
-                    int n = rand.nextInt(91 - 65) + 65;
-                    name += "+" + (char)n;
-                }
-
-                if( j > 5){
-
-                    Random rand = new Random();
-                    int n = rand.nextInt(123 - 97) + 97;
-
-                    name += (char)n;
-                }
-
-                if( j == 9){
-
-                    name += "sson";
-                }
-
-            }
-
-            try {
-
-                String fullUrl = "https://docs.google.com/forms/d/e/1FAIpQLSeNNzgiaKPlpcedoqK9ZTFGa6oHhtsRdUiPLvAK5ucs1UE3xw/formResponse";
-                HttpRequest mReq = new HttpRequest();
-
-                String data = "entry.1357747958=Norra+Real+Elevkår&entry.60332854=Årets+Elevkår&" +
-                        "entry.1413369446=" + name + "&entry.365068267=Stora+framsteg+inom+IT-fronten...";
-
-                String response = mReq.sendPost(fullUrl, data);
-                Log.i(myTag, response);
-
-
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-
         }
 
     }

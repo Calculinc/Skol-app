@@ -51,7 +51,8 @@
                     android:textColor="@color/colorLoginText"
                     android:textColorHint="@color/colorLoginTextHint"
                     android:background="@drawable/rect_login_textbox"
-                    android:layout_weight="4"/>
+                    android:layout_weight="4"
+                    android:focusable="false" />
 
                 <LinearLayout
                     android:layout_width="0dp"
@@ -85,7 +86,8 @@
                     android:textColor="@color/colorLoginText"
                     android:textColorHint="@color/colorLoginTextHint"
                     android:background="@drawable/rect_login_textbox"
-                    android:layout_weight="4"/>
+                    android:layout_weight="4"
+                    android:focusable="false" />
 
                 <LinearLayout
                     android:layout_width="0dp"
@@ -126,7 +128,8 @@
                     android:textColorHint="@color/colorLoginTextHint"
                     android:background="@drawable/rect_login_textbox"
                     android:layout_weight="4"
-                    android:paddingStart="16dp"/>
+                    android:paddingStart="16dp"
+                    android:focusable="false" />
 
                 <LinearLayout
                     android:layout_width="0dp"
@@ -160,7 +163,8 @@
                     android:textColor="@color/colorLoginText"
                     android:textColorHint="@color/colorLoginTextHint"
                     android:background="@drawable/rect_login_textbox"
-                    android:layout_weight="4" />
+                    android:layout_weight="4"
+                    android:focusable="false"/>
 
                 <LinearLayout
                     android:layout_width="0dp"
@@ -202,7 +206,8 @@
                     android:textColorHint="@color/colorLoginTextHint"
                     android:background="@drawable/rect_login_textbox"
                     android:layout_weight="4"
-                    android:paddingStart="16dp"/>
+                    android:paddingStart="16dp"
+                    android:focusable="false"/>
 
                 <LinearLayout
                     android:layout_width="0dp"
@@ -295,7 +300,19 @@
         <TextView
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_marginTop="30dp"
+            android:layout_marginTop="10dp"
+            android:layout_marginBottom="10dp"
+            android:layout_gravity="center"
+            android:gravity="center"
+            android:textColor="@color/colorLoginErrorText"
+            android:textSize="15sp"
+            android:text=""
+            android:visibility="invisible"
+            android:id="@+id/login_error_text" />
+
+        <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:gravity="center"
             android:textColor="@color/colorLoginRegisterText"

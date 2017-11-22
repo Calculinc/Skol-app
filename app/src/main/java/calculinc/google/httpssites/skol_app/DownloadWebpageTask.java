@@ -43,6 +43,7 @@ public class DownloadWebpageTask extends AsyncTask<String, Void, String> {
             callback.onResult(table);
         } catch (Exception e) {
             e.printStackTrace();
+            callback.onResult(null);
         }
     }
 

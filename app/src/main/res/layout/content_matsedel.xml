@@ -49,8 +49,8 @@
             android:layout_height="20dp"
             android:orientation="horizontal"
             android:gravity="center"
-            android:layout_marginLeft="10dp"
-            android:layout_marginRight="10dp"
+            android:layout_marginLeft="0dp"
+            android:layout_marginRight="0dp"
             android:elevation="3dp"
             android:background="@drawable/rect_matsedel_belt">
 
