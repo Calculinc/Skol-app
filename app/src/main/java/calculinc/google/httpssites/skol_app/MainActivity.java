@@ -1500,13 +1500,7 @@ public class MainActivity extends AppCompatActivity
                     statistikStdev.setText(String.valueOf(Math.round(matsedelStdev * 100d)/100d));
                     statistikAmountOfVotes.setText(String.valueOf(matsedelratingAmountOfVotes));
                     statistikMedian.setText(String.valueOf(matsedelMedian));
-                    try {
-                        statistikPersonalNumber.setText("#" + Math.round(Double.parseDouble(personalVoteNumber)));
-                    }
-                    catch (Exception e){
-                        e.printStackTrace();
-                        statistikPersonalNumber.setText("#");
-                    }
+                    statistikPersonalNumber.setText("#" + personalVoteNumber);
                     statistikHipsterScore.setText(String.valueOf(100));
                     statistikPersonalVote.setText(personalVote);
 
@@ -1545,6 +1539,20 @@ public class MainActivity extends AppCompatActivity
                             R.id.test_text4,
                             R.id.test_text5
                     };
+
+                    final TextView weekTextView = (TextView) findViewById(R.id.matsedel_belt_vecka_indikator);
+
+                    if ( currentDay < 7) {
+
+                        weekTextView.setText( "Vecka " + String.valueOf(currentWeek));
+
+
+                    } else if ( currentDay == 7) {
+
+                        int week = currentWeek + 1;
+                        weekTextView.setText( "Vecka " + String.valueOf(week));
+
+                    }
 
                     String[] veckodagar = {"Måndag", "Tisdag", "Onsdag", "Torsdag", "Fredag"};
 
@@ -1648,7 +1656,7 @@ public class MainActivity extends AppCompatActivity
                 outputStream.write(separator.getBytes());
                 outputStream.write(String.valueOf(ratingBar.getRating()).getBytes());
                 outputStream.write(separator.getBytes());
-                outputStream.write(String.valueOf(matsedelratingAmountOfVotes + 1.0D).getBytes());
+                outputStream.write(String.valueOf(matsedelratingAmountOfVotes + 1).getBytes());
                 outputStream.close();
             } catch (IOException e) {
                 e.printStackTrace();
@@ -1679,8 +1687,9 @@ public class MainActivity extends AppCompatActivity
                         statistikMedian.setText(String.valueOf(matsedelMedian));
 
                     }
+                    int number = matsedelratingAmountOfVotes + 1;
 
-                    statistikPersonalNumber.setText("#" + String.valueOf(Math.round(matsedelratingAmountOfVotes + 1)));
+                    statistikPersonalNumber.setText("#" + number);
                     statistikHipsterScore.setText(String.valueOf(100));
                     statistikPersonalVote.setText(personalVote);
 
