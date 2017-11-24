@@ -1,29 +1,23 @@
 package calculinc.google.httpssites.skol_app;
 
-import android.content.Context;
+
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.Color;
+
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
-import android.support.v4.content.ContextCompat;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.support.v4.widget.DrawerLayout.LayoutParams;
-import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
 import android.text.method.LinkMovementMethod;
-import android.util.Base64;
 import android.util.Log;
-import android.view.Gravity;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -33,33 +27,22 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
-import android.widget.ProgressBar;
 import android.widget.RatingBar;
-import android.widget.RelativeLayout;
-import android.widget.Spinner;
-import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.ViewFlipper;
 
-import com.itextpdf.text.Image;
 import com.itextpdf.text.pdf.PdfReader;
-import com.itextpdf.text.pdf.parser.Line;
 import com.itextpdf.text.pdf.parser.PdfTextExtractor;
-import com.squareup.picasso.Picasso;
 
 import org.apache.commons.lang3.StringEscapeUtils;
 import org.json.JSONArray;
 import org.json.JSONObject;
-import org.jsoup.Connection;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -74,14 +57,9 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.net.URLDecoder;
-import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
-import java.util.Random;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import org.json.JSONArray;
 import org.json.JSONException;
@@ -90,11 +68,7 @@ import android.support.v4.app.DialogFragment;
 
 import calculinc.google.httpssites.skol_app.Matsedel.FirstFragment;
 import calculinc.google.httpssites.skol_app.Matsedel.SecondFragment;
-import calculinc.google.httpssites.skol_app.days.Friday;
-import calculinc.google.httpssites.skol_app.days.Monday;
-import calculinc.google.httpssites.skol_app.days.Thursday;
-import calculinc.google.httpssites.skol_app.days.Tuesday;
-import calculinc.google.httpssites.skol_app.days.Wednesday;
+
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
@@ -135,8 +109,6 @@ public class MainActivity extends AppCompatActivity
     File loginFile;
     boolean downloadSuccess;
     boolean loggenIn = false;
-    boolean DayPref;
-    File DayPrefFile;
 
     ArrayList<String> urlCheck = new ArrayList<>();
 
@@ -149,7 +121,6 @@ public class MainActivity extends AppCompatActivity
     String[] mat;
     String dagensMat;
     String foodMenu = "/maq1/För lång kö till matsalen. Kunde inte se matsedeln/maq1/För lång kö till matsalen. Kunde inte se matsedeln/maq1/För lång kö till matsalen. Kunde inte se matsedeln/maq1/För lång kö till matsalen. Kunde inte se matsedeln/maq1/För lång kö till matsalen. Kunde inte se matsedeln";
-    String tempSchema = "10:55%maq1ekax%RELREL01 NSJ A13%maq1ekax%12:10%maq1ekax%12:40%maq1ekax%MATTID%maq1ekax%13:00%maq1ekax%13:10%maq1ekax%SVESVE03 PLA B13%maq1ekax%14:10%maq1ekax%14:20%maq1ekax%SVESVE03 PLA B13%maq1ekax%15:20%day%08:20%maq1ekax%ENGENG07 JHA C11%maq1ekax%09:35%maq1ekax%09:45%maq1ekax%GYAR NSJ,MOR B41,B42%maq1ekax%10:45%maq1ekax%10:50%maq1ekax%MATTID%maq1ekax%11:10%maq1ekax%11:35%maq1ekax%MATMAT05 BAM A23%maq1ekax%12:35%maq1ekax%12:45%maq1ekax%14:00%maq1ekax%studiebesök KBN%maq1ekax%TTF/GYARB%maq1ekax%17:00%day%09:50%maq1ekax%KEBI MOR A41%maq1ekax%11:05%maq1ekax%11:30%maq1ekax%MATTID%maq1ekax%11:50%maq1ekax%12:10%maq1ekax%MATMAT05 BAM B14%maq1ekax%13:40%maq1ekax%13:50%maq1ekax%PRRPRR01 LZH B32%maq1ekax%15:05%maq1ekax%15:15%maq1ekax%RELREL01 NSJ A01%maq1ekax%16:30%day%09:50%maq1ekax%ENGENG07 JHA A14%maq1ekax%11:05%maq1ekax%11:25%maq1ekax%MATTID%maq1ekax%11:45%maq1ekax%12:00%maq1ekax%Mentorstid BAM B12%maq1ekax%12:30%maq1ekax%12:30%maq1ekax%SVESVE03 PLA B12%maq1ekax%13:30%maq1ekax%13:40%maq1ekax%FYSFYS02 LAD A32%maq1ekax%14:50%maq1ekax%15:15%maq1ekax%EGEN STUDIETID NSJ,MOR%maq1ekax%16:15%day%08:20%maq1ekax%PRRPRR01 LZH A21%maq1ekax%09:35%maq1ekax%09:45%maq1ekax%KEBI (a MOR A42%maq1ekax%11:15%maq1ekax%11:35%maq1ekax%MATTID%maq1ekax%11:55";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -193,7 +164,6 @@ public class MainActivity extends AppCompatActivity
         personal_id.addTextChangedListener(personalIdTextWatcher);
         passCode.addTextChangedListener(passCodeTextWatcher);
         novaCode.addTextChangedListener(novaTextWatcher);
-
 
         recyclerView.smoothScrollToPosition(0);
         start();
@@ -403,49 +373,6 @@ public class MainActivity extends AppCompatActivity
 
     }
 
-    public class FixedDayPagerAdapter extends FragmentPagerAdapter {
-
-        public FixedDayPagerAdapter(FragmentManager fm) {
-            super(fm);
-        }
-
-        @Override
-        public int getCount() {
-            return 5;
-        }
-
-        @Override
-        public Fragment getItem(int position) {
-            switch(position) {
-
-                case 0:
-                    return new Monday();
-                case 1:
-                    return new Tuesday();
-                case 2:
-                    return new Wednesday();
-                case 3:
-                    return new Thursday();
-                case 4:
-                    return new Friday();
-                default:
-                    return null;
-            }
-        }
-
-    }
-
-    public void viewPager() {
-
-        ViewPager pager = (ViewPager) findViewById(R.id.view_pager2);
-        PagerAdapter pagerAdapter = new FixedDayPagerAdapter(getSupportFragmentManager());
-        pager.setAdapter(pagerAdapter);
-        pager.setCurrentItem(focusDay - 1);
-
-        TabLayout tabLayout = (TabLayout) findViewById(R.id.tab_layout2);
-        tabLayout.setupWithViewPager(pager);
-    }
-
     public void viewFuckingPager() {
 
         ViewPager pager = (ViewPager) findViewById(R.id.view_pager);
@@ -526,7 +453,7 @@ public class MainActivity extends AppCompatActivity
                 personalId.setFocusableInTouchMode(true);
                 passcode.setFocusableInTouchMode(true);
             }
-        }catch (IOException e) {
+        }catch (IOException | ArrayIndexOutOfBoundsException e) {
             e.printStackTrace();
         }
     }
@@ -668,7 +595,7 @@ public class MainActivity extends AppCompatActivity
             outputStream.write(loginContent.toString().getBytes());
             outputStream.close();
             loggenIn = true;
-        } catch (Exception e) {
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }
@@ -908,9 +835,6 @@ public class MainActivity extends AppCompatActivity
 
                 }
             });
-
-            schemaArrayFixer lloldawd = new schemaArrayFixer();
-            lloldawd.start();
         }
     }
 
@@ -923,20 +847,6 @@ public class MainActivity extends AppCompatActivity
                 }
             });
 
-
-        }
-    }
-
-    private class schemaRefresh extends Thread {
-        public void run() {
-
-            schemaTimeRefresh onSelectTimeSync = new schemaTimeRefresh();
-            onSelectTimeSync.start();
-            try {
-                onSelectTimeSync.join();
-            }catch (InterruptedException e) {
-                e.printStackTrace();
-            }
 
         }
     }
@@ -989,8 +899,6 @@ public class MainActivity extends AppCompatActivity
 
                         vf.setDisplayedChild(2);
                     }
-                    
-                    //Picasso.with(getApplicationContext()).load(imageUrl).into(imageView);
 
                 } catch (Exception e) {
 
@@ -1001,245 +909,6 @@ public class MainActivity extends AppCompatActivity
             }
         });
 
-    }
-
-    public void drawSchema() {
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-
-                StringBuilder sb = new StringBuilder();
-                try {
-                    String nameOfFile = "id:" + id_number + "week:" + downloadWeek + "_" + schemaFileName;
-                    FileInputStream fis = openFileInput(nameOfFile);
-                    InputStreamReader isr = new InputStreamReader(fis);
-                    BufferedReader bufferedReader = new BufferedReader(isr);
-                    String line;
-                    while ((line = bufferedReader.readLine()) != null) {
-                        sb.append(line);
-                    }
-                } catch (IOException e) {
-                    e.printStackTrace();
-                }
-
-                if (!schemaFile.exists()) {
-                    //String[] druvor = sb.toString().split("%day%");
-                    String[] druvor = tempSchema.split("%day%");
-
-                    final int[] relWeekIDS = {
-                            R.id.relativt_schema1,
-                            R.id.relativt_schema2,
-                            R.id.relativt_schema3,
-                            R.id.relativt_schema4,
-                            R.id.relativt_schema5
-                    };
-                    final int[] relDayLay = {
-                            R.layout.monday_frag,
-                            R.layout.tuesday_frag,
-                            R.layout.wednesday_frag,
-                            R.layout.thursday_frag,
-                            R.layout.friday_frag
-                    };
-                    final int[] relDayIDS = {
-                            R.id.relative_layout_monday,
-                            R.id.relative_layout_tuesday,
-                            R.id.relative_layout_wednesday,
-                            R.id.relative_layout_thursday,
-                            R.id.relative_layout_friday,
-                    };
-
-                    for (int i = 0; i <= 4; i++) {
-                        String[] desert;
-                        if (druvor.length > 4){
-                            if (!druvor[i].equals("")) {
-                                desert = druvor[i].split("%maq1ekax%");
-                            } else {
-                                desert = druvor;
-                            }
-                        } else {
-                            desert = druvor;
-                        }
-
-                        LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-                        View pagerItemInflater = inflater.inflate(relDayLay[i], null);
-
-                        RelativeLayout schema_space = (RelativeLayout) findViewById(relWeekIDS[i]);
-                        RelativeLayout schema_dayce = (RelativeLayout) pagerItemInflater.findViewById(relDayIDS[i]);
-
-                        String StartTid = "";
-                        double starttid = 0;
-                        String SlutTid;
-                        double sluttid;
-                        String öpö = "";
-
-                        for (int j = 0; j < desert.length; j++) {
-                            int status = j % 3;
-                            try {
-                                if (status == 0) {
-                                    //lite matte här
-                                    StartTid = desert[j];
-                                    String[] time = StartTid.split(":");
-                                    starttid = Double.parseDouble(time[0]) - 8 + (Double.parseDouble(time[1])) / 60;
-
-                                }
-                                if (status == 1) {
-                                    //hämta lektionstext
-                                    öpö = desert[j];
-                                }
-                                if (status == 2) {
-                                    //lite mer matte
-                                    SlutTid = desert[j];
-                                    String[] time = SlutTid.split(":");
-                                    sluttid = Double.parseDouble(time[0]) - 8 + Double.parseDouble(time[1]) / 60;
-
-                                    LinearLayout linear = new LinearLayout(getBaseContext());
-                                    //linear.setWeightSum(11);
-                                    LinearLayout.LayoutParams params2 = new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
-                                    linear.setOrientation(LinearLayout.VERTICAL);
-                                    linear.setLayoutParams(params2);
-
-                                    TextView blank1 = new TextView(getBaseContext());
-                                    LinearLayout.LayoutParams paramsBlank1 = new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
-                                    paramsBlank1.weight = (float)(starttid+1);
-                                    blank1.setLayoutParams(paramsBlank1);
-                                    blank1.setTextSize(0);
-                                    linear.addView(blank1);
-
-                                    TextView lektion = new TextView(getBaseContext());
-                                    LinearLayout.LayoutParams paramsLektion = new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
-                                    paramsLektion.weight = (float)(sluttid - starttid);
-                                    lektion.setLayoutParams(paramsLektion);
-                                    lektion.setBackgroundResource(R.drawable.rect_view_vecka_day_header);
-                                    lektion.setTextSize(0);
-                                    //lektion.setBackgroundResource(ya_blew_it);
-                                    //lektion.setText(öpö);
-                                    linear.addView(lektion);
-
-                                    TextView blank2 = new TextView(getBaseContext());
-                                    LinearLayout.LayoutParams paramsBlank2 = new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
-                                    paramsBlank2.weight = (float)(10 - sluttid);
-                                    blank2.setLayoutParams(paramsBlank2);
-                                    blank2.setTextSize(0);
-                                    linear.addView(blank2);
-
-                                    schema_space.addView(linear);
-
-                                    /**LinearLayout linearDay = new LinearLayout(getBaseContext());
-                                    linearDay.setOrientation(LinearLayout.VERTICAL);
-                                    LinearLayout.LayoutParams LinDayParams = new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, (int)((sluttid - starttid) * 90 * getResources().getDimension(R.dimen.dp_unit)));
-                                    LinDayParams.setMargins(0,(int)(starttid * 90 * getResources().getDimension(R.dimen.dp_unit)),0,0);
-                                    linearDay.setLayoutParams(LinDayParams);
-                                    linearDay.setBackgroundColor(ContextCompat.getColor(getBaseContext(), R.color.colorSchemaViewDayLektionBackground));
-
-                                    TextView dayTop = new TextView(getBaseContext());
-                                    LinearLayout.LayoutParams TopDayParams = new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, (int)(15 * getResources().getDimension(R.dimen.dp_unit)));
-                                    dayTop.setLayoutParams(TopDayParams);
-                                    dayTop.setGravity(Gravity.START | Gravity.CENTER_VERTICAL);
-                                    dayTop.setTextSize(12);
-                                    dayTop.setTextColor(ContextCompat.getColor(getBaseContext(), R.color.colorSchemaViewDayLektionText));
-                                    dayTop.setText(StartTid);
-                                    linearDay.addView(dayTop);
-
-                                    TextView dayMid = new TextView(getBaseContext());
-                                    LinearLayout.LayoutParams MidDayParams = new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.MATCH_PARENT); //(int)(((sluttid - starttid) * 90 - 30) * getResources().getDimension(R.dimen.dp_unit))
-                                    dayMid.setLayoutParams(MidDayParams);
-                                    dayMid.setGravity(Gravity.CENTER);
-                                    dayMid.setTextSize(20);
-                                    dayMid.setTextColor(ContextCompat.getColor(getBaseContext(), R.color.colorSchemaViewDayLektionText));
-                                    dayMid.setText(öpö);
-                                    linearDay.addView(dayMid);
-
-                                    TextView dayBot = new TextView(getBaseContext());
-                                    LinearLayout.LayoutParams BotDayParams = new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, (int)(15 * getResources().getDimension(R.dimen.dp_unit)));
-                                    dayBot.setLayoutParams(BotDayParams);
-                                    dayBot.setGravity(Gravity.END | Gravity.CENTER_VERTICAL);
-                                    dayBot.setTextSize(12);
-                                    dayBot.setTextColor(ContextCompat.getColor(getBaseContext(), R.color.colorSchemaViewDayLektionText));
-                                    dayBot.setText(SlutTid);
-                                    linearDay.addView(dayBot);
-
-                                    linearDay.setBackgroundResource(R.drawable.rect_view_vecka_day_header);
-
-                                    schema_dayce.addView(linearDay); **/
-
-                                }
-                            } catch (NumberFormatException | NullPointerException e) {
-                                e.printStackTrace();
-                            }
-                        }
-                    }
-                } else {
-                    //no file to draw
-                    String fail = "fail";
-                    String megafail = "fail";
-                }
-            }
-        });
-    }
-
-    public void theSwtich() {
-
-        final String DayPrefFileName = "DayPref.txt";
-        DayPrefFile = new File(getFilesDir() + "/" + DayPrefFileName);
-        DayPref = DayPrefFile.exists();
-
-        Switch the_switch = (Switch) findViewById(R.id.the_switch);
-        the_switch.setChecked(!DayPref);
-        if (DayPref) {
-            makeSchemaDag();
-        }
-
-        the_switch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (isChecked) {
-                    makeSchemaVecka();
-                    DayPref = false;
-                    DayPrefFile.delete();
-                } else {
-                    makeSchemaDag();
-                    DayPref = true;
-                    FileOutputStream outputStream;
-                    try {
-                        outputStream = openFileOutput(DayPrefFileName,MODE_PRIVATE);
-                        outputStream.write(DayPrefFileName.getBytes());
-                        outputStream.close();
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                }
-            }
-        });
-    }
-
-    public void makeSchemaDag() {
-
-        final LinearLayout schemaVeckaLayout = (LinearLayout) findViewById(R.id.schema_vecka_layout);
-        final LinearLayout schemaDagLayout = (LinearLayout) findViewById(R.id.schema_dag_layout);
-
-        schemaVeckaLayout.setVisibility(View.GONE);
-        schemaDagLayout.setVisibility(View.VISIBLE);
-
-    }
-
-    public void makeSchemaVecka() {
-
-        final LinearLayout schemaVeckaLayout = (LinearLayout) findViewById(R.id.schema_vecka_layout);
-        final LinearLayout schemaDagLayout = (LinearLayout) findViewById(R.id.schema_dag_layout);
-
-        schemaDagLayout.setVisibility(View.GONE);
-        schemaVeckaLayout.setVisibility(View.VISIBLE);
-    }
-
-    private class schemaArrayFixer extends Thread{
-        public void run() {
-            try {
-                Document doc = Jsoup.connect("http://192.168.1.70").get();
-                String llol = doc.toString();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
     }
 
     private class newsFeedDownload extends Thread {
@@ -1424,8 +1093,9 @@ public class MainActivity extends AppCompatActivity
 
                 }
 
-            } catch (IOException e) {
+            } catch (Exception e) {
                 e.printStackTrace();
+                foodMenu = "/maq1/Meny saknas/maq1/Meny saknas/maq1/Meny saknas/maq1/Meny saknas/maq1/Meny saknas/maq1/1";
             }
 
         }
@@ -1474,15 +1144,21 @@ public class MainActivity extends AppCompatActivity
                     } catch (JSONException | NullPointerException e) {
                         e.printStackTrace();
                     }
-                    final boolean qwerty = !downloaddatum.equals(filedatum);
+
+                    boolean qwerty = !downloaddatum.equals(filedatum);
 
                     final ViewFlipper matVf = (ViewFlipper) findViewById(R.id.mat_vf);
+                    final Button button = (Button) findViewById(R.id.matsedel_button);
 
                     if (qwerty) {
                         matVf.setDisplayedChild(1);
+                        button.setClickable(true);
                     } else {
                         matVf.setDisplayedChild(2);
+                        button.setClickable(false);
                     }
+
+                    long hipsterscore = 0;
 
                     final TextView ratingText = (TextView) findViewById(R.id.rating_text);
                     final RatingBar ratingBarOutput = (RatingBar) findViewById(R.id.rating_output_view);
@@ -1497,11 +1173,18 @@ public class MainActivity extends AppCompatActivity
                     final TextView statistikPersonalNumber = (TextView) findViewById(R.id.statistik_nummer);
                     final TextView statistikHipsterScore = (TextView) findViewById(R.id.statistik_hipster);
 
+                    try {
+                        hipsterscore = Math.round(20 * Math.abs(matsedelrating - Double.parseDouble(personalVote)));
+
+                    } catch (NumberFormatException e) {
+                        e.printStackTrace();
+                    }
+
                     statistikStdev.setText(String.valueOf(Math.round(matsedelStdev * 100d)/100d));
                     statistikAmountOfVotes.setText(String.valueOf(matsedelratingAmountOfVotes));
                     statistikMedian.setText(String.valueOf(matsedelMedian));
                     statistikPersonalNumber.setText("#" + personalVoteNumber);
-                    statistikHipsterScore.setText(String.valueOf(100));
+                    statistikHipsterScore.setText(String.valueOf(hipsterscore));
                     statistikPersonalVote.setText(personalVote);
 
                 }
@@ -1609,6 +1292,9 @@ public class MainActivity extends AppCompatActivity
 
         final RatingBar ratingBar = (RatingBar) findViewById(R.id.rating_bar);
         final Animation anim_button_click = AnimationUtils.loadAnimation(this, R.anim.anim_button_click);
+        final Button button = (Button) findViewById(R.id.matsedel_button);
+
+        button.setClickable(false);
 
         view.startAnimation(anim_button_click);
         final String matrating = String.valueOf(ratingBar.getRating()).replace(".",",");
@@ -1617,7 +1303,7 @@ public class MainActivity extends AppCompatActivity
         String[] charSwap2 = { "%c3%85", "%c3%84", "%c3%96", "%c3%a5", "%c3%a4", "%c3%b6"};
 
         for (int i = 0; i < 6 ; i++) {
-            votingID = votingID.replace( charSwap[i] , charSwap2[i] );
+                votingID = votingID.replace( charSwap[i] , charSwap2[i] );
         }
 
         Thread t = new Thread(new Runnable() {
@@ -1644,7 +1330,6 @@ public class MainActivity extends AppCompatActivity
             String response = mReq.sendPost(fullUrl, data);
             Log.i(myTag, response);
 
-            //File update
             final RatingBar ratingBar = (RatingBar) findViewById(R.id.rating_bar);
             String separator = "%";
             String matVoteFileName = "mat.txt";
@@ -1662,7 +1347,6 @@ public class MainActivity extends AppCompatActivity
                 e.printStackTrace();
             }
 
-            //UI code block
             runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
@@ -1688,17 +1372,22 @@ public class MainActivity extends AppCompatActivity
 
                     }
                     int number = matsedelratingAmountOfVotes + 1;
-
-                    statistikPersonalNumber.setText("#" + number);
-                    statistikHipsterScore.setText(String.valueOf(100));
-                    statistikPersonalVote.setText(personalVote);
+                    long hipsterscore = 0;
 
                     float tempChange = (float)((matsedelratingTotal + ratingBar.getRating()) / (matsedelratingAmountOfVotes + 1.0D));
 
+                    try {
+                        hipsterscore = Math.round(20 * Math.abs(tempChange  - ratingBar.getRating()));
+
+                    } catch (NumberFormatException e) {
+                        e.printStackTrace();
+                    }
+
                     ratingBarOutput.setRating(tempChange);
                     ratingText.setText(String.valueOf(tempChange));
+                    statistikHipsterScore.setText(String.valueOf(hipsterscore));
+                    statistikPersonalNumber.setText("#" + number);
 
-                    //On successful vote
                     final ViewFlipper matVf = (ViewFlipper) findViewById(R.id.mat_vf);
 
                     matVf.setDisplayedChild(2);
@@ -1737,24 +1426,6 @@ public class MainActivity extends AppCompatActivity
         protected void onPostExecute(Bitmap result) {
             bmImage.setImageBitmap(result);
         }
-    }
-
-    public void fidget_spinner(){
-
-        Spinner spinnerSchemaType = (Spinner) findViewById(R.id.typ_spinner);
-
-// Create an ArrayAdapter using the string array and a default spinner layout
-
-        ArrayAdapter adapterTyp = ArrayAdapter.createFromResource(this, R.array.typ_array, R.layout.spinner_schema_layout);
-        spinnerSchemaType.setAdapter(adapterTyp);
-
-// Specify the layout to use when the list of choices appears
-        adapterTyp.setDropDownViewResource(R.layout.spinner_schema_dropdown_layout);
-
-// Apply the adapter to the spinner
-        spinnerSchemaType.setAdapter(adapterTyp);
-
-
     }
 
     private class DownloadFile extends Thread{
