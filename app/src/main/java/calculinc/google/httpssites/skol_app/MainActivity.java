@@ -51,6 +51,7 @@ import org.jsoup.select.Elements;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -272,8 +273,7 @@ public class MainActivity extends AppCompatActivity
     private TextWatcher novaTextWatcher = new TextWatcher() {
         @Override
         public void onTextChanged(CharSequence s, int start, int before, int count) {
-            EditText novaCode = (EditText) findViewById(R.id.nova_code);
-            fyra_sista = novaCode.getText().toString();
+            novaCodeCheck(s.toString());
         }
 
         @Override
@@ -344,6 +344,43 @@ public class MainActivity extends AppCompatActivity
         } else {
             view.setBackgroundResource(R.drawable.login_not_ok);
             //Update indicator here
+        }
+    }
+
+    public void novaCodeCheck(String content){
+        if (content.length() == 4) {
+            EditText novaCode = (EditText) findViewById(R.id.nova_code);
+            fyra_sista = novaCode.getText().toString();
+
+            try {
+                FileInputStream fis = openFileInput(loginFileName);
+                InputStreamReader isr = new InputStreamReader(fis);
+                BufferedReader bufferedReader = new BufferedReader(isr);
+                StringBuilder sb = new StringBuilder();
+                String line;
+                while ((line = bufferedReader.readLine()) != null) {
+                    sb.append(line);
+                }
+                String[] loginParams = sb.toString().split("%");
+
+                StringBuilder loginContent = new StringBuilder();
+                for (int i = 0; i < loginParams.length; i++) {
+                    if (i != loginParams.length-1){
+                        loginContent.append(loginParams[i]);
+                        loginContent.append("%");
+                    } else {
+                        loginContent.append(fyra_sista);
+                    }
+                }
+
+                FileOutputStream outputStream;
+                outputStream = openFileOutput(loginFileName,MODE_PRIVATE);
+                outputStream.write(loginContent.toString().getBytes());
+                outputStream.close();
+                loggenIn = true;
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
     }
 
