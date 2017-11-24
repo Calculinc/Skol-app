@@ -1,6 +1,5 @@
 package calculinc.google.httpssites.skol_app;
 
-
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 
@@ -51,7 +50,6 @@ import org.jsoup.select.Elements;
 import java.io.BufferedReader;
 import java.io.File;
 import java.io.FileInputStream;
-import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
@@ -69,7 +67,6 @@ import android.support.v4.app.DialogFragment;
 
 import calculinc.google.httpssites.skol_app.Matsedel.FirstFragment;
 import calculinc.google.httpssites.skol_app.Matsedel.SecondFragment;
-
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
