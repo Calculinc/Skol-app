@@ -1248,12 +1248,12 @@ public class MainActivity extends AppCompatActivity
 
                     final TextView weekTextView = (TextView) findViewById(R.id.matsedel_belt_vecka_indikator);
 
-                    if ( currentDay < 7) {
+                    if ( currentDay < 6) {
 
                         weekTextView.setText( "Vecka " + String.valueOf(currentWeek));
 
 
-                    } else if ( currentDay == 7) {
+                    } else if ( currentDay == 6) {
 
                         int week = currentWeek + 1;
                         weekTextView.setText( "Vecka " + String.valueOf(week));
