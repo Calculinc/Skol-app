@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Skol-app</string>
+    <string name="app_name">Elevkårsappen</string>
 
     <string name="page_heading">@string/Tab_1</string>
 
