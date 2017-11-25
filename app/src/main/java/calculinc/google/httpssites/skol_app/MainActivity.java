@@ -91,7 +91,7 @@ public class MainActivity extends AppCompatActivity
     String personalVoteNumber = "";
     String votingID;
     String downloaddatum = "";
-    String personalVote;
+    String personalVote = "";
 
     int currentWeek = GregorianCalendar.getInstance().get(Calendar.WEEK_OF_YEAR);
     int currentDay = GregorianCalendar.getInstance().get(Calendar.DAY_OF_WEEK) - 1;
@@ -1133,6 +1133,7 @@ public class MainActivity extends AppCompatActivity
                     String matVoteFileName = "mat.txt";
                     File matfil = new File(getFilesDir() + "/" + matVoteFileName);
                     String filedatum = "";
+                    personalVote = "";
 
                     try {
                         FileInputStream fis = openFileInput(matVoteFileName);
@@ -1198,7 +1199,7 @@ public class MainActivity extends AppCompatActivity
                     try {
                         hipsterscore = Math.round(20 * Math.abs(matsedelrating - Double.parseDouble(personalVote)));
 
-                    } catch (NumberFormatException e) {
+                    } catch (NumberFormatException | NullPointerException e) {
                         e.printStackTrace();
                     }
 
