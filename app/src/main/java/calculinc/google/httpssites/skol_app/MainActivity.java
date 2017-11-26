@@ -510,7 +510,7 @@ public class MainActivity extends AppCompatActivity
         final String Mobil = phone.getText().toString();
         id_number = personal_id.getText().toString();
         final String passCode = passcode.getText().toString();
-        final String Code = passCode + ".0";
+        final String Code = passCode;
         final String Datum = id_number;
         votingID = id_number + Namn + Efternamn;
 
@@ -537,7 +537,7 @@ public class MainActivity extends AppCompatActivity
                             String JsonMobil = "" + M[0] + M[1] + M[2] + M[4] + M[5] + M[6] + M[7] + M[8] + M[9] + M[10];
                             char[] D = person.getJSONObject(5).getString("f").toCharArray();
                             String JsonDatum = "" + D[2] + D[3] + D[5] + D[6] + D[8] + D[9];
-                            String JsonCode = person.getJSONObject(7).getString("v");
+                            String JsonCode = (person.getJSONObject(7).getString("v")).substring(0,4);
 
                             if (JsonNamn.equals(Namn) && JsonEfternamn.equals(Efternamn) && JsonMobil.equals(Mobil) && JsonDatum.equals(Datum) && JsonCode.equals(Code)) {
                                 logSucc = true;
