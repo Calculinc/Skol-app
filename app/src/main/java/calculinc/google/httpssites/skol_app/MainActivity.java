@@ -98,7 +98,6 @@ public class MainActivity extends AppCompatActivity
     int currentHour = GregorianCalendar.getInstance().get(Calendar.HOUR_OF_DAY);
     int currentMinute = GregorianCalendar.getInstance().get(Calendar.MINUTE);
 
-    int foodDay = GregorianCalendar.getInstance().get(Calendar.DAY_OF_WEEK) - 1;
     int downloadWeek, focusDay;
 
     String schemaFileName = "Nova.txt";
@@ -880,11 +879,6 @@ public class MainActivity extends AppCompatActivity
             currentHour = GregorianCalendar.getInstance().get(Calendar.HOUR_OF_DAY);
             currentMinute = GregorianCalendar.getInstance().get(Calendar.MINUTE);
 
-            foodDay = GregorianCalendar.getInstance().get(Calendar.DAY_OF_WEEK) - 1;
-
-            if (foodDay == 0 || foodDay == 6 || foodDay ==7) {
-                foodDay = 1;
-            }
             if (currentHour < 18) {
                 focusDay = currentDay;
             } else {
@@ -1247,6 +1241,12 @@ public class MainActivity extends AppCompatActivity
                     };
 
                     final TextView weekTextView = (TextView) findViewById(R.id.matsedel_belt_vecka_indikator);
+
+                    int foodDay = GregorianCalendar.getInstance().get(Calendar.DAY_OF_WEEK) - 1;
+
+                    if (foodDay == 0 || foodDay == 6 || foodDay ==7) {
+                        foodDay = 1;
+                    }
 
                     if ( currentDay < 6) {
 
