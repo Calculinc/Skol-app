@@ -13,7 +13,7 @@
         android:layout_height="match_parent"
         android:orientation="vertical"
         android:gravity="center"
-        android:background="@drawable/login_background_gradient">
+        android:background="@drawable/login_gradient_background">
 
         <LinearLayout
             android:layout_width="345dp"
@@ -21,15 +21,12 @@
             android:layout_marginTop="20dp"
             android:layout_gravity="center" >
 
-            <Button
-                android:layout_width="match_parent"
+            <TextView
                 android:layout_height="match_parent"
-                android:visibility="visible"
-                android:text="Spamma"
-                android:textStyle="normal"
-                android:textColor="@color/colorLoginButtonText"
-                android:background="@drawable/rect_login_button"
-                android:onClick="spammaSverigesElevkårer" />
+                android:layout_width="match_parent"
+                android:layout_gravity="center"
+                android:gravity="center"
+                android:text="Coming soon..." />
 
         </LinearLayout>
 

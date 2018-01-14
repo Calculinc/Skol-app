@@ -52,7 +52,15 @@
             android:layout_marginLeft="10dp"
             android:layout_marginRight="10dp"
             android:elevation="3dp"
-            android:background="@drawable/rect_matsedel_belt">
+            android:background="@drawable/rect_matsedel_days">
+
+            <TextView
+                android:id="@+id/matsedel_belt_vecka_indikator"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:textSize="15sp"
+                android:textColor="@color/matsedelBlackText"/>
 
         </LinearLayout>
 

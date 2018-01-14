@@ -1,0 +1,27 @@
+<?xml version="1.0" encoding="utf-8"?>
+<android.support.constraint.ConstraintLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context="calculinc.google.httpssites.skol_app.MainActivity"
+    tools:showIn="@layout/app_bar_main">
+
+    <ViewFlipper xmlns:android="http://schemas.android.com/apk/res/android"
+        android:id="@+id/schema_new_vf"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:animateLayoutChanges="true">
+
+        <include android:id="@+id/schema_day_mode" layout="@layout/schema_day_mode" />
+        <include android:id="@+id/schema_load" layout="@layout/matsedel_loading" />
+        <include android:id="@+id/day_monday" layout="@layout/temp_monday" />
+        <include android:id="@+id/day_tuesday" layout="@layout/temp_tuesday" />
+        <include android:id="@+id/day_wednesday" layout="@layout/temp_wednesday" />
+        <include android:id="@+id/day_thursday" layout="@layout/temp_thursday" />
+        <include android:id="@+id/day_friday" layout="@layout/temp_friday" />
+
+    </ViewFlipper>
+
+</android.support.constraint.ConstraintLayout>

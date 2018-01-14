@@ -17,7 +17,7 @@ public class Monday extends Fragment {
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
-        View v = inflater.inflate(R.layout.monday_frag, container, false);
+        View v = inflater.inflate(R.layout.temp_monday, container, false);
 
 
         return v;

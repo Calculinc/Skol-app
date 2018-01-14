@@ -1,5 +1,5 @@
 <resources>
-    <string name="app_name">Skol-app</string>
+    <string name="app_name">Elevkårsappen</string>
 
     <string name="page_heading">@string/Tab_1</string>
 
@@ -30,20 +30,18 @@
     <string name="Torsdag">Torsdag</string>
     <string name="Fredag">Fredag</string>
 
+    <string name="register_link"><a href="https://docs.google.com/forms/d/e/1FAIpQLSfbgeZ2UMpuHDqSagZc2u39tjNhzmEF0toBYRsfFIyz6psiew/viewform">Klicka här</a> för att registrera dig</string>
+
+    <string name="info_text">Dina fyra sista siffror i ditt personnummer sparas endast lokalt på din enhet och används enbart för att hämta ditt personliga schema.\n\n/IT-Utskottet (Calculinc)</string>
+    <string name="ok">Ok</string>
+    <string name="matsedel_ditt_resultat">Ok</string>
+
     <string name="navigation_drawer_open">Open navigation drawer</string>
     <string name="navigation_drawer_close">Close navigation drawer</string>
 
     <string name="action_settings">Settings</string>
 
-    <string name="Calculinc_stamp">© 2017 CALCULINC ALL RIGHTS RESERVED</string>
-
-    <string-array name="gender_array">
-        <item>Kvinna</item>
-        <item>Man</item>
-        <item>AH-64 Apache</item>
-        <item>UH-60 Black Hawk</item>
-        <item>Annat</item>
-    </string-array>
+    <string name="Calculinc_stamp">Created by CALCULINC</string>
 
     <string-array name="typ_array">
         <item>Mitt Schema</item>

@@ -15,17 +15,18 @@
 
     <color name="colorApplogga">#ffffff</color>
 
+
     <!--  Drawer colors
           -->
     <color name="colorDrawerGradientStart">#56c77e</color>
     <color name="colorDrawerGradientCenter">#27a382</color>
     <color name="colorDrawerGradientEnd">#3a6064</color>
-    <color name="colorDrawerGradientTextHeader">@color/colorThird</color>
-    <color name="colorDrawerGradientText">@color/colorThird</color>
+    <color name="colorDrawerGradientTextHeader">#ffffff</color>
+    <color name="colorDrawerGradientText">#ffffff</color>
 
     <color name="colorDrawerMenuBackground">#ffffff</color>
-    <color name="colorDrawerMenuIcons">@color/colorThird</color>
-    <color name="colorDrawerMenuText">@color/colorThird</color>
+    <color name="colorDrawerMenuIcons">#ffffff</color>
+    <color name="colorDrawerMenuText">#ffffff</color>
 
     <color name="colorDrawerNavHeaderAlt">#40000000</color>
 
@@ -35,9 +36,17 @@
     <color name="colorDrawerGradientCenter2">@color/colorDrawerGradientCenter</color>
     <color name="colorDrawerGradientEnd3">@color/colorDrawerGradientEnd</color>
 
+    <!--  Nyheter colors
+        -->
+    <color name="colorNyheterHeader">@color/colorDrawerGradientCenter</color>
+    <color name="colorNyheterHeaderCommercial">#ffb300</color>
+    <color name="colorNyheterText">#878787</color>
+
     <!--  Schema colors
           -->
     <color name="colorSchemaBackground">#ffffff</color>
+
+    <color name="colorSchemaTempTint">#503a6064</color>
 
     <color name="colorSchemaLektionBackground">#ffffff</color>
     <color name="colorSchemaLektionBorder">@color/colorSecondary</color>
@@ -96,6 +105,8 @@
     <color name="matsedelBlackText">#878787</color>
     <color name="HeaderTextColor">#569970</color>
 
+    <color name="colorMatsedelHighLight">#ffffff</color>
+
 
     <!--  Login colors
               -->
@@ -115,7 +126,14 @@
     <color name="colorLoginRectLines">#50e7e7e7</color>
     <color name="colorLoginRectBig">#ffffff</color>
 
+    <color name="colorLoginOKCheck">#00ff00</color>
+    <color name="colorLoginNotOKCheck">#ff4040</color>
+    <color name="colorLoginInfo">#ffffff</color>
+    <color name="colorLoginLocked">#919191</color>
 
+    <color name="colorLoginErrorText">#ff0000</color>
+    <color name="colorLoginRegisterText">#ffffff</color>
+    <color name="colorLoginLinkText">#0012b7</color>
 
 
     <!--  Style colors

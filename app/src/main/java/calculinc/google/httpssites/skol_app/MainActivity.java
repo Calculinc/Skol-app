@@ -1,26 +1,22 @@
 package calculinc.google.httpssites.skol_app;
 
-import android.content.Context;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
-import android.support.v4.content.ContextCompat;
 import android.support.v4.view.PagerAdapter;
 import android.support.v4.view.ViewPager;
-import android.support.v4.widget.DrawerLayout.LayoutParams;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.text.Editable;
 import android.text.TextWatcher;
-import android.util.Base64;
+import android.text.method.LinkMovementMethod;
 import android.util.Log;
-import android.view.Gravity;
-import android.view.LayoutInflater;
 import android.view.View;
 import android.support.design.widget.NavigationView;
 import android.support.v4.view.GravityCompat;
@@ -30,19 +26,13 @@ import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
 import android.view.Menu;
 import android.view.MenuItem;
-import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.widget.ArrayAdapter;
 import android.widget.Button;
-import android.widget.CompoundButton;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RatingBar;
-import android.widget.RelativeLayout;
-import android.widget.Spinner;
-import android.widget.Switch;
 import android.widget.TextView;
 import android.widget.ViewFlipper;
 
@@ -52,7 +42,6 @@ import com.itextpdf.text.pdf.parser.PdfTextExtractor;
 import org.apache.commons.lang3.StringEscapeUtils;
 import org.json.JSONArray;
 import org.json.JSONObject;
-import org.jsoup.Connection;
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
@@ -67,59 +56,48 @@ import java.io.InputStream;
 import java.io.InputStreamReader;
 import java.net.HttpURLConnection;
 import java.net.URL;
-import java.net.URLDecoder;
-import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.GregorianCalendar;
-import java.util.Random;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
+import android.support.v4.app.DialogFragment;
 
 import calculinc.google.httpssites.skol_app.Matsedel.FirstFragment;
 import calculinc.google.httpssites.skol_app.Matsedel.SecondFragment;
-import calculinc.google.httpssites.skol_app.days.Friday;
-import calculinc.google.httpssites.skol_app.days.Monday;
-import calculinc.google.httpssites.skol_app.days.Thursday;
-import calculinc.google.httpssites.skol_app.days.Tuesday;
-import calculinc.google.httpssites.skol_app.days.Wednesday;
 
 public class MainActivity extends AppCompatActivity
         implements NavigationView.OnNavigationItemSelectedListener {
 
     String id_number;
     String fyra_sista;
-    int genderInteger = 0;
 
     boolean loginNameAccepted = false;
     boolean loginSurnameAccepted = false;
     boolean loginPhoneAccepted = false;
-    boolean loginCityAccepted = false;
     boolean loginPersonalIdAccepted = false;
     boolean loginPassCodeAccepted = false;
 
     final String myTag = "DocsUpload";
 
-    double matsedelrating;
-    double matsedelratingAmountOfVotes;
-    double matsedelratingTotal;
+    double matsedelrating = 0;
+    int matsedelratingAmountOfVotes = 0;
+    double matsedelratingTotal = 0;
+    double matsedelMedian = 0;
+    double matsedelStdev = 0;
+
+    String personalVoteNumber = "";
     String votingID;
     String downloaddatum = "";
-    String personalVote;
-    String test = "\ud83c\udf38 ON WEDNESDAY WE WEAR PINK \ud83c\udf38\n\nSista onsdagen i den rosa-m\u00e5naden! Vi kommer att hylla detta genom att ha en v\\u00e4lg\\u00f6renhetsf\\u00f6rs\\u00e4ljning nu p\\u00e5 onsdag vid h\\u00e4starna. Denna g\\u00e5ng g\\u00e5r summan till @cancerfonden . Det som kommer att s\\u00e4ljas \\u00e4r kaffe, te och bakelser med ett valfritt pris. Du f\\u00e5r g\\u00e4rna komma kl\\u00e4dd i rosa f\\u00f6r att visa att du \\u00e4r med oss och st\\u00f6ttar. \\n#elevk\\u00e5r\\nMindre \\u00e4n tre,\\n/Styrelsen";
-    String test2 = "\\ud83c\\udf83HALLOWEENEVENT P\\u00c5 STURECOMPAGNIET\\ud83c\\udf83\\nIdag p\\u00e5b\\u00f6rjas h\\u00f6stlovet och det inneb\\u00e4r att Halloween \\u00e4r runt h\\u00f6rnet. Detta firar vi givetvis med ett 18+evenemang p\\u00e5 en av Stockholms mest exklusiva klubbar.  Den f\\u00f6rsta november har vi ett evenemang tillsammans med Blackeberg, Enskilda, Kungsholmen, \\u00d6stra Real m.m. p\\u00e5 STURECOMPAGNIET. IDAG \\u00e4r sista dagen att s\\u00e4kra din biljett och detta g\\u00f6r du genom att swisha till k\\u00e5ren med namn s\\u00e5 skriver vi upp er p\\u00e5 listan. \\ud83d\\udc7b\\nP.S. Elevk\\u00e5ren kommer LOTTA UT fem stycken biljetter, och det enda ni beh\\u00f6ver g\\u00f6ra f\\u00f6r att delta i lottningen \\u00e4r att attenda Facebook evenemanget (s\\u00f6k: Norra Real x Sturecompagniet x Halloween) senast klockan 18.00 i eftermiddag. Vi ses v\\u00e4l d\\u00e4r? \\ud83d\\udd78\\ud83d\\udc80";
+    String personalVote = "";
 
-    String test3 = "\\ud83c\\udf83HALLOWEENEVENT P\\u00c5 STURECOMPAGNIET\\ud83c\\udf83\\nIdag p\\u00e5b\\u00f6rjas h\\u00f6stlovet och det inneb\\u00e4r att Halloween \\u00e4r runt h\\u00f6rnet. Detta firar vi givetvis med ett 18+evenemang p\\u00e5 en av Stockholms mest exklusiva klubbar.  Den f\\u00f6rsta november har vi ett evenemang tillsammans med Blackeberg Enskilda \\u00d6stra Real m.m. p\\u00e5 STURECOMPAGNIET. IDAG \\u00e4r sista dagen att s\\u00e4kra din biljett och detta g\\u00f6r du genom att swisha till k\\u00e5ren med namn s\\u00e5 skriver vi upp er p\\u00e5 listan. \\ud83d\\udc7b\\nP.S. Elevk\\u00e5ren kommer LOTTA UT fem stycken biljetter och det enda ni beh\\u00f6ver g\\u00f6ra f\\u00f6r att delta i lottningen \\u00e4r att attenda Facebook evenemanget (s\\u00f6k: Norra Real x Sturecompagniet x Halloween) senast klockan 18.00 i eftermiddag. Vi ses v\\u00e4l d\\u00e4r? \\ud83d\\udd78\\ud83d\\udc80 ";
     int currentWeek = GregorianCalendar.getInstance().get(Calendar.WEEK_OF_YEAR);
     int currentDay = GregorianCalendar.getInstance().get(Calendar.DAY_OF_WEEK) - 1;
     int currentHour = GregorianCalendar.getInstance().get(Calendar.HOUR_OF_DAY);
     int currentMinute = GregorianCalendar.getInstance().get(Calendar.MINUTE);
 
-    int foodDay = GregorianCalendar.getInstance().get(Calendar.DAY_OF_WEEK) - 1;
     int downloadWeek, focusDay;
 
     String schemaFileName = "Nova.txt";
@@ -128,24 +106,18 @@ public class MainActivity extends AppCompatActivity
     File loginFile;
     boolean downloadSuccess;
     boolean loggenIn = false;
-    boolean DayPref;
-    File DayPrefFile;
+
+    ArrayList<String> urlCheck = new ArrayList<>();
 
     private RecyclerView recyclerView;
     private RecyclerView.Adapter adapter;
 
-    final String[] genderStrings = {
-            "Kvinna",
-            "Man",
-            "Annat", "Annat", "Annat"
-    };
-
     String LoginDataBaseKey = "11SYOpe7-x_N2xQtjjgs7nUD9t7nRRBvp59O694rrmHc";
     String MatvoteDataBaseKey = "1KWnx2XtVrc229M2ixsgu5xXkpaxkHwZMf0nZdElxWRM";
+    String CommercialDataBaseKey = "1_-tmo7u4h0Z57coNfbzX945wrHy6g0ixdTgy-cjaMJE";
     String[] mat;
     String dagensMat;
     String foodMenu = "/maq1/För lång kö till matsalen. Kunde inte se matsedeln/maq1/För lång kö till matsalen. Kunde inte se matsedeln/maq1/För lång kö till matsalen. Kunde inte se matsedeln/maq1/För lång kö till matsalen. Kunde inte se matsedeln/maq1/För lång kö till matsalen. Kunde inte se matsedeln";
-    String tempSchema = "10:55%maq1ekax%RELREL01 NSJ A13%maq1ekax%12:10%maq1ekax%12:40%maq1ekax%MATTID%maq1ekax%13:00%maq1ekax%13:10%maq1ekax%SVESVE03 PLA B13%maq1ekax%14:10%maq1ekax%14:20%maq1ekax%SVESVE03 PLA B13%maq1ekax%15:20%day%08:20%maq1ekax%ENGENG07 JHA C11%maq1ekax%09:35%maq1ekax%09:45%maq1ekax%GYAR NSJ,MOR B41,B42%maq1ekax%10:45%maq1ekax%10:50%maq1ekax%MATTID%maq1ekax%11:10%maq1ekax%11:35%maq1ekax%MATMAT05 BAM A23%maq1ekax%12:35%maq1ekax%12:45%maq1ekax%14:00%maq1ekax%studiebesök KBN%maq1ekax%TTF/GYARB%maq1ekax%17:00%day%09:50%maq1ekax%KEBI MOR A41%maq1ekax%11:05%maq1ekax%11:30%maq1ekax%MATTID%maq1ekax%11:50%maq1ekax%12:10%maq1ekax%MATMAT05 BAM B14%maq1ekax%13:40%maq1ekax%13:50%maq1ekax%PRRPRR01 LZH B32%maq1ekax%15:05%maq1ekax%15:15%maq1ekax%RELREL01 NSJ A01%maq1ekax%16:30%day%09:50%maq1ekax%ENGENG07 JHA A14%maq1ekax%11:05%maq1ekax%11:25%maq1ekax%MATTID%maq1ekax%11:45%maq1ekax%12:00%maq1ekax%Mentorstid BAM B12%maq1ekax%12:30%maq1ekax%12:30%maq1ekax%SVESVE03 PLA B12%maq1ekax%13:30%maq1ekax%13:40%maq1ekax%FYSFYS02 LAD A32%maq1ekax%14:50%maq1ekax%15:15%maq1ekax%EGEN STUDIETID NSJ,MOR%maq1ekax%16:15%day%08:20%maq1ekax%PRRPRR01 LZH A21%maq1ekax%09:35%maq1ekax%09:45%maq1ekax%KEBI (a MOR A42%maq1ekax%11:15%maq1ekax%11:35%maq1ekax%MATTID%maq1ekax%11:55";
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -163,29 +135,75 @@ public class MainActivity extends AppCompatActivity
         NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
+        navigationView.setCheckedItem(R.id.nav_nyheter);
+
         schemaTimeRefresh bootUpTimeSync = new schemaTimeRefresh();
         bootUpTimeSync.start();
 
         getSavedLoginContent();
 
         viewFuckingPager();
-        viewPager();
+        //viewPager();
         recyclerViewAdapter();
+        //theSwtich();
 
         Log.i(myTag, "OnCreate()");
 
         final EditText name = (EditText) findViewById(R.id.name1);
         final EditText surname = (EditText) findViewById(R.id.name2);
         final EditText phone = (EditText) findViewById(R.id.mobile_number);
-        final EditText city = (EditText) findViewById(R.id.city);
         final EditText personal_id = (EditText) findViewById(R.id.personalid);
         final EditText passCode = (EditText) findViewById(R.id.passcode);
+        EditText novaCode = (EditText) findViewById(R.id.nova_code);
         name.addTextChangedListener(nameTextWatcher);
         surname.addTextChangedListener(surnameTextWatcher);
         phone.addTextChangedListener(phoneTextWatcher);
-        city.addTextChangedListener(cityTextWatcher);
         personal_id.addTextChangedListener(personalIdTextWatcher);
         passCode.addTextChangedListener(passCodeTextWatcher);
+        novaCode.addTextChangedListener(novaTextWatcher);
+
+        recyclerView.smoothScrollToPosition(0);
+        start();
+
+        TextView t2 = (TextView) findViewById(R.id.register_link);
+        t2.setMovementMethod(LinkMovementMethod.getInstance());
+    }
+
+    public void start() {
+
+        if (loggenIn) {
+
+            nyheterSelect click = new nyheterSelect();
+            click.start();
+
+        } else {
+
+            ViewFlipper vf = (ViewFlipper)findViewById(R.id.vf);
+            vf.setDisplayedChild(5);
+        }
+
+    }
+
+    public void freshLogin(View view) {
+
+        final ViewFlipper vf = (ViewFlipper)findViewById(R.id.vf);
+        final NavigationView navigationView = (NavigationView) findViewById(R.id.nav_view);
+
+        navigationView.setCheckedItem(R.id.nav_login);
+        vf.setDisplayedChild(4);
+
+    }
+
+    public void infoClick(View view) {
+
+        final Animation anim_button_click = AnimationUtils.loadAnimation(this, R.anim.anim_button_click);
+
+        view.startAnimation(anim_button_click);
+
+        DialogFragment newFragment = new InfoBox();
+        newFragment.show(getSupportFragmentManager(), "vafan");
+
+
     }
 
     private TextWatcher nameTextWatcher = new TextWatcher() {
@@ -224,18 +242,6 @@ public class MainActivity extends AppCompatActivity
         public void afterTextChanged(Editable s) {}
     };
 
-    private TextWatcher cityTextWatcher = new TextWatcher() {
-        @Override
-        public void onTextChanged(CharSequence s, int start, int before, int count) {
-            cityCheck(s.toString());
-        }
-
-        @Override
-        public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
-        @Override
-        public void afterTextChanged(Editable s) {}
-    };
-
     private TextWatcher personalIdTextWatcher = new TextWatcher() {
         @Override
         public void onTextChanged(CharSequence s, int start, int before, int count) {
@@ -260,57 +266,117 @@ public class MainActivity extends AppCompatActivity
         public void afterTextChanged(Editable s) {}
     };
 
+    private TextWatcher novaTextWatcher = new TextWatcher() {
+        @Override
+        public void onTextChanged(CharSequence s, int start, int before, int count) {
+            novaCodeCheck(s.toString());
+        }
+
+        @Override
+        public void beforeTextChanged(CharSequence s, int start, int count, int after) {}
+        @Override
+        public void afterTextChanged(Editable s) {}
+    };
+
     public void nameCheck(String content){
         loginNameAccepted = content.length() >= 1;
+
+        final View view = findViewById(R.id.checkbox_name);
         if (loginNameAccepted) {
+            view.setBackgroundResource(R.drawable.login_ok);
             //Update indicator here
         } else {
+            view.setBackgroundResource(R.drawable.login_not_ok);
             //Update indicator here
         }
     }
 
     public void surnameCheck(String content){
         loginSurnameAccepted = content.length() >= 1;
+
+        final View view = findViewById(R.id.checkbox_surname);
         if (loginSurnameAccepted) {
+            view.setBackgroundResource(R.drawable.login_ok);
             //Update indicator here
         } else {
+            view.setBackgroundResource(R.drawable.login_not_ok);
             //Update indicator here
         }
     }
 
     public void phoneCheck(String content){
         loginPhoneAccepted = content.length() == 10;
-        if (loginPhoneAccepted) {
-            //Update indicator here
-        } else {
-            //Update indicator here
-        }
-    }
 
-    public void cityCheck(String content){
-        loginCityAccepted = content.length() >= 1;
-        if (loginCityAccepted) {
+        final View view = findViewById(R.id.checkbox_telephone);
+        if (loginPhoneAccepted) {
+            view.setBackgroundResource(R.drawable.login_ok);
             //Update indicator here
         } else {
+            view.setBackgroundResource(R.drawable.login_not_ok);
             //Update indicator here
         }
     }
 
     public void personalIdCheck(String content){
         loginPersonalIdAccepted = content.length() == 6;
+
+        final View view =  findViewById(R.id.checkbox_personalid);
         if (loginPersonalIdAccepted) {
+            view.setBackgroundResource(R.drawable.login_ok);
             //Update indicator here
         } else {
+            view.setBackgroundResource(R.drawable.login_not_ok);
             //Update indicator here
         }
     }
 
     public void passCodeCheck(String content){
         loginPassCodeAccepted = content.length() == 4;
+
+        final View view = findViewById(R.id.checkbox_passcode);
         if (loginPassCodeAccepted) {
+            view.setBackgroundResource(R.drawable.login_ok);
             //Update indicator here
         } else {
+            view.setBackgroundResource(R.drawable.login_not_ok);
             //Update indicator here
+        }
+    }
+
+    public void novaCodeCheck(String content){
+        if (content.length() == 4) {
+            EditText novaCode = (EditText) findViewById(R.id.nova_code);
+            fyra_sista = novaCode.getText().toString();
+
+            try {
+                FileInputStream fis = openFileInput(loginFileName);
+                InputStreamReader isr = new InputStreamReader(fis);
+                BufferedReader bufferedReader = new BufferedReader(isr);
+                StringBuilder sb = new StringBuilder();
+                String line;
+                while ((line = bufferedReader.readLine()) != null) {
+                    sb.append(line);
+                }
+                String[] loginParams = sb.toString().split("%");
+
+                StringBuilder loginContent = new StringBuilder();
+                for (int i = 0; i < loginParams.length; i++) {
+                    if (i != loginParams.length-1){
+                        loginContent.append(loginParams[i]);
+                        loginContent.append("%");
+                    } else {
+                        loginContent.append(fyra_sista);
+                    }
+                }
+
+                FileOutputStream outputStream;
+                outputStream = openFileOutput(loginFileName,MODE_PRIVATE);
+                outputStream.write(loginContent.toString().getBytes());
+                outputStream.close();
+                loggenIn = true;
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
         }
     }
 
@@ -340,49 +406,6 @@ public class MainActivity extends AppCompatActivity
 
     }
 
-    public class FixedDayPagerAdapter extends FragmentPagerAdapter {
-
-        public FixedDayPagerAdapter(FragmentManager fm) {
-            super(fm);
-        }
-
-        @Override
-        public int getCount() {
-            return 5;
-        }
-
-        @Override
-        public Fragment getItem(int position) {
-            switch(position) {
-
-                case 0:
-                    return new Monday();
-                case 1:
-                    return new Tuesday();
-                case 2:
-                    return new Wednesday();
-                case 3:
-                    return new Thursday();
-                case 4:
-                    return new Friday();
-                default:
-                    return null;
-            }
-        }
-
-    }
-
-    public void viewPager() {
-
-        ViewPager pager = (ViewPager) findViewById(R.id.view_pager2);
-        PagerAdapter pagerAdapter = new FixedDayPagerAdapter(getSupportFragmentManager());
-        pager.setAdapter(pagerAdapter);
-        pager.setCurrentItem(focusDay - 1);
-
-        TabLayout tabLayout = (TabLayout) findViewById(R.id.tab_layout2);
-        tabLayout.setupWithViewPager(pager);
-    }
-
     public void viewFuckingPager() {
 
         ViewPager pager = (ViewPager) findViewById(R.id.view_pager);
@@ -403,6 +426,13 @@ public class MainActivity extends AppCompatActivity
     }
 
     public void getSavedLoginContent() {
+        EditText name = (EditText) findViewById(R.id.name1);
+        EditText surname = (EditText) findViewById(R.id.name2);
+        EditText phone = (EditText) findViewById(R.id.mobile_number);
+        EditText personalId = (EditText) findViewById(R.id.personalid);
+        EditText novacode = (EditText) findViewById(R.id.nova_code);
+        EditText passcode = (EditText) findViewById(R.id.passcode);
+
         loginFile = new File(getFilesDir() + "/" + loginFileName);
         loggenIn = loginFile.exists();
         try {
@@ -421,35 +451,42 @@ public class MainActivity extends AppCompatActivity
                     sb.append(line);
                 }
                 String[] loginParams = sb.toString().split("%");
-                id_number = loginParams[4];
+                id_number = loginParams[3];
                 fyra_sista = loginParams[5];
-                genderInteger = Integer.parseInt(loginParams[7]);
                 votingID = id_number + loginParams[0] + loginParams[1];
-
-                EditText name = (EditText) findViewById(R.id.name1);
-                EditText surname = (EditText) findViewById(R.id.name2);
-                EditText phone = (EditText) findViewById(R.id.mobile_number);
-                EditText city = (EditText) findViewById(R.id.city);
-                EditText personalId = (EditText) findViewById(R.id.personalid);
-                EditText novacode = (EditText) findViewById(R.id.nova_code);
-                EditText passcode = (EditText) findViewById(R.id.passcode);
 
                 name.setText(loginParams[0]);
                 surname.setText(loginParams[1]);
                 phone.setText(loginParams[2]);
-                city.setText(loginParams[3]);
                 personalId.setText(id_number);
                 novacode.setText(fyra_sista);
-                passcode.setText(loginParams[6]);
+                passcode.setText(loginParams[4]);
 
-                nameCheck(loginParams[0]);
-                surnameCheck(loginParams[1]);
-                phoneCheck(loginParams[2]);
-                cityCheck(loginParams[3]);
-                personalIdCheck(id_number);
-                passCodeCheck(loginParams[6]);
+                final View nameIcon = findViewById(R.id.checkbox_name);
+                final View surnameIcon = findViewById(R.id.checkbox_surname);
+                final View phoneIcon = findViewById(R.id.checkbox_telephone);
+                final View personalIdIcon = findViewById(R.id.checkbox_personalid);
+                final View passcodeIcon = findViewById(R.id.checkbox_passcode);
+
+                nameIcon.setBackgroundResource(R.drawable.login_locked);
+                surnameIcon.setBackgroundResource(R.drawable.login_locked);
+                phoneIcon.setBackgroundResource(R.drawable.login_locked);
+                personalIdIcon.setBackgroundResource(R.drawable.login_locked);
+                passcodeIcon.setBackgroundResource(R.drawable.login_locked);
+            } else {
+                name.setFocusable(true);
+                surname.setFocusable(true);
+                phone.setFocusable(true);
+                personalId.setFocusable(true);
+                passcode.setFocusable(true);
+
+                name.setFocusableInTouchMode(true);
+                surname.setFocusableInTouchMode(true);
+                phone.setFocusableInTouchMode(true);
+                personalId.setFocusableInTouchMode(true);
+                passcode.setFocusableInTouchMode(true);
             }
-        }catch (IOException e) {
+        }catch (IOException | ArrayIndexOutOfBoundsException e) {
             e.printStackTrace();
         }
     }
@@ -458,32 +495,31 @@ public class MainActivity extends AppCompatActivity
         final Animation anim_button_click = AnimationUtils.loadAnimation(this, R.anim.anim_button_click);
         view.startAnimation(anim_button_click);
 
+        TextView Error = (TextView) findViewById(R.id.login_error_text);
+        Error.setVisibility(View.INVISIBLE);
+
         final EditText name = (EditText) findViewById(R.id.name1);
         final EditText surname = (EditText) findViewById(R.id.name2);
         final EditText phone = (EditText) findViewById(R.id.mobile_number);
-        final EditText city = (EditText) findViewById(R.id.city);
         final EditText personal_id = (EditText) findViewById(R.id.personalid);
         final EditText passcode = (EditText) findViewById(R.id.passcode);
-        final Spinner spinnerLoginGender = (Spinner) findViewById(R.id.fidget_spinner);
 
         final String Namn = name.getText().toString();
         final String Efternamn = surname.getText().toString();
         final String Mobil = phone.getText().toString();
-        final String Stad = city.getText().toString();
         id_number = personal_id.getText().toString();
+        final String passCode = passcode.getText().toString();
+        final String Datum = id_number;
         votingID = id_number + Namn + Efternamn;
-        final String Code = passcode.getText().toString() + ".0";
-        final String Datum;{
-            char[] siffra = id_number.toCharArray();
-            if (siffra[0] == '9') {
-                Datum = "19" + siffra[0] + siffra[1] + "-" + siffra[2] + siffra[3] + "-" + siffra[4] + siffra[5];
-            } else {
-                Datum = "20" + siffra[0] + siffra[1] + "-" + siffra[2] + siffra[3] + "-" + siffra[4] + siffra[5];
-            }
-        }
-        final String Gender = genderStrings[spinnerLoginGender.getSelectedItemPosition()];
 
-        if (loginNameAccepted && loginSurnameAccepted && loginPhoneAccepted && loginCityAccepted && loginPersonalIdAccepted && loginPassCodeAccepted) {
+        nameCheck(Namn);
+        surnameCheck(Efternamn);
+        phoneCheck(Mobil);
+        personalIdCheck(id_number);
+        passCodeCheck(passCode);
+
+        if (loginNameAccepted && loginSurnameAccepted && loginPhoneAccepted && loginPersonalIdAccepted && loginPassCodeAccepted) {
+
             new DownloadWebpageTask(new AsyncResult() {
                 @Override
                 public void onResult(JSONObject object) {
@@ -495,11 +531,14 @@ public class MainActivity extends AppCompatActivity
                             JSONArray person = row.getJSONArray("c");
                             String JsonNamn = person.getJSONObject(1).getString("v");
                             String JsonEfternamn = person.getJSONObject(2).getString("v");
-                            String JsonStad = person.getJSONObject(4).getString("v");
-                            String JsonDatum = person.getJSONObject(5).getString("f");
-                            String JsonGender = person.getJSONObject(6).getString("v");
-                            String JsonCode = person.getJSONObject(7).getString("v");
-                            if (JsonNamn.equals(Namn) && JsonEfternamn.equals(Efternamn) && JsonStad.equals(Stad) && JsonDatum.equals(Datum) && JsonGender.equals(Gender) && JsonCode.equals(Code)) {
+                            char[] M = person.getJSONObject(3).getString("v").toCharArray();
+                            String JsonMobil = "" + M[0] + M[1] + M[2] + M[4] + M[5] + M[6] + M[7] + M[8] + M[9] + M[10];
+                            char[] D = person.getJSONObject(5).getString("f").toCharArray();
+                            String JsonDatum = "" + D[2] + D[3] + D[5] + D[6] + D[8] + D[9];
+                            String tempo = person.getJSONObject(7).getString("v");
+                            long JsonCode = Math.round(Double.parseDouble(tempo));
+
+                            if (JsonNamn.equals(Namn) && JsonEfternamn.equals(Efternamn) && JsonMobil.equals(Mobil) && JsonDatum.equals(Datum) && JsonCode == Long.parseLong(passCode)) {
                                 logSucc = true;
                                 i = rows.length();
                             }
@@ -509,39 +548,65 @@ public class MainActivity extends AppCompatActivity
                         } else {
                             loginFail();
                         }
-                    } catch (JSONException e) {
+                    } catch (Exception e) {
                         e.printStackTrace();
-                        loginFail();
+                        loginConnectFail();
                     }
                 }
             } ).execute("https://spreadsheets.google.com/tq?key=" + LoginDataBaseKey);
 
+        } else {
+            loginFillFail();
         }
     }
 
     public void loginSucces() {
         final Button LoginButt = (Button) findViewById(R.id.login_button);
         final Button LogoutButt = (Button) findViewById(R.id.logout_button);
+        TextView Error = (TextView) findViewById(R.id.login_error_text);
+
         LoginButt.setVisibility(View.GONE);
         LogoutButt.setVisibility(View.VISIBLE);
+
+        Error.setVisibility(View.INVISIBLE);
+
+        final View nameIcon = findViewById(R.id.checkbox_name);
+        final View surnameIcon = findViewById(R.id.checkbox_surname);
+        final View phoneIcon = findViewById(R.id.checkbox_telephone);
+        final View personalIdIcon = findViewById(R.id.checkbox_personalid);
+        final View passcodeIcon = findViewById(R.id.checkbox_passcode);
+
+        nameIcon.setBackgroundResource(R.drawable.login_locked);
+        surnameIcon.setBackgroundResource(R.drawable.login_locked);
+        phoneIcon.setBackgroundResource(R.drawable.login_locked);
+        personalIdIcon.setBackgroundResource(R.drawable.login_locked);
+        passcodeIcon.setBackgroundResource(R.drawable.login_locked);
 
         final EditText name = (EditText) findViewById(R.id.name1);
         final EditText surname = (EditText) findViewById(R.id.name2);
         final EditText phone = (EditText) findViewById(R.id.mobile_number);
-        final EditText city = (EditText) findViewById(R.id.city);
         final EditText personal_id = (EditText) findViewById(R.id.personalid);
         final EditText fyrasista = (EditText) findViewById(R.id.nova_code);
         final EditText passcode = (EditText) findViewById(R.id.passcode);
-        final Spinner spinnerLoginGender = (Spinner) findViewById(R.id.fidget_spinner);
+
+        name.setFocusable(false);
+        surname.setFocusable(false);
+        phone.setFocusable(false);
+        personal_id.setFocusable(false);
+        passcode.setFocusable(false);
+
+        name.setFocusableInTouchMode(false);
+        surname.setFocusableInTouchMode(false);
+        phone.setFocusableInTouchMode(false);
+        personal_id.setFocusableInTouchMode(false);
+        passcode.setFocusableInTouchMode(false);
 
         final String Namn = name.getText().toString();
         final String Efternamn = surname.getText().toString();
         final String Mobil = phone.getText().toString();
-        final String Stad = city.getText().toString();
         id_number = personal_id.getText().toString();
         fyra_sista = fyrasista.getText().toString();
         final String passCode = passcode.getText().toString();
-        final int id_spinneritemgender = spinnerLoginGender.getSelectedItemPosition();
 
         StringBuilder loginContent = new StringBuilder();{
             loginContent.append(Namn);
@@ -550,15 +615,11 @@ public class MainActivity extends AppCompatActivity
             loginContent.append("%");
             loginContent.append(Mobil);
             loginContent.append("%");
-            loginContent.append(Stad);
-            loginContent.append("%");
             loginContent.append(id_number);
-            loginContent.append("%");
-            loginContent.append(fyra_sista);
             loginContent.append("%");
             loginContent.append(passCode);
             loginContent.append("%");
-            loginContent.append(String.valueOf(id_spinneritemgender));
+            loginContent.append(fyra_sista);
         }
 
         FileOutputStream outputStream;
@@ -567,16 +628,42 @@ public class MainActivity extends AppCompatActivity
             outputStream.write(loginContent.toString().getBytes());
             outputStream.close();
             loggenIn = true;
-        } catch (Exception e) {
+        } catch (IOException e) {
             e.printStackTrace();
         }
     }
 
     public void loginFail() {
 
+        TextView Error = (TextView) findViewById(R.id.login_error_text);
+
+        Error.setVisibility(View.VISIBLE);
+        Error.setText("- Användare inte hittad -");
+    }
+
+    public void loginFillFail() {
+
+        TextView Error = (TextView) findViewById(R.id.login_error_text);
+
+        Error.setVisibility(View.VISIBLE);
+        Error.setText("- Fyll i alla fälten korrekt -");
+    }
+
+    public void loginConnectFail() {
+
+        TextView Error = (TextView) findViewById(R.id.login_error_text);
+
+        Error.setVisibility(View.VISIBLE);
+        Error.setText("- Kunde inte ansluta -");
     }
 
     public void logoutSubmit (View view) {
+        EditText name = (EditText) findViewById(R.id.name1);
+        EditText surname = (EditText) findViewById(R.id.name2);
+        EditText phone = (EditText) findViewById(R.id.mobile_number);
+        EditText personalId = (EditText) findViewById(R.id.personalid);
+        EditText passcode = (EditText) findViewById(R.id.passcode);
+
         final Button LoginButt = (Button) findViewById(R.id.login_button);
         final Button LogoutButt = (Button) findViewById(R.id.logout_button);
         LoginButt.setVisibility(View.VISIBLE);
@@ -584,41 +671,24 @@ public class MainActivity extends AppCompatActivity
 
         loginFile.delete();
         loggenIn = false;
-    }
 
-    public void registerSubmit (View view) {
-        final Animation anim_button_click = AnimationUtils.loadAnimation(this, R.anim.anim_button_click);
-        view.startAnimation(anim_button_click);
+        name.setFocusable(true);
+        surname.setFocusable(true);
+        phone.setFocusable(true);
+        personalId.setFocusable(true);
+        passcode.setFocusable(true);
 
-        final EditText name = (EditText) findViewById(R.id.name1);
-        final EditText surname = (EditText) findViewById(R.id.name2);
-        final EditText phone = (EditText) findViewById(R.id.mobile_number);
-        final EditText city = (EditText) findViewById(R.id.city);
-        final EditText personal_id = (EditText) findViewById(R.id.personalid);
-        final Spinner spinnerLoginGender = (Spinner) findViewById(R.id.fidget_spinner);
+        name.setFocusableInTouchMode(true);
+        surname.setFocusableInTouchMode(true);
+        phone.setFocusableInTouchMode(true);
+        personalId.setFocusableInTouchMode(true);
+        passcode.setFocusableInTouchMode(true);
 
-        final String Namn = name.getText().toString();
-        final String Efternamn = surname.getText().toString();
-        final String Mobil = phone.getText().toString();
-        final String Stad = city.getText().toString();
-        id_number = personal_id.getText().toString();
-        final String datum;{
-            char[] siffra = id_number.toCharArray();
-            if (siffra[0] == '9') {
-                datum = "19" + siffra[0] + siffra[1] + "-" + siffra[2] + siffra[3] + "-" + siffra[4] + siffra[5];
-            } else {
-                datum = "20" + siffra[0] + siffra[1] + "-" + siffra[2] + siffra[3] + "-" + siffra[4] + siffra[5];
-            }
-        }
-        final int id_spinneritemgender = spinnerLoginGender.getSelectedItemPosition();
-
-        Thread t = new Thread(new Runnable() {
-            @Override
-            public void run() {
-                postFormRegisterData(Namn, Efternamn, Mobil, Stad, datum, id_spinneritemgender);
-            }
-        });
-        t.start();
+        nameCheck(name.getText().toString());
+        surnameCheck(surname.getText().toString());
+        phoneCheck(phone.getText().toString());
+        personalIdCheck(personalId.getText().toString());
+        passCodeCheck(passcode.getText().toString());
     }
 
     @Override
@@ -632,14 +702,6 @@ public class MainActivity extends AppCompatActivity
     }
 
     @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        // Inflate the menu; this adds items to the action bar if it is present.
-        getMenuInflater().inflate(R.menu.main, menu);
-
-        return true;
-    }
-
-    @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         // Handle action bar item clicks here. The action bar will
         // automatically handle clicks on the Home/Up button, so long
@@ -647,9 +709,6 @@ public class MainActivity extends AppCompatActivity
         int id = item.getItemId();
 
         //noinspection SimplifiableIfStatement
-        if (id == R.id.action_settings) {
-            return true;
-        }
 
         return super.onOptionsItemSelected(item);
     }
@@ -735,8 +794,8 @@ public class MainActivity extends AppCompatActivity
             runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-                    theSwtich();
-                    fidget_spinner();
+                    //theSwtich();
+                    //fidget_spinner();
                 }
             });
 
@@ -760,7 +819,8 @@ public class MainActivity extends AppCompatActivity
                 e.printStackTrace();
             }
 
-            drawSchema();
+            //drawSchema();
+            drawSchemaTemp(true);
         }
     }
 
@@ -796,9 +856,6 @@ public class MainActivity extends AppCompatActivity
 
                 }
             });
-
-            schemaArrayFixer lloldawd = new schemaArrayFixer();
-            lloldawd.start();
         }
     }
 
@@ -807,24 +864,10 @@ public class MainActivity extends AppCompatActivity
             runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
-                    fidget_spinner();
+                    //fidget_spinner();
                 }
             });
 
-
-        }
-    }
-
-    private class schemaRefresh extends Thread {
-        public void run() {
-
-            schemaTimeRefresh onSelectTimeSync = new schemaTimeRefresh();
-            onSelectTimeSync.start();
-            try {
-                onSelectTimeSync.join();
-            }catch (InterruptedException e) {
-                e.printStackTrace();
-            }
 
         }
     }
@@ -836,11 +879,6 @@ public class MainActivity extends AppCompatActivity
             currentHour = GregorianCalendar.getInstance().get(Calendar.HOUR_OF_DAY);
             currentMinute = GregorianCalendar.getInstance().get(Calendar.MINUTE);
 
-            foodDay = GregorianCalendar.getInstance().get(Calendar.DAY_OF_WEEK) - 1;
-
-            if (foodDay == 0 || foodDay == 6 || foodDay ==7) {
-                foodDay = 1;
-            }
             if (currentHour < 18) {
                 focusDay = currentDay;
             } else {
@@ -855,265 +893,58 @@ public class MainActivity extends AppCompatActivity
         }
     }
 
-    public void drawSchema() {
+    public void drawSchemaTemp(final boolean status) {
+
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
+                ViewFlipper vf = (ViewFlipper) findViewById(R.id.schema_week_vf);
 
-                StringBuilder sb = new StringBuilder();
                 try {
-                    String nameOfFile = "id:" + id_number + "week:" + downloadWeek + "_" + schemaFileName;
-                    FileInputStream fis = openFileInput(nameOfFile);
-                    InputStreamReader isr = new InputStreamReader(fis);
-                    BufferedReader bufferedReader = new BufferedReader(isr);
-                    String line;
-                    while ((line = bufferedReader.readLine()) != null) {
-                        sb.append(line);
+
+                    ImageView imageView = (ImageView) findViewById(R.id.temp_weekly);
+
+                    String imageUrl = "http://www.novasoftware.se/ImgGen/schedulegenerator.aspx?format=png&schoolid=81530/sv-se&type=0&id=" + id_number + fyra_sista + "&period=&week=" + downloadWeek + "&mode=0&printer=0&colors=2&head=5&clock=7&foot=1&day=0&width=360&height=600";
+
+                    new DownloadImageTask((ImageView) findViewById(R.id.temp_weekly)) .execute(imageUrl);
+
+                    if (status) {
+
+                        vf.setDisplayedChild(1);
+                    } else {
+
+                        vf.setDisplayedChild(2);
                     }
-                } catch (IOException e) {
+
+                } catch (Exception e) {
+
+                    vf.setDisplayedChild(2);
+
                     e.printStackTrace();
                 }
-
-                if (!schemaFile.exists()) {
-                    //String[] druvor = sb.toString().split("%day%");
-                    String[] druvor = tempSchema.split("%day%");
-
-                    final int[] relWeekIDS = {
-                            R.id.relativt_schema1,
-                            R.id.relativt_schema2,
-                            R.id.relativt_schema3,
-                            R.id.relativt_schema4,
-                            R.id.relativt_schema5
-                    };
-                    final int[] relDayLay = {
-                            R.layout.monday_frag,
-                            R.layout.tuesday_frag,
-                            R.layout.wednesday_frag,
-                            R.layout.thursday_frag,
-                            R.layout.friday_frag
-                    };
-                    final int[] relDayIDS = {
-                            R.id.relative_layout_monday,
-                            R.id.relative_layout_tuesday,
-                            R.id.relative_layout_wednesday,
-                            R.id.relative_layout_thursday,
-                            R.id.relative_layout_friday,
-                    };
-
-                    for (int i = 0; i <= 4; i++) {
-                        String[] desert;
-                        if (druvor.length > 4){
-                            if (!druvor[i].equals("")) {
-                                desert = druvor[i].split("%maq1ekax%");
-                            } else {
-                                desert = druvor;
-                            }
-                        } else {
-                            desert = druvor;
-                        }
-
-                        LayoutInflater inflater = (LayoutInflater) getSystemService(Context.LAYOUT_INFLATER_SERVICE);
-                        View pagerItemInflater = inflater.inflate(relDayLay[i], null);
-
-                        RelativeLayout schema_space = (RelativeLayout) findViewById(relWeekIDS[i]);
-                        RelativeLayout schema_dayce = (RelativeLayout) pagerItemInflater.findViewById(relDayIDS[i]);
-
-                        String StartTid = "";
-                        double starttid = 0;
-                        String SlutTid;
-                        double sluttid;
-                        String öpö = "";
-
-                        for (int j = 0; j < desert.length; j++) {
-                            int status = j % 3;
-                            try {
-                                if (status == 0) {
-                                    //lite matte här
-                                    StartTid = desert[j];
-                                    String[] time = StartTid.split(":");
-                                    starttid = Double.parseDouble(time[0]) - 8 + (Double.parseDouble(time[1])) / 60;
-
-                                }
-                                if (status == 1) {
-                                    //hämta lektionstext
-                                    öpö = desert[j];
-                                }
-                                if (status == 2) {
-                                    //lite mer matte
-                                    SlutTid = desert[j];
-                                    String[] time = SlutTid.split(":");
-                                    sluttid = Double.parseDouble(time[0]) - 8 + Double.parseDouble(time[1]) / 60;
-
-                                    LinearLayout linear = new LinearLayout(getBaseContext());
-                                    //linear.setWeightSum(11);
-                                    LinearLayout.LayoutParams params2 = new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.MATCH_PARENT);
-                                    linear.setOrientation(LinearLayout.VERTICAL);
-                                    linear.setLayoutParams(params2);
-
-                                    TextView blank1 = new TextView(getBaseContext());
-                                    LinearLayout.LayoutParams paramsBlank1 = new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
-                                    paramsBlank1.weight = (float)(starttid+1);
-                                    blank1.setLayoutParams(paramsBlank1);
-                                    blank1.setTextSize(0);
-                                    linear.addView(blank1);
-
-                                    TextView lektion = new TextView(getBaseContext());
-                                    LinearLayout.LayoutParams paramsLektion = new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT);
-                                    paramsLektion.weight = (float)(sluttid - starttid);
-                                    lektion.setLayoutParams(paramsLektion);
-                                    lektion.setBackgroundResource(R.drawable.rect_view_vecka_day_header);
-                                    lektion.setTextSize(0);
-                                    //lektion.setBackgroundResource(ya_blew_it);
-                                    //lektion.setText(öpö);
-                                    linear.addView(lektion);
-
-                                    TextView blank2 = new TextView(getBaseContext());
-                                    LinearLayout.LayoutParams paramsBlank2 = new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.WRAP_CONTENT);
-                                    paramsBlank2.weight = (float)(10 - sluttid);
-                                    blank2.setLayoutParams(paramsBlank2);
-                                    blank2.setTextSize(0);
-                                    linear.addView(blank2);
-
-                                    schema_space.addView(linear);
-
-
-
-                                    /**LinearLayout linearDay = new LinearLayout(getBaseContext());
-                                    linearDay.setOrientation(LinearLayout.VERTICAL);
-                                    LinearLayout.LayoutParams LinDayParams = new LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, (int)((sluttid - starttid) * 90 * getResources().getDimension(R.dimen.dp_unit)));
-                                    LinDayParams.setMargins(0,(int)(starttid * 90 * getResources().getDimension(R.dimen.dp_unit)),0,0);
-                                    linearDay.setLayoutParams(LinDayParams);
-                                    linearDay.setBackgroundColor(ContextCompat.getColor(getBaseContext(), R.color.colorSchemaViewDayLektionBackground));
-
-                                    TextView dayTop = new TextView(getBaseContext());
-                                    LinearLayout.LayoutParams TopDayParams = new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, (int)(15 * getResources().getDimension(R.dimen.dp_unit)));
-                                    dayTop.setLayoutParams(TopDayParams);
-                                    dayTop.setGravity(Gravity.START | Gravity.CENTER_VERTICAL);
-                                    dayTop.setTextSize(12);
-                                    dayTop.setTextColor(ContextCompat.getColor(getBaseContext(), R.color.colorSchemaViewDayLektionText));
-                                    dayTop.setText(StartTid);
-                                    linearDay.addView(dayTop);
-
-                                    TextView dayMid = new TextView(getBaseContext());
-                                    LinearLayout.LayoutParams MidDayParams = new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, LayoutParams.MATCH_PARENT); //(int)(((sluttid - starttid) * 90 - 30) * getResources().getDimension(R.dimen.dp_unit))
-                                    dayMid.setLayoutParams(MidDayParams);
-                                    dayMid.setGravity(Gravity.CENTER);
-                                    dayMid.setTextSize(20);
-                                    dayMid.setTextColor(ContextCompat.getColor(getBaseContext(), R.color.colorSchemaViewDayLektionText));
-                                    dayMid.setText(öpö);
-                                    linearDay.addView(dayMid);
-
-                                    TextView dayBot = new TextView(getBaseContext());
-                                    LinearLayout.LayoutParams BotDayParams = new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, (int)(15 * getResources().getDimension(R.dimen.dp_unit)));
-                                    dayBot.setLayoutParams(BotDayParams);
-                                    dayBot.setGravity(Gravity.END | Gravity.CENTER_VERTICAL);
-                                    dayBot.setTextSize(12);
-                                    dayBot.setTextColor(ContextCompat.getColor(getBaseContext(), R.color.colorSchemaViewDayLektionText));
-                                    dayBot.setText(SlutTid);
-                                    linearDay.addView(dayBot);
-
-                                    linearDay.setBackgroundResource(R.drawable.rect_view_vecka_day_header);
-
-                                    schema_dayce.addView(linearDay); **/
-
-                                }
-                            } catch (NumberFormatException | NullPointerException e) {
-                                e.printStackTrace();
-                            }
-                        }
-                    }
-                } else {
-                    //no file to draw
-                    String fail = "fail";
-                    String megafail = "fail";
-                }
             }
         });
-    }
 
-    public void theSwtich() {
-
-        final String DayPrefFileName = "DayPref.txt";
-        DayPrefFile = new File(getFilesDir() + "/" + DayPrefFileName);
-        DayPref = DayPrefFile.exists();
-
-        Switch the_switch = (Switch) findViewById(R.id.the_switch);
-        the_switch.setChecked(!DayPref);
-        if (DayPref) {
-            makeSchemaDag();
-        }
-
-        the_switch.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
-            @Override
-            public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
-                if (isChecked) {
-                    makeSchemaVecka();
-                    DayPref = false;
-                    DayPrefFile.delete();
-                } else {
-                    makeSchemaDag();
-                    DayPref = true;
-                    FileOutputStream outputStream;
-                    try {
-                        outputStream = openFileOutput(DayPrefFileName,MODE_PRIVATE);
-                        outputStream.write(DayPrefFileName.getBytes());
-                        outputStream.close();
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                }
-            }
-        });
-    }
-
-    public void makeSchemaDag() {
-
-        final LinearLayout schemaVeckaLayout = (LinearLayout) findViewById(R.id.schema_vecka_layout);
-        final LinearLayout schemaDagLayout = (LinearLayout) findViewById(R.id.schema_dag_layout);
-
-        schemaVeckaLayout.setVisibility(View.GONE);
-        schemaDagLayout.setVisibility(View.VISIBLE);
-
-    }
-
-    public void makeSchemaVecka() {
-
-        final LinearLayout schemaVeckaLayout = (LinearLayout) findViewById(R.id.schema_vecka_layout);
-        final LinearLayout schemaDagLayout = (LinearLayout) findViewById(R.id.schema_dag_layout);
-
-        schemaDagLayout.setVisibility(View.GONE);
-        schemaVeckaLayout.setVisibility(View.VISIBLE);
-    }
-
-    private class schemaArrayFixer extends Thread{
-        public void run() {
-            try {
-                Document doc = Jsoup.connect("http://192.168.1.70").get();
-                String llol = doc.toString();
-            } catch (IOException e) {
-                e.printStackTrace();
-            }
-        }
     }
 
     private class newsFeedDownload extends Thread {
         public void run() {
             Document doc;
 
-
             try {
 
                 doc = Jsoup.connect("http://instagram.com/norraselevkar/").get();
                 Elements script = doc.select("script");
 
-                Element picUrls = script.get(1);
+                Element picUrls = script.get(2);
 
                 String[] rawText = picUrls.toString().split(" ");
 
                 ArrayList<String> imageUrls = new ArrayList<>();
                 ArrayList<String> caption = new ArrayList<>();
+                ArrayList<String> commercialData = new ArrayList<>();
 
-                String temp = "";
+                String temp;
                 StringBuilder sb = new StringBuilder();
 
                 int status = 0;
@@ -1130,11 +961,11 @@ public class MainActivity extends AppCompatActivity
 
                         status = 0;
 
-                        temp = sb.toString().replace("\"","").replace(",","");
+                        temp = sb.toString().replace("\",","");
 
                         temp = StringEscapeUtils.unescapeJava(temp);
 
-                        caption.add(temp);
+                        caption.add(temp.substring(1));
 
                         sb.setLength(0);
 
@@ -1155,7 +986,13 @@ public class MainActivity extends AppCompatActivity
 
                 }
 
-                applyNewsFeed(imageUrls, caption);
+                if ( !imageUrls.equals(urlCheck) ) {
+
+                    urlCheck = imageUrls;
+                    applyNewsFeed(imageUrls, caption, commercialData);
+                    commercialFeedDownload(imageUrls, caption, commercialData);
+
+                }
 
             } catch (IOException e) {
                 e.printStackTrace();
@@ -1166,14 +1003,52 @@ public class MainActivity extends AppCompatActivity
 
     }
 
-    public void applyNewsFeed(final ArrayList<String> imageUrls, final ArrayList<String> caption) {
+    private void commercialFeedDownload(final ArrayList<String> imageUrls, final ArrayList<String> caption, final ArrayList<String> commercialData) {
+
+        new DownloadWebpageTask(new AsyncResult() {
+            @Override
+            public void onResult(JSONObject object) {
+
+                try {
+                    JSONArray rows = object.getJSONArray("rows");
+                    for (int i = 0; i < rows.length(); i++) {
+
+                        commercialData.clear();
+
+                        JSONObject row = rows.getJSONObject(i);
+                        JSONArray columns = row.getJSONArray("c");
+                        String urlString = columns.getJSONObject(0).getString("v");
+                        String name = columns.getJSONObject(1).getString("v");
+                        String caption = columns.getJSONObject(2).getString("v");
+                        String color = columns.getJSONObject(3).getString("v");
+
+                        commercialData.add(urlString);
+                        commercialData.add(name);
+                        commercialData.add(caption);
+                        commercialData.add(color);
+                    }
+
+                    applyNewsFeed(imageUrls, caption, commercialData );
+
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+            }
+        } ).execute("https://spreadsheets.google.com/tq?key=" + CommercialDataBaseKey);
+
+    }
+
+    public void applyNewsFeed(final ArrayList<String> imageUrls, final ArrayList<String> caption, final ArrayList<String> commercialData) {
 
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
 
-                adapter = new MyRecyclerViewAdapter(getApplicationContext(), caption, imageUrls);
+                adapter = new MyRecyclerViewAdapter(getApplicationContext(), caption, imageUrls, commercialData );
                 recyclerView.setAdapter(adapter);
+
+                final LinearLayout progressbar = (LinearLayout) findViewById(R.id.nyheter_progress_bar);
+                progressbar.setVisibility(View.GONE);
 
             }
         });
@@ -1186,7 +1061,15 @@ public class MainActivity extends AppCompatActivity
             int size;
 
             try {
-                doc = Jsoup.connect("http://skolmaten.se/norra-real/rss/").get();
+
+                if (GregorianCalendar.getInstance().get(Calendar.DAY_OF_WEEK) == Calendar.SUNDAY || GregorianCalendar.getInstance().get(Calendar.DAY_OF_WEEK) == Calendar.SATURDAY) {
+
+                    doc = Jsoup.connect("https://skolmaten.se/norra-real/rss/days/?limit=7").get();
+                } else {
+
+                    doc = Jsoup.connect("https://skolmaten.se/norra-real/rss/weeks/").get();
+                }
+
                 size = doc.select("description").size();
                 foodMenu = "";
 
@@ -1226,8 +1109,9 @@ public class MainActivity extends AppCompatActivity
 
                 }
 
-            } catch (IOException e) {
+            } catch (Exception e) {
                 e.printStackTrace();
+                foodMenu = "/maq1/Meny saknas/maq1/Meny saknas/maq1/Meny saknas/maq1/Meny saknas/maq1/Meny saknas/maq1/1";
             }
 
         }
@@ -1243,10 +1127,7 @@ public class MainActivity extends AppCompatActivity
                     String matVoteFileName = "mat.txt";
                     File matfil = new File(getFilesDir() + "/" + matVoteFileName);
                     String filedatum = "";
-
-                    //Temporary code for animation-testing
-                    //matfil.delete();
-                    //Delete the above when necessary
+                    personalVote = "";
 
                     try {
                         FileInputStream fis = openFileInput(matVoteFileName);
@@ -1260,8 +1141,9 @@ public class MainActivity extends AppCompatActivity
                         String[] data = sb.toString().split("%");
                         filedatum = data[0];
                         personalVote = data[1];
+                        personalVoteNumber = data[2];
 
-                    } catch (IOException e) {
+                    } catch (IOException | IndexOutOfBoundsException e) {
                         e.printStackTrace();
                     }
                     downloaddatum = filedatum;
@@ -1271,21 +1153,29 @@ public class MainActivity extends AppCompatActivity
                         JSONArray columns = row.getJSONArray("c");
                         matsedelrating = columns.getJSONObject(0).getDouble("v");
                         matsedelratingTotal = columns.getJSONObject(1).getDouble("v");
-                        matsedelratingAmountOfVotes = columns.getJSONObject(2).getDouble("v");
-                        downloaddatum = columns.getJSONObject(4).getString("v") + "/" + columns.getJSONObject(6).getString("v") + "/" + columns.getJSONObject(7).getString("v");
+                        matsedelratingAmountOfVotes = columns.getJSONObject(2).getInt("v");
+                        matsedelMedian = columns.getJSONObject(4).getDouble("v");
+                        matsedelStdev = columns.getJSONObject(3).getDouble("v");
+                        downloaddatum = columns.getJSONObject(5).getString("v") + "/" + columns.getJSONObject(6).getString("v") + "/" + columns.getJSONObject(7).getString("v");
 
-                    } catch (JSONException e) {
+                    } catch (JSONException | NullPointerException e) {
                         e.printStackTrace();
                     }
-                    final boolean qwerty = !downloaddatum.equals(filedatum);
+
+                    boolean qwerty = !downloaddatum.equals(filedatum);
 
                     final ViewFlipper matVf = (ViewFlipper) findViewById(R.id.mat_vf);
+                    final Button button = (Button) findViewById(R.id.matsedel_button);
 
                     if (qwerty) {
                         matVf.setDisplayedChild(1);
+                        button.setClickable(true);
                     } else {
                         matVf.setDisplayedChild(2);
+                        button.setClickable(false);
                     }
+
+                    long hipsterscore = 0;
 
                     final TextView ratingText = (TextView) findViewById(R.id.rating_text);
                     final RatingBar ratingBarOutput = (RatingBar) findViewById(R.id.rating_output_view);
@@ -1293,28 +1183,26 @@ public class MainActivity extends AppCompatActivity
                     ratingBarOutput.setRating((float)matsedelrating);
                     ratingText.setText(String.valueOf(matsedelrating));
 
-                    final TextView statistik = (TextView) findViewById(R.id.statistik);
-                    statistik.setText(personalVote);
+                    final TextView statistikPersonalVote = (TextView) findViewById(R.id.statistik_personal_vote);
+                    final TextView statistikMedian = (TextView) findViewById(R.id.statistik_median);
+                    final TextView statistikStdev = (TextView) findViewById(R.id.statistik_stdev);
+                    final TextView statistikAmountOfVotes = (TextView) findViewById(R.id.statistik_amount_of_votes);
+                    final TextView statistikPersonalNumber = (TextView) findViewById(R.id.statistik_nummer);
+                    final TextView statistikHipsterScore = (TextView) findViewById(R.id.statistik_hipster);
 
-                    /**
-                     final TextView klickahär = (TextView) findViewById(R.id.klicka_rösta_mat);
-                     final LinearLayout matbelt = (LinearLayout) findViewById(R.id.matsedel_belt);
+                    try {
+                        hipsterscore = Math.round(20 * Math.abs(matsedelrating - Double.parseDouble(personalVote)));
 
-                     if (qwerty) {
+                    } catch (NumberFormatException | NullPointerException e) {
+                        e.printStackTrace();
+                    }
 
-                     klickahär.setVisibility(View.GONE);
-                     ratingText.setVisibility(View.VISIBLE);
-                     ratingBarOutput.setVisibility(View.VISIBLE);
-                     matbelt.setVisibility(View.GONE);
-
-                     } else {
-
-                     klickahär.setVisibility(View.GONE);
-                     ratingText.setVisibility(View.VISIBLE);
-                     ratingBarOutput.setVisibility(View.VISIBLE);
-                     matbelt.setVisibility(View.VISIBLE);
-
-                     }**/
+                    statistikStdev.setText(String.valueOf(Math.round(matsedelStdev * 100d)/100d));
+                    statistikAmountOfVotes.setText(String.valueOf(matsedelratingAmountOfVotes));
+                    statistikMedian.setText(String.valueOf(matsedelMedian));
+                    statistikPersonalNumber.setText("#" + personalVoteNumber);
+                    statistikHipsterScore.setText(String.valueOf(hipsterscore));
+                    statistikPersonalVote.setText(personalVote);
 
                 }
             } ).execute("https://spreadsheets.google.com/tq?key=" + MatvoteDataBaseKey );
@@ -1328,17 +1216,13 @@ public class MainActivity extends AppCompatActivity
 
                 try {
 
-                    TextView textView1 = (TextView) findViewById(R.id.test_text1);
-                    TextView textView2 = (TextView) findViewById(R.id.test_text2);
-                    TextView textView3 = (TextView) findViewById(R.id.test_text3);
-                    TextView textView4 = (TextView) findViewById(R.id.test_text4);
-                    TextView textView5 = (TextView) findViewById(R.id.test_text5);
-
-                    LinearLayout monday = (LinearLayout) findViewById(R.id.matsedel_monday);
-                    LinearLayout tuesday = (LinearLayout) findViewById(R.id.matsedel_tuesday);
-                    LinearLayout wednesday = (LinearLayout) findViewById(R.id.matsedel_wednesday);
-                    LinearLayout thursday = (LinearLayout) findViewById(R.id.matsedel_thursday);
-                    LinearLayout friday = (LinearLayout) findViewById(R.id.matsedel_friday);
+                    final int[] matdayBox = {
+                            R.id.matsedel_monday,
+                            R.id.matsedel_tuesday,
+                            R.id.matsedel_wednesday,
+                            R.id.matsedel_thursday,
+                            R.id.matsedel_friday
+                    };
 
                     final int[] matdayTitle = {
                             R.id.mat_title_måndag,
@@ -1347,6 +1231,36 @@ public class MainActivity extends AppCompatActivity
                             R.id.mat_title_torsdag,
                             R.id.mat_title_fredag
                     };
+
+                    final int[] matdayText = {
+                            R.id.test_text1,
+                            R.id.test_text2,
+                            R.id.test_text3,
+                            R.id.test_text4,
+                            R.id.test_text5
+                    };
+
+                    final TextView weekTextView = (TextView) findViewById(R.id.matsedel_belt_vecka_indikator);
+
+                    int foodDay = GregorianCalendar.getInstance().get(Calendar.DAY_OF_WEEK) - 1;
+
+                    if (foodDay == 0 || foodDay == 6 || foodDay ==7) {
+                        foodDay = 1;
+                    }
+
+                    if ( currentDay < 6) {
+
+                        weekTextView.setText( "Vecka " + String.valueOf(currentWeek));
+
+
+                    } else if ( currentDay == 6) {
+
+                        int week = currentWeek + 1;
+                        weekTextView.setText( "Vecka " + String.valueOf(week));
+
+                    }
+
+                    String[] veckodagar = {"Måndag", "Tisdag", "Onsdag", "Torsdag", "Fredag"};
 
                     LinearLayout progressLayout = (LinearLayout) findViewById(R.id.progress_layout);
 
@@ -1357,77 +1271,36 @@ public class MainActivity extends AppCompatActivity
                     String[] charSwap = { "Å", "Ä", "Ö", "å", "ä", "ö"};
                     String[] charSwap2 = { "%c3%85", "%c3%84", "%c3%96", "%c3%a5", "%c3%a4", "%c3%b6"};
 
-                    dagensMat = mat[1].replace("\n\n","\n");
+                    dagensMat = mat[foodDay].replace("\n\n","\n");
 
                     for (int i = 0; i < 6 ; i++) {
 
                         dagensMat = dagensMat.replace( charSwap[i] , charSwap2[i] );
                     }
 
-                    if (mat.length == 6) {
+                    for (int i = 0; i < 5 ; i++) {
 
-                        if (foodDay < 2) {
+                        TextView Dagens = (TextView) findViewById(matdayTitle[i]);
+                        LinearLayout dagensMatBox = (LinearLayout) findViewById(matdayBox[i]);
+                        TextView foodtext = (TextView) findViewById(matdayText[i]);
 
-                            monday.setVisibility(View.VISIBLE);
-                            textView1.setText(mat[1]);
+                        foodtext.setText(mat[i + 1]);
+                        dagensMatBox.setBackgroundResource(R.drawable.rect_matsedel_days);
+                        foodtext.setTextColor(getResources().getColor(R.color.colorMatSedelBoxText));
+                        Dagens.setText(veckodagar[i]);
 
-                        } else {
+                    }
 
-                            monday.setVisibility(View.GONE);
-                        }
+                    if( GregorianCalendar.getInstance().get(Calendar.DAY_OF_WEEK) != Calendar.SATURDAY && GregorianCalendar.getInstance().get(Calendar.DAY_OF_WEEK) != Calendar.SUNDAY )
+                    {
+                        TextView Dagens = (TextView) findViewById(matdayTitle[foodDay - 1]);
+                        LinearLayout dagensMatBox = (LinearLayout) findViewById(matdayBox[foodDay-1]);
+                        TextView foodtext = (TextView) findViewById(matdayText[foodDay-1]);
 
-                        if (foodDay < 3) {
-
-                            tuesday.setVisibility(View.VISIBLE);
-                            textView2.setText(mat[3-foodDay]);
-
-                        } else {
-
-                            tuesday.setVisibility(View.GONE);
-                        }
-
-                        if (foodDay < 4) {
-                            wednesday.setVisibility(View.VISIBLE);
-                            textView3.setText(mat[4-foodDay]);
-
-                        } else {
-
-                            wednesday.setVisibility(View.GONE);
-                        }
-
-                        if (foodDay < 5) {
-                            thursday.setVisibility(View.VISIBLE);
-                            textView4.setText(mat[5-foodDay]);
-
-                        } else {
-
-                            thursday.setVisibility(View.GONE);
-                        }
-
-                        if (foodDay < 6) {
-                            friday.setVisibility(View.VISIBLE);
-                            textView5.setText(mat[6-foodDay]);
-
-                        } else {
-
-                            friday.setVisibility(View.GONE);
-                        }
-
-                        if( GregorianCalendar.getInstance().get(Calendar.DAY_OF_WEEK) != Calendar.SATURDAY && GregorianCalendar.getInstance().get(Calendar.DAY_OF_WEEK) != Calendar.SUNDAY )
-                        {
-
-                            TextView Dagens = (TextView) findViewById(matdayTitle[foodDay - 1]);
-                            Dagens.setText("Dagens Mat");
-
-                        }
-
-                    } else {
-
-                        textView1.setText(mat[1]);
-                        textView2.setText(mat[2]);
-                        textView3.setText(mat[3]);
-                        textView4.setText(mat[4]);
-                        textView5.setText(mat[5]);
+                        Dagens.setText("Dagens Mat");
+                        Dagens.setTextColor(getResources().getColor(R.color.colorMatsedelHighLight));
+                        foodtext.setTextColor(getResources().getColor(R.color.colorMatsedelHighLight));
+                        dagensMatBox.setBackgroundResource(R.drawable.rect_matsedel_days_highlight);
                     }
 
                 } catch (NumberFormatException e) {
@@ -1442,6 +1315,10 @@ public class MainActivity extends AppCompatActivity
 
         final RatingBar ratingBar = (RatingBar) findViewById(R.id.rating_bar);
         final Animation anim_button_click = AnimationUtils.loadAnimation(this, R.anim.anim_button_click);
+        final Button button = (Button) findViewById(R.id.matsedel_button);
+
+        button.setClickable(false);
+        //lol
 
         view.startAnimation(anim_button_click);
         final String matrating = String.valueOf(ratingBar.getRating()).replace(".",",");
@@ -1450,7 +1327,7 @@ public class MainActivity extends AppCompatActivity
         String[] charSwap2 = { "%c3%85", "%c3%84", "%c3%96", "%c3%a5", "%c3%a4", "%c3%b6"};
 
         for (int i = 0; i < 6 ; i++) {
-            votingID = votingID.replace( charSwap[i] , charSwap2[i] );
+                votingID = votingID.replace( charSwap[i] , charSwap2[i] );
         }
 
         Thread t = new Thread(new Runnable() {
@@ -1462,28 +1339,6 @@ public class MainActivity extends AppCompatActivity
         });
         t.start();
 
-    }
-
-    public void postFormRegisterData(String Namn, String Efternamn, String Mobil, String Stad, String Födsel, int gender) {
-
-        String logingender = genderStrings[gender];
-        try {
-            String fullUrl = "https://docs.google.com/forms/d/e/1FAIpQLSfbgeZ2UMpuHDqSagZc2u39tjNhzmEF0toBYRsfFIyz6psiew/formResponse";
-            HttpRequest mReq = new HttpRequest();
-
-            String data = "entry.669832305=" + Namn + "&"
-                    + "entry.1465471991=" + Efternamn + "&"
-                    + "entry.1588314371=" + Mobil + "&"
-                    + "entry.1054214164=" + Stad + "&"
-                    + "entry.1765914386=" + Födsel + "&" //1999-11-06
-                    + "entry.1179920717=" + logingender;
-
-            String response = mReq.sendPost(fullUrl, data);
-            Log.i(myTag, response);
-
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
     }
 
     public void postMatsedelRatingData(String matrating) {
@@ -1499,7 +1354,6 @@ public class MainActivity extends AppCompatActivity
             String response = mReq.sendPost(fullUrl, data);
             Log.i(myTag, response);
 
-            //File update
             final RatingBar ratingBar = (RatingBar) findViewById(R.id.rating_bar);
             String separator = "%";
             String matVoteFileName = "mat.txt";
@@ -1510,119 +1364,64 @@ public class MainActivity extends AppCompatActivity
                 outputStream.write(downloaddatum.getBytes());
                 outputStream.write(separator.getBytes());
                 outputStream.write(String.valueOf(ratingBar.getRating()).getBytes());
+                outputStream.write(separator.getBytes());
+                outputStream.write(String.valueOf(matsedelratingAmountOfVotes + 1).getBytes());
                 outputStream.close();
             } catch (IOException e) {
                 e.printStackTrace();
             }
 
-            //UI code block
             runOnUiThread(new Runnable() {
                 @Override
                 public void run() {
+
                     final RatingBar ratingBarOutput = (RatingBar) findViewById(R.id.rating_output_view);
                     final TextView ratingText = (TextView) findViewById(R.id.rating_text);
                     final RatingBar ratingBar = (RatingBar) findViewById(R.id.rating_bar);
-                    final TextView statistik = (TextView) findViewById(R.id.statistik);
+                    final TextView statistikPersonalVote = (TextView) findViewById(R.id.statistik_personal_vote);
+                    final TextView statistikMedian = (TextView) findViewById(R.id.statistik_median);
+                    final TextView statistikStdev = (TextView) findViewById(R.id.statistik_stdev);
+                    final TextView statistikAmountOfVotes = (TextView) findViewById(R.id.statistik_amount_of_votes);
+                    final TextView statistikPersonalNumber = (TextView) findViewById(R.id.statistik_nummer);
+                    final TextView statistikHipsterScore = (TextView) findViewById(R.id.statistik_hipster);
+
+                    statistikStdev.setText(String.valueOf(Math.round(matsedelStdev * 100d)/100d));
+                    statistikAmountOfVotes.setText(String.valueOf(matsedelratingAmountOfVotes + 1));
+
+                    if (matsedelratingAmountOfVotes == 0) {
+                        statistikMedian.setText(String.valueOf(ratingBar.getRating()));
+
+                    } else {
+                        statistikMedian.setText(String.valueOf(matsedelMedian));
+
+                    }
+                    int number = matsedelratingAmountOfVotes + 1;
+                    long hipsterscore = 0;
 
                     float tempChange = (float)((matsedelratingTotal + ratingBar.getRating()) / (matsedelratingAmountOfVotes + 1.0D));
 
+                    try {
+                        hipsterscore = Math.round(20 * Math.abs(tempChange  - ratingBar.getRating()));
+
+                    } catch (NumberFormatException e) {
+                        e.printStackTrace();
+                    }
+
                     ratingBarOutput.setRating(tempChange);
                     ratingText.setText(String.valueOf(tempChange));
+                    statistikHipsterScore.setText(String.valueOf(hipsterscore));
+                    statistikPersonalNumber.setText("#" + number);
 
-                    //On successful vote
                     final ViewFlipper matVf = (ViewFlipper) findViewById(R.id.mat_vf);
 
                     matVf.setDisplayedChild(2);
-                    statistik.setText(String.valueOf(ratingBar.getRating()));
+                    statistikPersonalVote.setText(String.valueOf(ratingBar.getRating()));
 
-
-                    /**
-                    final TextView klickahär = (TextView) findViewById(R.id.klicka_rösta_mat);
-                    final LinearLayout matbelt = (LinearLayout) findViewById(R.id.matsedel_belt);
-                    final LinearLayout viewpagerlayout = (LinearLayout) findViewById(R.id.layout_pager);
-
-                    klickahär.setVisibility(View.GONE);
-                    ratingText.setVisibility(View.VISIBLE);
-                    ratingBarOutput.setVisibility(View.VISIBLE);
-                    matbelt.setVisibility(View.GONE);
-
-                    LinearLayout.LayoutParams paramsBlank2 = new LinearLayout.LayoutParams(LayoutParams.WRAP_CONTENT, Math.round(getResources().getDimension(R.dimen.matchange)));
-                    viewpagerlayout.setLayoutParams(paramsBlank2);
-                     **/
                 }
             });
 
         } catch (Exception e) {
             e.printStackTrace();
-        }
-
-    }
-
-    public void spammaSverigesElevkårer(View view) {
-
-        final Animation anim_button_click = AnimationUtils.loadAnimation(this, R.anim.anim_button_click);
-
-        view.startAnimation(anim_button_click);
-
-        String name;
-
-        for (int i = 0; i < 25 ; i++) {
-
-            name = "";
-
-            for (int j = 0; j < 10; j++) {
-
-                if( j == 0){
-                    Random rand = new Random();
-                    int n = rand.nextInt(91 - 65) + 65;
-                    name += (char)n;
-                }
-
-                if( j < 5){
-
-                    Random rand = new Random();
-                    int n = rand.nextInt(123 - 97) + 97;
-
-                    name += (char)n;
-                }
-
-                if( j == 5){
-                    Random rand = new Random();
-                    int n = rand.nextInt(91 - 65) + 65;
-                    name += "+" + (char)n;
-                }
-
-                if( j > 5){
-
-                    Random rand = new Random();
-                    int n = rand.nextInt(123 - 97) + 97;
-
-                    name += (char)n;
-                }
-
-                if( j == 9){
-
-                    name += "sson";
-                }
-
-            }
-
-            try {
-
-                String fullUrl = "https://docs.google.com/forms/d/e/1FAIpQLSeNNzgiaKPlpcedoqK9ZTFGa6oHhtsRdUiPLvAK5ucs1UE3xw/formResponse";
-                HttpRequest mReq = new HttpRequest();
-
-                String data = "entry.1357747958=Norra+Real+Elevkår&entry.60332854=Årets+Elevkår&" +
-                        "entry.1413369446=" + name + "&entry.365068267=Stora+framsteg+inom+IT-fronten...";
-
-                String response = mReq.sendPost(fullUrl, data);
-                Log.i(myTag, response);
-
-
-            } catch (Exception e) {
-                e.printStackTrace();
-            }
-
         }
 
     }
@@ -1642,6 +1441,7 @@ public class MainActivity extends AppCompatActivity
                 mIcon11 = BitmapFactory.decodeStream(in);
             } catch (Exception e) {
                 Log.e("Error", e.getMessage());
+                drawSchemaTemp(false);
                 e.printStackTrace();
             }
             return mIcon11;
@@ -1650,29 +1450,6 @@ public class MainActivity extends AppCompatActivity
         protected void onPostExecute(Bitmap result) {
             bmImage.setImageBitmap(result);
         }
-    }
-
-    public void fidget_spinner(){
-
-        Spinner spinnerLoginGender = (Spinner) findViewById(R.id.fidget_spinner);
-        Spinner spinnerSchemaType = (Spinner) findViewById(R.id.typ_spinner);
-
-// Create an ArrayAdapter using the string array and a default spinner layout
-        ArrayAdapter adapterGender = ArrayAdapter.createFromResource(this, R.array.gender_array, R.layout.spinner_login_layout);
-        spinnerLoginGender.setAdapter(adapterGender);
-
-        ArrayAdapter adapterTyp = ArrayAdapter.createFromResource(this, R.array.typ_array, R.layout.spinner_schema_layout);
-        spinnerSchemaType.setAdapter(adapterTyp);
-
-// Specify the layout to use when the list of choices appears
-        adapterGender.setDropDownViewResource(R.layout.spinner_login_dropdown_layout);
-        adapterTyp.setDropDownViewResource(R.layout.spinner_schema_dropdown_layout);
-// Apply the adapter to the spinner
-        spinnerLoginGender.setAdapter(adapterGender);
-        spinnerSchemaType.setAdapter(adapterTyp);
-
-        spinnerLoginGender.setSelection(genderInteger);
-
     }
 
     private class DownloadFile extends Thread{

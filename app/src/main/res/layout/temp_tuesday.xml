@@ -12,30 +12,22 @@
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:orientation="vertical"
-        android:layout_marginTop="56dp"
         android:elevation="3dp"
-        android:background="@color/colorMatBackground">
+        android:background="@drawable/rect_matsedel_days"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:paddingTop="5dp"
+        android:paddingBottom="5dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp">
 
-        <LinearLayout
+        <ImageView
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:gravity="center"
-            android:id="@+id/nyheter_progress_bar">
-
-            <ProgressBar
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:progress="0"  />
-
-        </LinearLayout>
-
-        <android.support.v7.widget.RecyclerView
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:id="@+id/nyheter_recyclerview">
-
-        </android.support.v7.widget.RecyclerView>
+            android:layout_height="wrap_content"
+            android:id="@+id/temp_tuesday_image"
+            android:elevation="3dp"
+            android:adjustViewBounds="true"
+            android:scaleType="fitCenter" />
 
     </LinearLayout>
 

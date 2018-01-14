@@ -60,6 +60,7 @@
 
                 <Button
                     android:gravity="center"
+                    android:id="@+id/matsedel_button"
                     android:layout_gravity="center_vertical"
                     android:layout_width="78dp"
                     android:layout_height="33dp"
