@@ -807,7 +807,7 @@ public class MainActivity extends AppCompatActivity
                 e.printStackTrace();
             }
 
-            String nameOfFile = "id:" + id_number + "week:" + downloadWeek + "_" + schemaFileName;
+            /**String nameOfFile = "id:" + id_number + "week:" + downloadWeek + "_" + schemaFileName;
             schemaFile = new File(getFilesDir() + "/" + nameOfFile);
             String downloadID = id_number;
 
@@ -817,7 +817,7 @@ public class MainActivity extends AppCompatActivity
                 M.join();
             } catch (InterruptedException e) {
                 e.printStackTrace();
-            }
+            }   **/
 
             //drawSchema();
             drawSchemaTemp(true);
@@ -879,16 +879,35 @@ public class MainActivity extends AppCompatActivity
             currentHour = GregorianCalendar.getInstance().get(Calendar.HOUR_OF_DAY);
             currentMinute = GregorianCalendar.getInstance().get(Calendar.MINUTE);
 
-            if (currentHour < 18) {
-                focusDay = currentDay;
-            } else {
-                focusDay = currentDay + 1;
-            }
-            if (focusDay == 0 || focusDay == 6 || focusDay == 7) {
+            boolean next = currentHour > 18;
+            switch (currentDay){
+                case 0: downloadWeek = currentWeek;
                 focusDay = 1;
-                downloadWeek = currentWeek + 1;
-            } else {
-                downloadWeek = currentWeek;
+                break;
+
+                case 1: downloadWeek = currentWeek;
+                focusDay = next ? 2 : 1;
+                break;
+
+                case 2: downloadWeek = currentWeek;
+                focusDay = next ? 3 : 2;
+                break;
+
+                case 3: downloadWeek = currentWeek;
+                focusDay = next ? 4 : 3;
+                break;
+
+                case 4: downloadWeek = currentWeek;
+                focusDay = next ? 5 : 4;
+                break;
+
+                case 5: downloadWeek = next ? currentWeek + 1: currentWeek;
+                focusDay = next ? 1 : 5;
+                break;
+
+                case 6: downloadWeek = currentWeek + 1;
+                focusDay = 1;
+                break;
             }
         }
     }
