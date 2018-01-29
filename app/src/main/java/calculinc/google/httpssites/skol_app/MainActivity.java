@@ -946,77 +946,99 @@ public class MainActivity extends AppCompatActivity
 
     }
 
-    private class newsFeedDownload extends Thread {
-        public void run() {
-            Document doc;
+    private ArrayList<ArrayList<String>> instagramFeedParser(String url)
+    {
+        ArrayList<String> imageUrls = new ArrayList<>();
+        ArrayList<String> caption = new ArrayList<>();
 
-            try {
+        ArrayList<ArrayList<String>> data = new ArrayList<>();
 
-                doc = Jsoup.connect("http://instagram.com/norraselevkar/").get();
-                Elements script = doc.select("script");
+        Document doc;
 
-                Element picUrls = script.get(2);
+        try {
 
-                String[] rawText = picUrls.toString().split(" ");
+            doc = Jsoup.connect(url).get();
+            Elements script = doc.select("script");
 
-                ArrayList<String> imageUrls = new ArrayList<>();
-                ArrayList<String> caption = new ArrayList<>();
-                ArrayList<String> commercialData = new ArrayList<>();
+            Element picUrls = script.get(2);
 
-                String temp;
-                StringBuilder sb = new StringBuilder();
+            String[] rawText = picUrls.toString().split(" ");
 
-                int status = 0;
+            ArrayList<String> commercialData = new ArrayList<>();
 
-                for (int i = 0; i < rawText.length; i++) {
+            String temp;
+            StringBuilder sb = new StringBuilder();
 
-                    if(rawText[i].equals("\"display_src\":") ) {
+            int status = 0;
 
-                        imageUrls.add(rawText[i +1 ].replace("\"","").replace(",",""));
-                    }
+            for (int i = 0; i < rawText.length; i++) {
 
+                if(rawText[i].equals("\"display_src\":") ) {
 
-                    if (rawText[i].equals("\"comments\":")) {
-
-                        status = 0;
-
-                        temp = sb.toString().replace("\",","");
-
-                        temp = StringEscapeUtils.unescapeJava(temp);
-
-                        caption.add(temp.substring(1));
-
-                        sb.setLength(0);
-
-                    }
+                    imageUrls.add(rawText[i +1 ].replace("\"","").replace(",",""));
+                }
 
 
-                    if (status == 1) {
+                if (rawText[i].equals("\"comments\":")) {
 
-                        sb.append(rawText[i]);
-                        sb.append(" ");
+                    status = 0;
 
-                    }
+                    temp = sb.toString().replace("\",","");
 
-                    if (rawText[i].equals("\"caption\":")) {
+                    temp = StringEscapeUtils.unescapeJava(temp);
 
-                        status = 1;
-                    }
+                    caption.add(temp.substring(1));
+
+                    sb.setLength(0);
 
                 }
 
-                if ( !imageUrls.equals(urlCheck) ) {
 
-                    urlCheck = imageUrls;
-                    applyNewsFeed(imageUrls, caption, commercialData);
-                    commercialFeedDownload(imageUrls, caption, commercialData);
+                if (status == 1) {
+
+                    sb.append(rawText[i]);
+                    sb.append(" ");
 
                 }
 
-            } catch (IOException e) {
-                e.printStackTrace();
+                if (rawText[i].equals("\"caption\":")) {
+
+                    status = 1;
+                }
+
             }
 
+            data.add(0,imageUrls);
+            data.add(1,caption);
+
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+        return data;
+
+    }
+
+    private class newsFeedDownload extends Thread {
+        public void run() {
+
+            ArrayList<String> imageUrls;
+            ArrayList<String> caption;
+            ArrayList<String> commercialData = new ArrayList<>();
+            ArrayList<ArrayList<String>> data;
+
+            data = instagramFeedParser("https://www.instagram.com/norraselevkar/");
+
+            imageUrls = data.get(0);
+            caption = data.get(1);
+
+            if ( !imageUrls.equals(urlCheck) ) {
+
+                urlCheck = imageUrls;
+                applyNewsFeed(imageUrls, caption, commercialData);
+                commercialFeedDownload(imageUrls, caption, commercialData);
+
+            }
 
         }
 
