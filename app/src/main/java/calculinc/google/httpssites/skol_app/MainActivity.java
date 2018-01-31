@@ -147,6 +147,9 @@ public class MainActivity extends AppCompatActivity
         recyclerViewAdapter();
         //theSwtich();
 
+        urlCheck.add("1");
+        urlCheck.add("2");
+
         Log.i(myTag, "OnCreate()");
 
         final EditText name = (EditText) findViewById(R.id.name1);
@@ -946,8 +949,8 @@ public class MainActivity extends AppCompatActivity
 
     }
 
-    private ArrayList<ArrayList<String>> instagramFeedParser(String url)
-    {
+    private ArrayList<ArrayList<String>> instagramFeedParser(String url) {
+
         ArrayList<String> imageUrls = new ArrayList<>();
         ArrayList<String> caption = new ArrayList<>();
 
@@ -962,50 +965,22 @@ public class MainActivity extends AppCompatActivity
 
             Element picUrls = script.get(2);
 
-            String[] rawText = picUrls.toString().split(" ");
+            String[] rawTextCaption = picUrls.toString().split("caption\":\"");
+            String[] rawTextImageUrl = picUrls.toString().split("display_src\":\"");
 
-            ArrayList<String> commercialData = new ArrayList<>();
+            for (int i = 1; i < rawTextImageUrl.length ; i++) {
 
-            String temp;
-            StringBuilder sb = new StringBuilder();
+                imageUrls.add(rawTextImageUrl[i].split("\",\"")[0]);
 
-            int status = 0;
+            }
 
-            for (int i = 0; i < rawText.length; i++) {
+            for (int i = 1; i < rawTextCaption.length ; i++) {
 
-                if(rawText[i].equals("\"display_src\":") ) {
+                String temp = rawTextCaption[i].split("\",\"")[0];
+                temp = StringEscapeUtils.unescapeJava(temp);
 
-                    imageUrls.add(rawText[i +1 ].replace("\"","").replace(",",""));
-                }
-
-
-                if (rawText[i].equals("\"comments\":")) {
-
-                    status = 0;
-
-                    temp = sb.toString().replace("\",","");
-
-                    temp = StringEscapeUtils.unescapeJava(temp);
-
-                    caption.add(temp.substring(1));
-
-                    sb.setLength(0);
-
-                }
-
-
-                if (status == 1) {
-
-                    sb.append(rawText[i]);
-                    sb.append(" ");
-
-                }
-
-                if (rawText[i].equals("\"caption\":")) {
-
-                    status = 1;
-                }
-
+                caption.add(temp);
+                
             }
 
             data.add(0,imageUrls);
@@ -1024,52 +999,69 @@ public class MainActivity extends AppCompatActivity
 
             ArrayList<String> imageUrls;
             ArrayList<String> caption;
-            ArrayList<String> commercialData = new ArrayList<>();
+            ArrayList<String> commercialData;
             ArrayList<ArrayList<String>> data;
 
             data = instagramFeedParser("https://www.instagram.com/norraselevkar/");
 
             imageUrls = data.get(0);
             caption = data.get(1);
-
-            if ( !imageUrls.equals(urlCheck) ) {
-
-                urlCheck = imageUrls;
-                applyNewsFeed(imageUrls, caption, commercialData);
-                commercialFeedDownload(imageUrls, caption, commercialData);
-
-            }
+            commercialFeedDownload(imageUrls,caption);
 
         }
 
     }
 
-    private void commercialFeedDownload(final ArrayList<String> imageUrls, final ArrayList<String> caption, final ArrayList<String> commercialData) {
+    private void commercialFeedDownload(final ArrayList<String> imageUrls, final ArrayList<String> captionData) {
 
         new DownloadWebpageTask(new AsyncResult() {
             @Override
             public void onResult(JSONObject object) {
 
+                ArrayList<String> commercialData = new ArrayList<>();
+
                 try {
                     JSONArray rows = object.getJSONArray("rows");
-                    for (int i = 0; i < rows.length(); i++) {
 
-                        commercialData.clear();
+                    if (rows.length() == 0)
+                    {
+                        if ( !imageUrls.get(0).equals(urlCheck.get(0)) || !commercialData.get(2).equals(urlCheck.get(1))) {
 
-                        JSONObject row = rows.getJSONObject(i);
-                        JSONArray columns = row.getJSONArray("c");
-                        String urlString = columns.getJSONObject(0).getString("v");
-                        String name = columns.getJSONObject(1).getString("v");
-                        String caption = columns.getJSONObject(2).getString("v");
-                        String color = columns.getJSONObject(3).getString("v");
+                            applyNewsFeed(imageUrls, captionData, commercialData);
+                            urlCheck.add(0,imageUrls.get(0));
+                            urlCheck.add(1,commercialData.get(2));
 
-                        commercialData.add(urlString);
-                        commercialData.add(name);
-                        commercialData.add(caption);
-                        commercialData.add(color);
+                        }
+
+                    } else {
+
+                        for (int i = 0; i < rows.length(); i++) {
+
+                            commercialData.clear();
+
+                            JSONObject row = rows.getJSONObject(i);
+                            JSONArray columns = row.getJSONArray("c");
+                            String urlString = columns.getJSONObject(0).getString("v");
+                            String name = columns.getJSONObject(1).getString("v");
+                            String caption = columns.getJSONObject(2).getString("v");
+                            String color = columns.getJSONObject(3).getString("v");
+
+                            commercialData.add(urlString);
+                            commercialData.add(name);
+                            commercialData.add(caption);
+                            commercialData.add(color);
+
+                            if ( !imageUrls.get(0).equals(urlCheck.get(0)) || !commercialData.get(2).equals(urlCheck.get(1))) {
+
+                                applyNewsFeed(imageUrls, captionData, commercialData);
+                                urlCheck.add(0,imageUrls.get(0));
+                                urlCheck.add(1,commercialData.get(2));
+
+                            }
+
+                        }
+
                     }
-
-                    applyNewsFeed(imageUrls, caption, commercialData );
 
                 } catch (JSONException e) {
                     e.printStackTrace();
