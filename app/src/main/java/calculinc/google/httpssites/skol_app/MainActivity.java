@@ -965,18 +965,19 @@ public class MainActivity extends AppCompatActivity
 
             Element picUrls = script.get(2);
 
-            String[] rawTextCaption = picUrls.toString().split("caption\":\"");
-            String[] rawTextImageUrl = picUrls.toString().split("display_src\":\"");
+            String[] rawTextCaption = picUrls.toString().split("\"text\":\"");
+            String[] rawTextImageUrl = picUrls.toString().split("display_url\":\"");
 
             for (int i = 1; i < rawTextImageUrl.length ; i++) {
 
-                imageUrls.add(rawTextImageUrl[i].split("\",\"")[0]);
+                imageUrls.add(rawTextImageUrl[i].split("\",\"edge_liked_by\":")[0]);
 
             }
 
             for (int i = 1; i < rawTextCaption.length ; i++) {
 
-                String temp = rawTextCaption[i].split("\",\"")[0];
+                String temp = rawTextCaption[i].split("shortcode")[0];
+                temp = temp.substring(0,temp.length() - 7);
                 temp = StringEscapeUtils.unescapeJava(temp);
 
                 caption.add(temp);

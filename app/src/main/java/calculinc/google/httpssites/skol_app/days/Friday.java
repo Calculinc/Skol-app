@@ -19,7 +19,6 @@ public class Friday extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.temp_friday, container, false);
 
-
         return v;
     }
 
