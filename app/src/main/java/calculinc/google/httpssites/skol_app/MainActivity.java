@@ -963,7 +963,7 @@ public class MainActivity extends AppCompatActivity
             doc = Jsoup.connect(url).get();
             Elements script = doc.select("script");
 
-            Element picUrls = script.get(2);
+            Element picUrls = script.get(3);
 
             String[] rawTextCaption = picUrls.toString().split("\"text\":\"");
             String[] rawTextImageUrl = picUrls.toString().split("display_url\":\"");
